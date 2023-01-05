@@ -201,4 +201,4 @@ README.html
 .exercism
 
 ### my own properties
-env.properties
+src/main/resources/env.properties
