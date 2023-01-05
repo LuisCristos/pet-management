@@ -199,3 +199,6 @@ README.html
 *.iml
 .idea
 .exercism
+
+### my own properties
+env.properties
