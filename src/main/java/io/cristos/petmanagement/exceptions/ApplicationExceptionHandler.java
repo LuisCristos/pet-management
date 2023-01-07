@@ -25,12 +25,12 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(UserNotFoundException.class)
-    public Map<String, String> handlePersonNotFound(UserNotFoundException userNotFoundException) {
+    @ExceptionHandler(NotFoundException.class)
+    public Map<String, String> handlePersonNotFound(NotFoundException notFoundException) {
 
         Map<String, String> errorMap = new HashMap<>();
 
-        errorMap.put("errorMessage", userNotFoundException.getMessage());
+        errorMap.put("errorMessage", notFoundException.getMessage());
 
         return errorMap;
     }

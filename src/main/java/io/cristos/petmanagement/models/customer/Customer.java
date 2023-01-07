@@ -1,4 +1,4 @@
-package io.cristos.petmanagement.models.person;
+package io.cristos.petmanagement.models.customer;
 
 import io.cristos.petmanagement.models.BaseEntity;
 import jakarta.persistence.Column;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity(name = "Person")
 @Table(name = "person")
-public class Person extends BaseEntity {
+public class Customer extends BaseEntity {
 
     @Column(
             name = "first_name",
@@ -32,14 +32,14 @@ public class Person extends BaseEntity {
     @Transient
     private int age;
 
-    public Person(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
+    public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Person() {
+    public Customer() {
     }
 
     public String getFirstName() {
@@ -68,7 +68,7 @@ public class Person extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Customer{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
