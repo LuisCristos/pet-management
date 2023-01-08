@@ -10,9 +10,12 @@ import java.util.List;
 
 public interface CustomerController {
 
-    ResponseEntity<Customer> saveNewPerson(CustomerRequest customerRequest);
+    ResponseEntity<Customer> saveCustomer(CustomerRequest customerRequest);
 
-    ResponseEntity<List<Customer>> getAllPersons();
+    ResponseEntity<List<Customer>> getAllCustomers();
 
-    ResponseEntity<Customer> findPersonById(Long id) throws NotFoundException;
+    ResponseEntity<Customer> findCustomerById(Long id) throws NotFoundException;
+
+    void deleteCustomerById(Long id);
+
 }

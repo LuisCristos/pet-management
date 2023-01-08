@@ -15,30 +15,36 @@ import java.util.List;
 @RequestMapping("/persons")
 public class CustomerControllerImpl implements CustomerController {
 
-    private final CustomerServiceImpl personService;
+    private final CustomerServiceImpl customerService;
 
-    public CustomerControllerImpl(CustomerServiceImpl personService) {
-        this.personService = personService;
+    public CustomerControllerImpl(CustomerServiceImpl customerService) {
+        this.customerService = customerService;
     }
 
     @Override
     @PostMapping("/add")
-    public ResponseEntity<Customer> saveNewPerson(@RequestBody @Valid CustomerRequest customerRequest) {
-        return new ResponseEntity<>(personService.savePerson(customerRequest), HttpStatus.CREATED);
+    public ResponseEntity<Customer> saveCustomer(@RequestBody @Valid CustomerRequest customerRequest) {
+        return new ResponseEntity<>(customerService.saveCustomer(customerRequest), HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<Customer>> getAllPersons() {
-        return ResponseEntity.ok(personService.getAllPersons());
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> findPersonById(@PathVariable Long id) throws NotFoundException {
-        return ResponseEntity.ok(personService.findById(id));
+    public ResponseEntity<Customer> findCustomerById(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(customerService.findCustomerById(id));
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public void deleteCustomerById(@PathVariable Long id) {
+
+        customerService.deleteCustomerById(id);
     }
 
 
-    // TO_LC: delete, update with boolean.
 }
