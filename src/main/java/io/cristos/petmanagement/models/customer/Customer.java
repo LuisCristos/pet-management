@@ -7,9 +7,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 import java.time.LocalDate;
+import java.time.Period;
 
-@Entity(name = "Person")
-@Table(name = "person")
+@Entity(name = "Customer")
+@Table(name = "customer")
 public class Customer extends BaseEntity {
 
     @Column(
@@ -30,7 +31,7 @@ public class Customer extends BaseEntity {
     )
     private LocalDate dateOfBirth;
     @Transient
-    private int age;
+    private Integer age;
 
     public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
         super(id);
@@ -64,6 +65,10 @@ public class Customer extends BaseEntity {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Integer getAge() {
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
     @Override

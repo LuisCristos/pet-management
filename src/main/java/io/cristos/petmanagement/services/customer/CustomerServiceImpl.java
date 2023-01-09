@@ -8,9 +8,7 @@ import io.cristos.petmanagement.utilities.mapper.CustomerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 
@@ -57,26 +55,26 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findCustomerById(Long id) throws NotFoundException {
+    public Optional<Customer> findCustomerById(Long id) throws NotFoundException {
 
         Optional<Customer> optionalPerson = customerRepository.findById(id);
 
         Customer customer = optionalPerson.orElseThrow(
-                () -> new NotFoundException("Customer with id: " +  id + " not found."));
+                () -> new NotFoundException("Customer with id: " + id + " not found."));
 
-        return customer;
+        return customerRepository.findById(id);
     }
 
     @Override
-    public void deleteCustomerById(Long id) {
+    public void deleteCustomerById(Long id) throws NotFoundException {
 
-       boolean isNull =  Objects.isNull(id);
+        boolean exists = customerRepository.existsById(id);
 
-       if (isNull) {
-           throw new RuntimeException("Id musst have value");
-       }
+        if (!exists) {
+            throw new NotFoundException("Customer with id: " + id + " not found.");
+        }
 
-       customerRepository.deleteById(id);
+        customerRepository.deleteById(id);
 
     }
 

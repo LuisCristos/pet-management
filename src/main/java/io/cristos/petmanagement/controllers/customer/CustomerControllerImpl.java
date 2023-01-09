@@ -10,9 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/customers")
 public class CustomerControllerImpl implements CustomerController {
 
     private final CustomerServiceImpl customerService;
@@ -35,16 +36,31 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> findCustomerById(@PathVariable Long id) throws NotFoundException {
-        return ResponseEntity.ok(customerService.findCustomerById(id));
+    public ResponseEntity<Optional<Customer>> findCustomerById(@PathVariable Long id) {
+
+        try {
+
+            return ResponseEntity.ok(customerService.findCustomerById(id));
+
+        } catch (NotFoundException e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public void deleteCustomerById(@PathVariable Long id) {
+    public ResponseEntity<Customer> deleteCustomerById(@PathVariable Long id) {
 
-        customerService.deleteCustomerById(id);
+        try {
+
+            customerService.deleteCustomerById(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 
 }
