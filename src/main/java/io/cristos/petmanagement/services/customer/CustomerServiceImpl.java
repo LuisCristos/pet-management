@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RuntimeException("CustomerRequest is null");
         }
 
-        logger.info(customerRequest.toString() + " saved in database");
+        logger.info(customerRequest + " saved in database");
 
         return customerRepository.save(customerMapper.customerRequestToCustomer(customerRequest));
     }
@@ -52,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         List<Customer> customerList = new ArrayList<>(customerCollection);
 
+        logger.info("retrieved customer List");
         return customerList;
     }
 

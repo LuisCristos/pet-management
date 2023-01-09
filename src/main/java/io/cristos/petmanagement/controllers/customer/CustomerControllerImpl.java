@@ -26,6 +26,7 @@ public class CustomerControllerImpl implements CustomerController {
     @Override
     @PostMapping("/add")
     public ResponseEntity<Customer> saveCustomer(@RequestBody @Valid CustomerRequest customerRequest) {
+
         return new ResponseEntity<>(customerService.saveCustomer(customerRequest), HttpStatus.CREATED);
     }
 
