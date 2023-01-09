@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RuntimeException("CustomerRequest is null");
         }
 
-        logger.info(customerRequest + " saved in database");
+        logger.info(customerRequest + "saved in database");
 
         return customerRepository.save(customerMapper.customerRequestToCustomer(customerRequest));
     }
@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         List<Customer> customerList = new ArrayList<>(customerCollection);
 
-        logger.info("retrieved customer List");
+        logger.info("Retrieved customer List");
         return customerList;
     }
 
@@ -61,8 +61,14 @@ public class CustomerServiceImpl implements CustomerService {
 
         Optional<Customer> optionalPerson = customerRepository.findById(id);
 
-        Customer customer = optionalPerson.orElseThrow(
-                () -> new NotFoundException("Customer with id: " + id + " not found."));
+        if (optionalPerson.isEmpty()) {
+
+            logger.info("findCustomerById(). Customer with id: " + id + " cannot be found.");
+
+            throw new NotFoundException("Customer with id: " + id + " cannot be found.");
+        }
+
+        logger.info("Retrieved customer with id: " + id);
 
         return customerRepository.findById(id);
     }
@@ -73,8 +79,13 @@ public class CustomerServiceImpl implements CustomerService {
         boolean exists = customerRepository.existsById(id);
 
         if (!exists) {
-            throw new NotFoundException("Customer with id: " + id + " not found.");
+
+            logger.info("deleteCustomerById(). Customer ID: " + id + " cannot be deleted because it does not exist.");
+
+            throw new NotFoundException("Customer ID: " + id + " cannot be deleted because it does not exist.");
         }
+
+        logger.info("Deleted customer with id: " + id);
 
         customerRepository.deleteById(id);
     }
@@ -82,27 +93,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException {
 
-        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        boolean exists = customerRepository.existsById(id);
 
-        if (optionalCustomer.isEmpty()) {
-            throw new NotFoundException("Can not update customer with id: " + id);
+        if (!exists) {
+
+            logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
+
+            throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
         }
 
-        Customer customer = optionalCustomer.get();
+        logger.info("Update customer with id " + id);
 
-        if (optionalCustomer.get().getFirstName() != firstName) {
-            customer.setFirstName(firstName);
-        }
-
-        if (optionalCustomer.get().getLastName() != lastName) {
-            customer.setLastName(lastName);
-        }
-
-        if (optionalCustomer.get().getDateOfBirth() != dateOfBirth) {
-            customer.setDateOfBirth(dateOfBirth);
-        }
-
-        return customerRepository.save(customer);
+        return customerRepository.save(
+                customerMapper.customerRequestToCustomer(
+                        customerMapper.createCustomerRequest(id, firstName, lastName, dateOfBirth)
+                ));
     }
 
 

@@ -4,9 +4,9 @@ import io.cristos.petmanagement.dtos.customer.CustomerRequest;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/customers")
+@Validated
 public class CustomerControllerImpl implements CustomerController {
 
     private final CustomerServiceImpl customerService;
@@ -25,7 +26,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PostMapping("/add")
-    public ResponseEntity<Customer> saveCustomer(@RequestBody @Valid CustomerRequest customerRequest) {
+    public ResponseEntity<Customer> saveCustomer(@RequestBody CustomerRequest customerRequest) {
 
         return new ResponseEntity<>(customerService.saveCustomer(customerRequest), HttpStatus.CREATED);
     }
@@ -70,10 +71,10 @@ public class CustomerControllerImpl implements CustomerController {
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(
             @PathVariable Long id,
-            @RequestParam(required = false)  String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) LocalDate dateOfBirth
-            ) {
+            String firstName,
+            String lastName,
+            LocalDate dateOfBirth
+    ) {
 
         try {
             customerService.updateCustomer(id, firstName, lastName, dateOfBirth);
