@@ -24,6 +24,7 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         Customer customer = new Customer();
 
+        customer.setId(customerRequest.getId());
         customer.setFirstName(customerRequest.getFirstName());
         customer.setLastName(customerRequest.getLastName());
         customer.setDateOfBirth(customerRequest.getDateOfBirth());

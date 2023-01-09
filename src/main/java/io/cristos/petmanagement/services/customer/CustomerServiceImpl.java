@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -32,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
         boolean isNull = Objects.isNull(customerRequest);
 
         if (isNull) {
-            throw new RuntimeException("CustomerRequest is null" + customerRequest.toString());
+            throw new RuntimeException("CustomerRequest is null");
         }
 
         logger.info(customerRequest.toString() + " saved in database");
@@ -75,7 +76,34 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         customerRepository.deleteById(id);
-
     }
+
+    @Override
+    public Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException {
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+
+        if (optionalCustomer.isEmpty()) {
+            throw new NotFoundException("Can not update customer with id: " + id);
+        }
+
+        Customer customer = optionalCustomer.get();
+
+        if (optionalCustomer.get().getFirstName() != firstName) {
+            customer.setFirstName(firstName);
+        }
+
+        if (optionalCustomer.get().getLastName() != lastName) {
+            customer.setLastName(lastName);
+        }
+
+        if (optionalCustomer.get().getDateOfBirth() != dateOfBirth) {
+            customer.setDateOfBirth(dateOfBirth);
+        }
+
+        return customerRepository.save(customer);
+    }
+
+
 
 }

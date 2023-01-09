@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,27 @@ public class CustomerControllerImpl implements CustomerController {
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (NotFoundException e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    public ResponseEntity<Customer> updateCustomer(
+            @PathVariable Long id,
+            @RequestParam(required = false)  String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) LocalDate dateOfBirth
+            ) {
+
+        try {
+            customerService.updateCustomer(id, firstName, lastName, dateOfBirth);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (NotFoundException e) {
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

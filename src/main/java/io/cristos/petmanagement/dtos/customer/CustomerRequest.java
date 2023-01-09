@@ -2,12 +2,14 @@ package io.cristos.petmanagement.dtos.customer;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class CustomerRequest {
 
+    private Long id;
     @NotBlank(message = "Firstname is required.")
     @Size(min = 2, max = 255, message = "Firstname must be between 2 and 255 characters long")
     private String firstName;
@@ -17,7 +19,15 @@ public class CustomerRequest {
     private String lastName;
 
     @NotNull(message = "Date of Birth is required.")
+    @Past
     private LocalDate dateOfBirth;
+
+    public CustomerRequest(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public CustomerRequest(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
@@ -26,6 +36,14 @@ public class CustomerRequest {
     }
 
     public CustomerRequest() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -55,7 +73,8 @@ public class CustomerRequest {
     @Override
     public String toString() {
         return "CustomerRequest{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
