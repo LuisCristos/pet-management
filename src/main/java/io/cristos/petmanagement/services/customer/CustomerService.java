@@ -4,7 +4,6 @@ import io.cristos.petmanagement.dtos.customer.CustomerRequest;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +17,8 @@ public interface CustomerService {
 
     void deleteCustomerById(Long id) throws NotFoundException;
 
-    Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException;
+//    Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException;
+
+    Customer updateCustomer(Long id, CustomerRequest customerRequest) throws NotFoundException;
 
 }

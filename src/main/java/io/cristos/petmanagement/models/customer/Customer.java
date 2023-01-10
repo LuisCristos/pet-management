@@ -5,6 +5,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -17,18 +21,24 @@ public class Customer extends BaseEntity {
             name = "first_name",
             columnDefinition = "VARCHAR(255)"
     )
+    @NotBlank(message = "Firstname is required.")
+    @Size(min = 2, max = 255, message = "Firstname must be between 2 and 255 characters long")
     private String firstName;
     @Column(
             name = "last_name",
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
+    @NotBlank(message = "Lastname is required.")
+    @Size(min = 2, max = 255, message = "Lastname must be between 2 and 255 characters long")
     private String lastName;
     @Column(
             name = "date_of_birth",
             nullable = false,
             columnDefinition = "DATE"
     )
+    @NotNull(message = "Date of Birth is required.")
+    @Past
     private LocalDate dateOfBirth;
     @Transient
     private Integer age;

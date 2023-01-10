@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 
@@ -91,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException {
+    public Customer updateCustomer(Long id, CustomerRequest customerRequest) throws NotFoundException {
 
         boolean exists = customerRepository.existsById(id);
 
@@ -100,16 +99,33 @@ public class CustomerServiceImpl implements CustomerService {
             logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
 
             throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
+
         }
 
-        logger.info("Update customer with id " + id);
-
         return customerRepository.save(
-                customerMapper.customerRequestToCustomer(
-                        customerMapper.createCustomerRequest(id, firstName, lastName, dateOfBirth)
-                ));
+                customerMapper.customerRequestToCustomer(customerRequest));
     }
 
+
+//    @Override
+//    public Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException {
+//
+//        boolean exists = customerRepository.existsById(id);
+//
+//        if (!exists) {
+//
+//            logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
+//
+//            throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
+//        }
+//
+//        logger.info("Update customer with id " + id);
+//
+//        return customerRepository.save(
+//                customerMapper.customerRequestToCustomer(
+//                        customerMapper.createCustomerRequest(id, firstName, lastName, dateOfBirth)
+//                ));
+//    }
 
 
 }
