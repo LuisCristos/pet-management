@@ -102,6 +102,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         }
 
+        logger.info("Updated customer with id: " + id);
+
         return customerRepository.save(
                 customerMapper.customerRequestToCustomer(customerRequest));
     }
