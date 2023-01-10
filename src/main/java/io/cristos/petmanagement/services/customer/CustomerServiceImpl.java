@@ -105,27 +105,4 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.save(
                 customerMapper.customerRequestToCustomer(customerRequest));
     }
-
-
-//    @Override
-//    public Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException {
-//
-//        boolean exists = customerRepository.existsById(id);
-//
-//        if (!exists) {
-//
-//            logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
-//
-//            throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
-//        }
-//
-//        logger.info("Update customer with id " + id);
-//
-//        return customerRepository.save(
-//                customerMapper.customerRequestToCustomer(
-//                        customerMapper.createCustomerRequest(id, firstName, lastName, dateOfBirth)
-//                ));
-//    }
-
-
 }

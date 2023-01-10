@@ -17,8 +17,6 @@ public interface CustomerService {
 
     void deleteCustomerById(Long id) throws NotFoundException;
 
-//    Customer updateCustomer(Long id, String firstName, String lastName, LocalDate dateOfBirth) throws NotFoundException;
-
     Customer updateCustomer(Long id, CustomerRequest customerRequest) throws NotFoundException;
 
 }

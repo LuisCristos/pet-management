@@ -79,27 +79,4 @@ public class CustomerControllerImpl implements CustomerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-//
-//    @Override
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Customer> updateCustomer(
-//            @PathVariable Long id,
-//            @RequestParam() @Size(min = 2, max = 255, message = "Firstname must be between 2 and 255 characters long") String firstName,
-//            @RequestParam() String lastName,
-//            @RequestParam() LocalDate dateOfBirth
-//    ) {
-//
-//        try {
-//            customerService.updateCustomer(id, firstName, lastName, dateOfBirth);
-//
-//            return new ResponseEntity<>(HttpStatus.OK);
-//
-//        } catch (NotFoundException e) {
-//
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
 }
