@@ -68,6 +68,7 @@ public class CustomerControllerImpl implements CustomerController {
     @Override
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long id,
+                                                   @Valid
                                                    @RequestBody CustomerRequest customerRequest) {
         try {
             customerService.updateCustomer(id, customerRequest);
