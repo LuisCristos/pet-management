@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +28,15 @@ public class CustomerControllerImpl implements CustomerController {
     @PostMapping("/add")
     public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
 
-        return new ResponseEntity<>(customerService.saveCustomer(customerRequest), HttpStatus.CREATED);
+        Customer customer = customerService.saveCustomer(customerRequest);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(customer.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @Override
@@ -57,7 +67,7 @@ public class CustomerControllerImpl implements CustomerController {
 
             customerService.deleteCustomerById(id);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (NotFoundException e) {
 

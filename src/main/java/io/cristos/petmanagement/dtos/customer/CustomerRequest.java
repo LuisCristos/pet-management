@@ -10,16 +10,16 @@ import java.time.LocalDate;
 public class CustomerRequest {
 
     private Long id;
-    @NotBlank(message = "Firstname is required.")
-    @Size(min = 2, max = 255, message = "Firstname must be between 2 and 255 characters long")
+    @NotBlank(message = "First name is required.")
+    @Size(min = 2, max = 255, message = "First name must be between 2 - 255 characters.")
     private String firstName;
 
-    @NotBlank(message = "Lastname is required.")
-    @Size(min = 2, max = 255, message = "Lastname must be between 2 and 255 characters long")
+    @NotBlank(message = "Last name is required.")
+    @Size(min = 2, max = 255, message = "Last name must be between 2 - 255 characters.")
     private String lastName;
 
-    @NotNull(message = "Date of Birth is required.")
-    @Past
+    @NotNull(message = "Date of birth is required.")
+    @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
 
     public CustomerRequest(Long id, String firstName, String lastName, LocalDate dateOfBirth) {

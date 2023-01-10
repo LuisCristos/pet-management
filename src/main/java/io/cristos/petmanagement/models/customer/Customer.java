@@ -21,24 +21,24 @@ public class Customer extends BaseEntity {
             name = "first_name",
             columnDefinition = "VARCHAR(255)"
     )
-    @NotBlank(message = "Firstname is required.")
-    @Size(min = 2, max = 255, message = "Firstname must be between 2 and 255 characters long")
+    @NotBlank(message = "First name is required.")
+    @Size(min = 2, max = 255, message = "First name must be between 2 - 255 characters.")
     private String firstName;
     @Column(
             name = "last_name",
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-    @NotBlank(message = "Lastname is required.")
-    @Size(min = 2, max = 255, message = "Lastname must be between 2 and 255 characters long")
+    @NotBlank(message = "Last name is required.")
+    @Size(min = 2, max = 255, message = "Last name must be between 2 - 255 characters.")
     private String lastName;
     @Column(
             name = "date_of_birth",
             nullable = false,
             columnDefinition = "DATE"
     )
-    @NotNull(message = "Date of Birth is required.")
-    @Past
+    @NotNull(message = "Date of birth is required.")
+    @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
     @Transient
     private Integer age;
