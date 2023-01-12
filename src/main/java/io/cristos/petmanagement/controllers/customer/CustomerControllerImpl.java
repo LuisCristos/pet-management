@@ -5,8 +5,11 @@ import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ public class CustomerControllerImpl implements CustomerController {
     private final Logger logger = LoggerFactory.getLogger(CustomerControllerImpl.class);
     private final CustomerServiceImpl customerService;
 
+    @Autowired
     public CustomerControllerImpl(CustomerServiceImpl customerService) {
         this.customerService = customerService;
     }
@@ -67,7 +71,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerRequest> findCustomerById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRequest> findCustomerById(@PathVariable
+                                                            @Positive
+                                                            @NotNull Long id) {
 
         try {
             logger.info("Retrieved customer with id: " + id);
@@ -86,7 +92,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomerRequest> deleteCustomerById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRequest> deleteCustomerById(@PathVariable
+                                                              @Positive
+                                                              @NotNull Long id) {
 
         try {
 
