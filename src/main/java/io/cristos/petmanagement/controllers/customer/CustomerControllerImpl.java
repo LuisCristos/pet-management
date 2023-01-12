@@ -3,7 +3,7 @@ package io.cristos.petmanagement.controllers.customer;
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
-import io.cristos.petmanagement.services.customer.CustomerServiceImpl;
+import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -23,10 +23,10 @@ import java.util.List;
 public class CustomerControllerImpl implements CustomerController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerControllerImpl.class);
-    private final CustomerServiceImpl customerService;
+    private final CustomerService customerService;
 
     @Autowired
-    public CustomerControllerImpl(CustomerServiceImpl customerService) {
+    public CustomerControllerImpl(CustomerService customerService) {
         this.customerService = customerService;
     }
 
