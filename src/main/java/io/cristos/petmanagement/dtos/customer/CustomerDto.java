@@ -6,10 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class CustomerDto {
+public class CustomerDto implements Serializable {
 
     private Long id;
     @NotBlank(message = "First name is required.")

@@ -31,7 +31,7 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @Override
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<CustomerDto> saveCustomer(@Valid @RequestBody CustomerDto customerDto) {
 
         Customer customer = customerService.saveCustomer(customerDto);
@@ -48,7 +48,7 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @Override
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
 
         logger.info("getAllCustomers(). Retrieved all customers.");
@@ -57,67 +57,67 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @Override
-    @GetMapping("/{id}")
+    @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDto> findCustomerById(@PathVariable
                                                         @Positive
-                                                        @NotNull Long id) {
+                                                        @NotNull Long customerId) {
 
         try {
-            logger.info("Retrieved customer with id: " + id);
+            logger.info("Retrieved customer with customerId: " + customerId);
 
-            return ResponseEntity.ok(customerService.findCustomerById(id));
+            return ResponseEntity.ok(customerService.findCustomerById(customerId));
 
         } catch (NotFoundException e) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
+                    "findCustomerById().", "Customer with customerId: " + customerId + " cannot be found because it does not exist.",
+                    new NotFoundException("Customer with customerId: " + customerId + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{customerId}")
     public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable
                                                           @Positive
-                                                          @NotNull Long id) {
+                                                          @NotNull Long customerId) {
 
         try {
 
-            customerService.deleteCustomerById(id);
+            customerService.deleteCustomerById(customerId);
 
-            logger.info("Deleted customer with id: " + id);
+            logger.info("Deleted customer with customerId: " + customerId);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (NotFoundException e) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "deleteCustomerById().", "Customer with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
+                    "deleteCustomerById().", "Customer with customerId: " + customerId + " cannot be deleted because it does not exist.",
+                    new NotFoundException("Customer with customerId: " + customerId + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id,
+    @PutMapping("/{customerID}")
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long customerID,
                                                       @Valid
                                                       @RequestBody CustomerDto customerDto) {
         try {
-            customerService.updateCustomer(id, customerDto);
+            customerService.updateCustomer(customerID, customerDto);
 
-            logger.info("Updated customer with id: " + id);
+            logger.info("Updated customer with customerID: " + customerID);
 
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (NotFoundException e) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "updateCustomer().", "Customer with id: " + id + " cannot be updated because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
+                    "updateCustomer().", "Customer with customerID: " + customerID + " cannot be updated because it does not exist.",
+                    new NotFoundException("Customer with customerID: " + customerID + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
