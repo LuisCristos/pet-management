@@ -41,7 +41,7 @@ public class Customer extends BaseEntity {
     @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
     @Transient
-    private Integer age;
+    private int age;
 
     public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
         super(id);
@@ -84,7 +84,7 @@ public class Customer extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
