@@ -15,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/customers")
@@ -30,8 +29,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PostMapping("/add")
-    public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerRequest> saveCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
 
+        // TODO_LC: Question.  @Valid enough for null check ? Should i outsource the is null check in utils?
         boolean isNull = Objects.isNull(customerRequest);
 
         if (isNull) {
@@ -56,7 +56,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
+    public ResponseEntity<List<CustomerRequest>> getAllCustomers() {
 
         logger.info("getAllCustomers(). Retrieved all customers.");
 
@@ -65,11 +65,11 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Customer>> findCustomerById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRequest> findCustomerById(@PathVariable Long id) {
 
         try {
             logger.info("findCustomerById(). Retrieved customer by id.");
-
+            // modify the return of the method. it must return CustomerRequest.
             return ResponseEntity.ok(customerService.findCustomerById(id));
 
         } catch (NotFoundException e) {
@@ -82,7 +82,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Customer> deleteCustomerById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRequest> deleteCustomerById(@PathVariable Long id) {
 
         try {
 
@@ -103,9 +103,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id,
-                                                   @Valid
-                                                   @RequestBody CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerRequest> updateCustomer(@PathVariable Long id,
+                                                          @Valid
+                                                          @RequestBody CustomerRequest customerRequest) {
         try {
             customerService.updateCustomer(id, customerRequest);
 

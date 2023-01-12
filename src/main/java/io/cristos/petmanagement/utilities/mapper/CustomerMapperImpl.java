@@ -4,7 +4,9 @@ import io.cristos.petmanagement.dtos.customer.CustomerRequest;
 import io.cristos.petmanagement.models.customer.Customer;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 public class CustomerMapperImpl implements CustomerMapper {
@@ -14,6 +16,7 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         CustomerRequest customerRequest = new CustomerRequest();
 
+        customerRequest.setId(customer.getId());
         customerRequest.setFirstName(customer.getFirstName());
         customerRequest.setLastName(customer.getLastName());
         customerRequest.setDateOfBirth(customer.getDateOfBirth());
@@ -35,15 +38,18 @@ public class CustomerMapperImpl implements CustomerMapper {
     }
 
     @Override
-    public CustomerRequest createCustomerRequest(Long id, String firstName,
-                                                 String lastName, LocalDate dateOfBirth) {
+    public List<CustomerRequest> customerListToCustomerRequestList(Collection<Customer> customerCollection) {
 
-        CustomerRequest customerRequest = new CustomerRequest();
-        customerRequest.setId(id);
-        customerRequest.setFirstName(firstName);
-        customerRequest.setLastName(lastName);
-        customerRequest.setDateOfBirth(dateOfBirth);
+        List<CustomerRequest> customerRequestsList = new ArrayList<>();
 
-        return customerRequest;
+        for (Customer customer : customerCollection) {
+
+            CustomerRequest customerRequest = customerToCustomerRequest(customer);
+
+            customerRequestsList.add(customerRequest);
+        }
+
+        return customerRequestsList;
     }
+
 }

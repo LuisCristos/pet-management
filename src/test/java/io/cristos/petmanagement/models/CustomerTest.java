@@ -3,10 +3,11 @@ package io.cristos.petmanagement.models;
 import io.cristos.petmanagement.models.customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CustomerTest {
 

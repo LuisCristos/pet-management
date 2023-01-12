@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<CustomerRequest> getAllCustomers() {
 
         Collection<Customer> customerCollection = customerRepository.findAll();
 
@@ -49,14 +49,13 @@ public class CustomerServiceImpl implements CustomerService {
             return Collections.emptyList();
         }
 
-        List<Customer> customerList = new ArrayList<>(customerCollection);
-
         logger.info("Retrieved customer List");
-        return customerList;
+
+        return customerMapper.customerListToCustomerRequestList(customerCollection);
     }
 
     @Override
-    public Optional<Customer> findCustomerById(Long id) throws NotFoundException {
+    public CustomerRequest findCustomerById(Long id) throws NotFoundException {
 
         Optional<Customer> optionalPerson = customerRepository.findById(id);
 
@@ -69,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         logger.info("Retrieved customer with id: " + id);
 
-        return customerRepository.findById(id);
+        return customerMapper.customerToCustomerRequest(optionalPerson.get());
     }
 
     @Override

@@ -3,7 +3,8 @@ package io.cristos.petmanagement.utilities.mapper;
 import io.cristos.petmanagement.dtos.customer.CustomerRequest;
 import io.cristos.petmanagement.models.customer.Customer;
 
-import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 public interface CustomerMapper {
 
@@ -11,5 +12,6 @@ public interface CustomerMapper {
 
     Customer customerRequestToCustomer(CustomerRequest customerRequest);
 
-    CustomerRequest createCustomerRequest(Long id, String firstName, String lastName, LocalDate dateOfBirth);
+    List<CustomerRequest> customerListToCustomerRequestList(Collection<Customer> customerCollection);
+
 }
