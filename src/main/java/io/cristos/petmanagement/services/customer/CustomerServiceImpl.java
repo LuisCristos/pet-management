@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.services.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerRequest;
+import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
@@ -27,23 +27,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer saveCustomer(CustomerRequest customerRequest) {
+    public Customer saveCustomer(CustomerDto customerDto) {
 
-        boolean isNull = Objects.isNull(customerRequest);
+        boolean isNull = Objects.isNull(customerDto);
 
         if (isNull) {
             logger.warn("{}, {}! An exception occurred!",
                     "saveCustomer().", "Received value is null.",
-                    new IllegalStateException("CustomerRequest is null."));
+                    new IllegalStateException("CustomerDto is null."));
         }
 
-        logger.info(customerRequest + "saved in database");
+        logger.info(customerDto + "saved in database");
 
-        return customerRepository.save(customerMapper.customerRequestToCustomer(customerRequest));
+        return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
     }
 
     @Override
-    public List<CustomerRequest> getAllCustomers() {
+    public List<CustomerDto> getAllCustomers() {
 
         Collection<Customer> customerCollection = customerRepository.findAll();
 
@@ -53,11 +53,11 @@ public class CustomerServiceImpl implements CustomerService {
 
         logger.info("getAllCustomers(). Retrieved all customers.");
 
-        return customerMapper.customerListToCustomerRequestList(customerCollection);
+        return customerMapper.customerListToCustomerDtoList(customerCollection);
     }
 
     @Override
-    public CustomerRequest findCustomerById(Long id) throws NotFoundException {
+    public CustomerDto findCustomerById(Long id) throws NotFoundException {
 
         Optional<Customer> optionalPerson = customerRepository.findById(id);
 
@@ -72,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         logger.info("Retrieved customer with id: " + id);
 
-        return customerMapper.customerToCustomerRequest(optionalPerson.get());
+        return customerMapper.customerToCustomerDto(optionalPerson.get());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Long id, CustomerRequest customerRequest) throws NotFoundException {
+    public Customer updateCustomer(Long id, CustomerDto customerDto) throws NotFoundException {
 
         boolean exists = customerRepository.existsById(id);
 
@@ -112,6 +112,6 @@ public class CustomerServiceImpl implements CustomerService {
         logger.info("Updated customer with id: " + id);
 
         return customerRepository.save(
-                customerMapper.customerRequestToCustomer(customerRequest));
+                customerMapper.customerDtoToCustomer(customerDto));
     }
 }

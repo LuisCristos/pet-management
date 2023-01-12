@@ -50,6 +50,13 @@ public class Customer extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public Customer() {
     }
 

@@ -1,20 +1,20 @@
 package io.cristos.petmanagement.controllers.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerRequest;
+import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface CustomerController {
 
-    ResponseEntity<CustomerRequest> saveCustomer(CustomerRequest customerRequest);
+    ResponseEntity<CustomerDto> saveCustomer(CustomerDto customerDto);
 
-    ResponseEntity<List<CustomerRequest>> getAllCustomers();
+    ResponseEntity<List<CustomerDto>> getAllCustomers();
 
-    ResponseEntity<CustomerRequest> findCustomerById(Long id);
+    ResponseEntity<CustomerDto> findCustomerById(Long id);
 
-    ResponseEntity<CustomerRequest> deleteCustomerById(Long id);
+    ResponseEntity<CustomerDto> deleteCustomerById(Long id);
 
-    ResponseEntity<CustomerRequest> updateCustomer(Long id, CustomerRequest customerRequest);
+    ResponseEntity<CustomerDto> updateCustomer(Long id, CustomerDto customerDto);
 
 }

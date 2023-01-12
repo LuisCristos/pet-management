@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.utilities.mapper;
 
-import io.cristos.petmanagement.dtos.customer.CustomerRequest;
+import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.models.customer.Customer;
 import org.springframework.stereotype.Component;
 
@@ -12,41 +12,41 @@ import java.util.List;
 public class CustomerMapperImpl implements CustomerMapper {
 
     @Override
-    public CustomerRequest customerToCustomerRequest(Customer customer) {
+    public CustomerDto customerToCustomerDto(Customer customer) {
 
-        CustomerRequest customerRequest = new CustomerRequest();
+        CustomerDto customerDto = new CustomerDto();
 
-        customerRequest.setId(customer.getId());
-        customerRequest.setFirstName(customer.getFirstName());
-        customerRequest.setLastName(customer.getLastName());
-        customerRequest.setDateOfBirth(customer.getDateOfBirth());
+        customerDto.setId(customer.getId());
+        customerDto.setFirstName(customer.getFirstName());
+        customerDto.setLastName(customer.getLastName());
+        customerDto.setDateOfBirth(customer.getDateOfBirth());
 
-        return customerRequest;
+        return customerDto;
     }
 
     @Override
-    public Customer customerRequestToCustomer(CustomerRequest customerRequest) {
+    public Customer customerDtoToCustomer(CustomerDto customerDto) {
 
         Customer customer = new Customer();
 
-        customer.setId(customerRequest.getId());
-        customer.setFirstName(customerRequest.getFirstName());
-        customer.setLastName(customerRequest.getLastName());
-        customer.setDateOfBirth(customerRequest.getDateOfBirth());
+        customer.setId(customerDto.getId());
+        customer.setFirstName(customerDto.getFirstName());
+        customer.setLastName(customerDto.getLastName());
+        customer.setDateOfBirth(customerDto.getDateOfBirth());
 
         return customer;
     }
 
     @Override
-    public List<CustomerRequest> customerListToCustomerRequestList(Collection<Customer> customerCollection) {
+    public List<CustomerDto> customerListToCustomerDtoList(Collection<Customer> customerCollection) {
 
-        List<CustomerRequest> customerRequestsList = new ArrayList<>();
+        List<CustomerDto> customerRequestsList = new ArrayList<>();
 
         for (Customer customer : customerCollection) {
 
-            CustomerRequest customerRequest = customerToCustomerRequest(customer);
+            CustomerDto customerDto = customerToCustomerDto(customer);
 
-            customerRequestsList.add(customerRequest);
+            customerRequestsList.add(customerDto);
         }
 
         return customerRequestsList;

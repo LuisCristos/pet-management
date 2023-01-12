@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public class CustomerRequest {
+public class CustomerDto {
 
     private Long id;
     @NotBlank(message = "First name is required.")
@@ -22,20 +22,20 @@ public class CustomerRequest {
     @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
 
-    public CustomerRequest(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
+    public CustomerDto(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public CustomerRequest(String firstName, String lastName, LocalDate dateOfBirth) {
+    public CustomerDto(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public CustomerRequest() {
+    public CustomerDto() {
     }
 
     public Long getId() {
@@ -72,7 +72,7 @@ public class CustomerRequest {
 
     @Override
     public String toString() {
-        return "CustomerRequest{" +
+        return "CustomerDto{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

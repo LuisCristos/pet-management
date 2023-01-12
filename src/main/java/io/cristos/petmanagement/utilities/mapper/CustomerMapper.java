@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.utilities.mapper;
 
-import io.cristos.petmanagement.dtos.customer.CustomerRequest;
+import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.models.customer.Customer;
 
 import java.util.Collection;
@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface CustomerMapper {
 
-    CustomerRequest customerToCustomerRequest(Customer customer);
+    CustomerDto customerToCustomerDto(Customer customer);
 
-    Customer customerRequestToCustomer(CustomerRequest customerRequest);
+    Customer customerDtoToCustomer(CustomerDto customerDto);
 
-    List<CustomerRequest> customerListToCustomerRequestList(Collection<Customer> customerCollection);
+    List<CustomerDto> customerListToCustomerDtoList(Collection<Customer> customerCollection);
 
 }

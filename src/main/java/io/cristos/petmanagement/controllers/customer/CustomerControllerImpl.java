@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.controllers.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerRequest;
+import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerServiceImpl;
@@ -32,9 +32,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PostMapping("/add")
-    public ResponseEntity<CustomerRequest> saveCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerDto> saveCustomer(@Valid @RequestBody CustomerDto customerDto) {
 
-        Customer customer = customerService.saveCustomer(customerRequest);
+        Customer customer = customerService.saveCustomer(customerDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -42,14 +42,14 @@ public class CustomerControllerImpl implements CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
-        logger.info(customerRequest + " saved to database.");
+        logger.info(customerDto + " saved to database.");
 
         return ResponseEntity.created(location).build();
     }
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<CustomerRequest>> getAllCustomers() {
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
 
         logger.info("getAllCustomers(). Retrieved all customers.");
 
@@ -58,9 +58,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerRequest> findCustomerById(@PathVariable
-                                                            @Positive
-                                                            @NotNull Long id) {
+    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable
+                                                        @Positive
+                                                        @NotNull Long id) {
 
         try {
             logger.info("Retrieved customer with id: " + id);
@@ -79,9 +79,9 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomerRequest> deleteCustomerById(@PathVariable
-                                                              @Positive
-                                                              @NotNull Long id) {
+    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable
+                                                          @Positive
+                                                          @NotNull Long id) {
 
         try {
 
@@ -103,11 +103,11 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerRequest> updateCustomer(@PathVariable Long id,
-                                                          @Valid
-                                                          @RequestBody CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id,
+                                                      @Valid
+                                                      @RequestBody CustomerDto customerDto) {
         try {
-            customerService.updateCustomer(id, customerRequest);
+            customerService.updateCustomer(id, customerDto);
 
             logger.info("Updated customer with id: " + id);
 
