@@ -32,7 +32,9 @@ public class CustomerServiceImpl implements CustomerService {
         boolean isNull = Objects.isNull(customerRequest);
 
         if (isNull) {
-            throw new RuntimeException("CustomerRequest is null");
+            logger.warn("{}, {}! An exception occurred!",
+                    "saveCustomer().", "Received value is null.",
+                    new IllegalStateException("CustomerRequest is null."));
         }
 
         logger.info(customerRequest + "saved in database");
@@ -49,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
             return Collections.emptyList();
         }
 
-        logger.info("Retrieved customer List");
+        logger.info("getAllCustomers(). Retrieved all customers.");
 
         return customerMapper.customerListToCustomerRequestList(customerCollection);
     }
@@ -61,7 +63,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (optionalPerson.isEmpty()) {
 
-            logger.info("findCustomerById(). Customer with id: " + id + " cannot be found.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             throw new NotFoundException("Customer with id: " + id + " cannot be found.");
         }
@@ -78,7 +82,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (!exists) {
 
-            logger.info("deleteCustomerById(). Customer ID: " + id + " cannot be deleted because it does not exist.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "deleteCustomerById().", "Customer with id: " + id + " cannot be deleted because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             throw new NotFoundException("Customer ID: " + id + " cannot be deleted because it does not exist.");
         }
@@ -95,7 +101,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (!exists) {
 
-            logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "updateCustomer().", "Customer with id: " + id + " cannot be updated because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
 

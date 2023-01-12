@@ -36,9 +36,11 @@ public class CustomerControllerImpl implements CustomerController {
 
         if (isNull) {
 
-            logger.info("RequestBody CustomerRequest is null");
+            logger.warn("{}, {}! An exception occurred!",
+                    "saveCustomer().", "Received value is null.",
+                    new IllegalStateException("CustomerRequest is null."));
 
-            throw new IllegalStateException("Ist null.");
+            throw new IllegalStateException("CustomerRequest is null.");
         }
 
         Customer customer = customerService.saveCustomer(customerRequest);
@@ -68,13 +70,15 @@ public class CustomerControllerImpl implements CustomerController {
     public ResponseEntity<CustomerRequest> findCustomerById(@PathVariable Long id) {
 
         try {
-            logger.info("findCustomerById(). Retrieved customer by id.");
-            // modify the return of the method. it must return CustomerRequest.
+            logger.info("Retrieved customer with id: " + id);
+
             return ResponseEntity.ok(customerService.findCustomerById(id));
 
         } catch (NotFoundException e) {
 
-            logger.info("findCustomerById(). Customer with id: " + id + " cannot be found.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -88,14 +92,15 @@ public class CustomerControllerImpl implements CustomerController {
 
             customerService.deleteCustomerById(id);
 
-
             logger.info("Deleted customer with id: " + id);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (NotFoundException e) {
 
-            logger.info("deleteCustomerById(). Customer ID: " + id + " cannot be deleted because it does not exist.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "deleteCustomerById().", "Customer with id: " + id + " cannot be deleted because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -115,7 +120,9 @@ public class CustomerControllerImpl implements CustomerController {
 
         } catch (NotFoundException e) {
 
-            logger.info("updateCustomer(). Customer ID:  " + id + " cannot be updated because it does not exist.");
+            logger.warn("{}, {}! An exception occurred!",
+                    "updateCustomer().", "Customer with id: " + id + " cannot be updated because it does not exist.",
+                    new NotFoundException("Customer with id: " + id + " not found"));
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
