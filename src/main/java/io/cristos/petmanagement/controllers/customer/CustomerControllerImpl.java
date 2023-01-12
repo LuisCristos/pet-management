@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/customers")
@@ -34,18 +33,6 @@ public class CustomerControllerImpl implements CustomerController {
     @Override
     @PostMapping("/add")
     public ResponseEntity<CustomerRequest> saveCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
-
-        // TODO_LC: Question.  @Valid enough for null check ? Should i outsource the is null check in utils?
-        boolean isNull = Objects.isNull(customerRequest);
-
-        if (isNull) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "saveCustomer().", "Received value is null.",
-                    new IllegalStateException("CustomerRequest is null."));
-
-            throw new IllegalStateException("CustomerRequest is null.");
-        }
 
         Customer customer = customerService.saveCustomer(customerRequest);
 
