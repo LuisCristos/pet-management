@@ -1,10 +1,7 @@
 package io.cristos.petmanagement.models.customer;
 
 import io.cristos.petmanagement.models.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -15,6 +12,7 @@ import java.time.Period;
 
 @Entity(name = "Customer")
 @Table(name = "customer")
+@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_customer", allocationSize = 10)
 public class Customer extends BaseEntity {
 
     @Column(
