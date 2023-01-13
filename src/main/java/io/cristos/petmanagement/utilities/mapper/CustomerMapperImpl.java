@@ -40,16 +40,16 @@ public class CustomerMapperImpl implements CustomerMapper {
     @Override
     public List<CustomerDto> customerListToCustomerDtoList(Collection<Customer> customerCollection) {
 
-        List<CustomerDto> customerRequestsList = new ArrayList<>();
+        List<CustomerDto> customercustomerDtosList = new ArrayList<>();
 
         for (Customer customer : customerCollection) {
 
             CustomerDto customerDto = customerToCustomerDto(customer);
 
-            customerRequestsList.add(customerDto);
+            customercustomerDtosList.add(customerDto);
         }
 
-        return customerRequestsList;
+        return customercustomerDtosList;
     }
 
 }
