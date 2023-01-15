@@ -24,7 +24,6 @@ public class CustomerDto implements Serializable {
     @NotNull(message = "Date of birth is required.")
     @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
-
     private LocalDate dateOfCreation;
 
     @Transient

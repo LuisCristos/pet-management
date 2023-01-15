@@ -2,8 +2,6 @@ package io.cristos.petmanagement.utilities.mapper;
 
 import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Component
 public class VeterinarianMapperImpl implements VeterinarianMapper {
-    private final Logger logger = LoggerFactory.getLogger(VeterinarianMapperImpl.class);
 
     @Override
     public VeterinarianDto veterinarianToVeterinarianDto(Veterinarian veterinarian) {
@@ -21,6 +18,7 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
 
         veterinarianDto.setId(veterinarian.getId());
         veterinarianDto.setSpeciality(veterinarian.getSpeciality());
+        veterinarianDto.setDateOfCreation(veterinarian.getDateOfCreation());
 
         return veterinarianDto;
     }
@@ -32,6 +30,7 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
 
         veterinarian.setId(veterinarianDto.getId());
         veterinarian.setSpeciality(veterinarianDto.getSpeciality());
+        veterinarian.setDateOfCreation(veterinarianDto.getDateOfCreation());
 
         return veterinarian;
     }

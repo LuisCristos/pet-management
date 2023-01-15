@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class VeterinarianDto {
 
@@ -11,14 +13,17 @@ public class VeterinarianDto {
     @NotBlank(message = "Speciality is required.")
     @Size(min = 2, max = 255, message = "Speciality must be between 2 - 255 characters.")
     private String speciality;
+    private LocalDate dateOfCreation;
 
-    public VeterinarianDto(Long id, String speciality) {
+    public VeterinarianDto(Long id, String speciality, LocalDate dateOfCreation) {
         this.id = id;
         this.speciality = speciality;
+        this.dateOfCreation = dateOfCreation;
     }
 
-    public VeterinarianDto(String speciality) {
+    public VeterinarianDto(String speciality, LocalDate dateOfCreation) {
         this.speciality = speciality;
+        this.dateOfCreation = dateOfCreation;
     }
 
     public VeterinarianDto() {
@@ -38,5 +43,13 @@ public class VeterinarianDto {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
+    }
+
+    public LocalDate getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+    public void setDateOfCreation(LocalDate dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
     }
 }
