@@ -29,23 +29,6 @@ public class CustomerDto implements Serializable {
     @Transient
     private int age;
 
-    public CustomerDto(Long id, String firstName, String lastName, LocalDate dateOfBirth, LocalDate dateOfCreation, int age) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfCreation = dateOfCreation;
-        this.age = age;
-    }
-
-    public CustomerDto(String firstName, String lastName, LocalDate dateOfBirth, LocalDate dateOfCreation, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfCreation = dateOfCreation;
-        this.age = age;
-    }
-
     public CustomerDto() {
     }
 
@@ -91,15 +74,5 @@ public class CustomerDto implements Serializable {
 
     public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomerDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
     }
 }

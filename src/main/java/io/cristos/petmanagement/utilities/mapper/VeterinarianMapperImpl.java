@@ -17,8 +17,12 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         VeterinarianDto veterinarianDto = new VeterinarianDto();
 
         veterinarianDto.setId(veterinarian.getId());
+        veterinarianDto.setFirstName(veterinarian.getFirstName());
+        veterinarianDto.setLastName(veterinarian.getLastName());
+        veterinarianDto.setDateOfBirth(veterinarian.getDateOfBirth());
         veterinarianDto.setSpeciality(veterinarian.getSpeciality());
         veterinarianDto.setDateOfCreation(veterinarian.getDateOfCreation());
+        veterinarianDto.setAge(veterinarian.getAge());
 
         return veterinarianDto;
     }
@@ -29,8 +33,12 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         Veterinarian veterinarian = new Veterinarian();
 
         veterinarian.setId(veterinarianDto.getId());
+        veterinarian.setFirstName(veterinarianDto.getFirstName());
+        veterinarian.setLastName(veterinarianDto.getLastName());
+        veterinarian.setDateOfBirth(veterinarianDto.getDateOfBirth());
         veterinarian.setSpeciality(veterinarianDto.getSpeciality());
         veterinarian.setDateOfCreation(veterinarianDto.getDateOfCreation());
+        veterinarian.setAge(veterinarianDto.getAge());
 
         return veterinarian;
     }

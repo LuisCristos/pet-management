@@ -23,6 +23,10 @@ public class Veterinarian extends Person {
         this.speciality = speciality;
     }
 
+    public Veterinarian(String speciality) {
+        this.speciality = speciality;
+    }
+
     public Veterinarian() {
     }
 

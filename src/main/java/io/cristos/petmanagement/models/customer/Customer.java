@@ -15,7 +15,6 @@ public class Customer extends Person {
     // TO_DO_LC: create list of pets
 //    private List<Pet> pets;
 
-
     public Customer(String firstName, String lastName, LocalDate dateOfBirth) {
         super(firstName, lastName, dateOfBirth);
     }
@@ -23,5 +22,8 @@ public class Customer extends Person {
     public Customer() {
     }
 
-
+    @Override
+    public String toString() {
+        return "Customer{}";
+    }
 }
