@@ -25,20 +25,26 @@ public class CustomerDto implements Serializable {
     @Past(message = "The date of birth must be in the past.")
     private LocalDate dateOfBirth;
 
+    private LocalDate dateOfCreation;
+
     @Transient
     private int age;
 
-    public CustomerDto(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
+    public CustomerDto(Long id, String firstName, String lastName, LocalDate dateOfBirth, LocalDate dateOfCreation, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
+        this.dateOfCreation = dateOfCreation;
+        this.age = age;
     }
 
-    public CustomerDto(String firstName, String lastName, LocalDate dateOfBirth) {
+    public CustomerDto(String firstName, String lastName, LocalDate dateOfBirth, LocalDate dateOfCreation, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
+        this.dateOfCreation = dateOfCreation;
+        this.age = age;
     }
 
     public CustomerDto() {
@@ -78,6 +84,14 @@ public class CustomerDto implements Serializable {
 
     public int getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public LocalDate getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+    public void setDateOfCreation(LocalDate dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
     }
 
     @Override

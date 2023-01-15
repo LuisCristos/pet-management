@@ -20,6 +20,7 @@ public class CustomerMapperImpl implements CustomerMapper {
         customerDto.setFirstName(customer.getFirstName());
         customerDto.setLastName(customer.getLastName());
         customerDto.setDateOfBirth(customer.getDateOfBirth());
+        customerDto.setDateOfCreation(customer.getDateOfCreation());
 
         return customerDto;
     }
@@ -33,6 +34,7 @@ public class CustomerMapperImpl implements CustomerMapper {
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
         customer.setDateOfBirth(customerDto.getDateOfBirth());
+        customer.setDateOfCreation(customerDto.getDateOfCreation());
 
         return customer;
     }

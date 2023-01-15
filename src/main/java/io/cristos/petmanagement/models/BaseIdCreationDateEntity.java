@@ -18,6 +18,14 @@ public class BaseIdCreationDateEntity extends BaseEntity {
         return dateOfCreation;
     }
 
+    public LocalDate getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+    public void setDateOfCreation(LocalDate dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
+
     @Override
     public String toString() {
         return "BaseIdCreationDateEntity{" +
