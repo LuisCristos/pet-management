@@ -10,12 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
@@ -29,14 +30,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer saveCustomer(CustomerDto customerDto) {
 
-        boolean isNull = Objects.isNull(customerDto);
-
-        if (isNull) {
-            logger.warn("{}, {}! An exception occurred!",
-                    "saveCustomer().", "Received value is null.",
-                    new IllegalStateException("CustomerDto is null."));
-        }
-
         logger.info(customerDto + "saved in database");
 
         return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
@@ -48,6 +41,8 @@ public class CustomerServiceImpl implements CustomerService {
         Collection<Customer> customerCollection = customerRepository.findAll();
 
         if (customerCollection.isEmpty()) {
+
+            logger.info("getAllCustomers(). Retrieved empty List.");
             return Collections.emptyList();
         }
 

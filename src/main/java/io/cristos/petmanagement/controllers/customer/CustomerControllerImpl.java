@@ -1,7 +1,6 @@
 package io.cristos.petmanagement.controllers.customer;
 
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
-import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
@@ -58,41 +57,20 @@ public class CustomerControllerImpl implements CustomerController {
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDto> findCustomerById(@PathVariable Long customerId) {
 
-        try {
-            logger.info("Retrieved customer with customerId: " + customerId);
+        logger.info("findCustomerById(). Find Customer with customerId." + customerId);
 
-            return ResponseEntity.ok(customerService.findCustomerById(customerId));
-
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "findCustomerById().", "Customer with customerId: " + customerId + " cannot be found because it does not exist.",
-                    new NotFoundException("Customer with customerId: " + customerId + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
 
     @Override
     @DeleteMapping("/{customerId}")
     public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable Long customerId) {
 
-        try {
+        customerService.deleteCustomerById(customerId);
 
-            customerService.deleteCustomerById(customerId);
+        logger.info("Deleted customer with customerId: " + customerId);
 
-            logger.info("Deleted customer with customerId: " + customerId);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "deleteCustomerById().", "Customer with customerId: " + customerId + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Customer with customerId: " + customerId + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -100,20 +78,10 @@ public class CustomerControllerImpl implements CustomerController {
     public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long customerID,
                                                       @Valid
                                                       @RequestBody CustomerDto customerDto) {
-        try {
-            customerService.updateCustomer(customerID, customerDto);
+        customerService.updateCustomer(customerID, customerDto);
 
-            logger.info("Updated customer with customerID: " + customerID);
+        logger.info("Updated customer with customerID: " + customerID);
 
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "updateCustomer().", "Customer with customerID: " + customerID + " cannot be updated because it does not exist.",
-                    new NotFoundException("Customer with customerID: " + customerID + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
