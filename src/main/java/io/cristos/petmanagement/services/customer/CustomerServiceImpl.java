@@ -4,7 +4,7 @@ import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
-import io.cristos.petmanagement.utilities.mapper.CustomerMapper;
+import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package io.cristos.petmanagement.utilities.mapper;
+package io.cristos.petmanagement.utilities.mapper.veterinarian;
 
 import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;

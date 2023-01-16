@@ -1,4 +1,4 @@
-package io.cristos.petmanagement.utilities.mapper;
+package io.cristos.petmanagement.utilities.mapper.customer;
 
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.models.customer.Customer;

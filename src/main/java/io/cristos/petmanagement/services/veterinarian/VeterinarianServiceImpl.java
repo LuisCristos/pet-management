@@ -4,7 +4,7 @@ import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.veterinarian.VeterinarianRepository;
-import io.cristos.petmanagement.utilities.mapper.VeterinarianMapper;
+import io.cristos.petmanagement.utilities.mapper.veterinarian.VeterinarianMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
