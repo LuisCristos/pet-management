@@ -7,10 +7,11 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Component
-public class VeterinarianDto {
+public class VeterinarianDto implements Serializable {
 
     private Long id;
 
@@ -91,5 +92,18 @@ public class VeterinarianDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "VeterinarianDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfCreation=" + dateOfCreation +
+                ", speciality='" + speciality + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

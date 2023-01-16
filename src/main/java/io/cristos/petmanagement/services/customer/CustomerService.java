@@ -1,7 +1,6 @@
 package io.cristos.petmanagement.services.customer;
 
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
-import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 
 import java.util.List;
@@ -12,10 +11,10 @@ public interface CustomerService {
 
     List<CustomerDto> getAllCustomers();
 
-    CustomerDto findCustomerById(Long id) throws NotFoundException;
+    CustomerDto findCustomerById(Long id);
 
-    void deleteCustomerById(Long id) throws NotFoundException;
+    void deleteCustomerById(Long id);
 
-    Customer updateCustomer(Long id, CustomerDto customerDto) throws NotFoundException;
+    Customer updateCustomer(Long id, CustomerDto customerDto);
 
 }

@@ -39,7 +39,6 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         veterinarian.setSpeciality(veterinarianDto.getSpeciality());
         veterinarian.setDateOfCreation(veterinarianDto.getDateOfCreation());
         veterinarian.setAge(veterinarianDto.getAge());
-
         return veterinarian;
     }
 

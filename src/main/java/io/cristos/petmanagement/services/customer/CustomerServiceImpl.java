@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto findCustomerById(Long id) throws NotFoundException {
+    public CustomerDto findCustomerById(Long id) {
 
         Optional<Customer> optionalPerson = customerRepository.findById(id);
 
@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomerById(Long id) throws NotFoundException {
+    public void deleteCustomerById(Long id) {
 
         boolean exists = customerRepository.existsById(id);
 
@@ -90,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Long id, CustomerDto customerDto) throws NotFoundException {
+    public Customer updateCustomer(Long id, CustomerDto customerDto) {
 
         boolean exists = customerRepository.existsById(id);
 

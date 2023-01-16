@@ -35,7 +35,7 @@ public class CustomerControllerImpl implements CustomerController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{customerId}")
                 .buildAndExpand(customer.getId())
                 .toUri();
 

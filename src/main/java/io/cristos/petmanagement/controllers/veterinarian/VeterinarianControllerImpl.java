@@ -1,7 +1,6 @@
 package io.cristos.petmanagement.controllers.veterinarian;
 
 import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
-import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
 import jakarta.validation.Valid;
@@ -61,21 +60,10 @@ public class VeterinarianControllerImpl implements VeterinarianController {
     public ResponseEntity<VeterinarianDto> findVeterinarianById(@PathVariable
                                                                 @Positive
                                                                 @NotNull Long veterinarianId) {
-        try {
 
-            logger.info("Retrieved veterinarian with customerId: " + veterinarianId);
+        logger.info("Retrieved veterinarian with customerId: " + veterinarianId);
 
-            return ResponseEntity.ok(veterinarianService.findVeterinarianById(veterinarianId));
-
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "findVeterinarianById().", "veterinarian with veterinarianId: " + veterinarianId + " cannot be found because it does not exist.",
-                    new NotFoundException("Veterinarian with veterinarianId: " + veterinarianId + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+        return ResponseEntity.ok(veterinarianService.findVeterinarianById(veterinarianId));
     }
 
     @Override
@@ -83,22 +71,12 @@ public class VeterinarianControllerImpl implements VeterinarianController {
     public ResponseEntity<VeterinarianDto> deleteVeterinarianById(@PathVariable
                                                                   @Positive
                                                                   @NotNull Long veterinarianId) {
-        try {
 
-            veterinarianService.deleteVeterinarianById(veterinarianId);
+        veterinarianService.deleteVeterinarianById(veterinarianId);
 
-            logger.info("Deleted veterinarian with veterinarianId: " + veterinarianId);
+        logger.info("Deleted veterinarian with veterinarianId: " + veterinarianId);
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "deleteVeterinarianById().", "veterinarian with veterinarianId: " + veterinarianId + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Veterinarian with veterinarianId: " + veterinarianId + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -106,20 +84,10 @@ public class VeterinarianControllerImpl implements VeterinarianController {
     public ResponseEntity<VeterinarianDto> updateVeterinarianById(@PathVariable Long veterinarianId,
                                                                   @Valid
                                                                   @RequestBody VeterinarianDto veterinarianDto) {
-        try {
+        veterinarianService.updateVeterinarian(veterinarianId, veterinarianDto);
 
-            veterinarianService.updateVeterinarian(veterinarianId, veterinarianDto);
+        logger.info("Updated Veterinarian with customerID: " + veterinarianId);
 
-            logger.info("Updated Veterinarian with customerID: " + veterinarianId);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NotFoundException e) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "updateVeterinarianById().", "veterinarian with veterinarianId: " + veterinarianId + " cannot be updated because it does not exist.",
-                    new NotFoundException("Veterinarian with veterinarianId: " + veterinarianId + " not found"));
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
