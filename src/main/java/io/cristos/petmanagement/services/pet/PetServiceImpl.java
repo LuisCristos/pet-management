@@ -7,6 +7,7 @@ import io.cristos.petmanagement.repositories.pet.PetRepository;
 import io.cristos.petmanagement.utilities.mapper.pet.PetMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,10 +18,10 @@ import java.util.Optional;
 @Service
 public class PetServiceImpl implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
-
     private final PetRepository petRepository;
     private final PetMapper petMapper;
 
+    @Autowired
     public PetServiceImpl(PetRepository petRepository, PetMapper petMapper) {
         this.petRepository = petRepository;
         this.petMapper = petMapper;
@@ -28,6 +29,8 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet savePet(PetDto petDto) {
+
+        logger.info(petDto + " save in database.");
 
         return petRepository.save(petMapper.petDtoToPet(petDto));
     }

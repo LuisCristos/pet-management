@@ -20,7 +20,6 @@ import java.util.List;
 public class PetControllerImpl implements PetController {
 
     private final Logger logger = LoggerFactory.getLogger(PetControllerImpl.class);
-
     private final PetService petService;
 
     @Autowired
@@ -58,7 +57,7 @@ public class PetControllerImpl implements PetController {
     @GetMapping("/{petId}")
     public ResponseEntity<PetDto> findPetById(@PathVariable Long petId) {
 
-        PetDto petDto = petService.findPetById(petId);
+        logger.info("Find Pet with petId: " + petId);
 
         return ResponseEntity.ok(petService.findPetById(petId));
     }
