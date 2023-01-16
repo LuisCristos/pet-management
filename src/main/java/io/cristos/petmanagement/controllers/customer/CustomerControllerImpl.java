@@ -5,8 +5,6 @@ import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +56,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable
-                                                        @Positive
-                                                        @NotNull Long customerId) {
+    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable Long customerId) {
 
         try {
             logger.info("Retrieved customer with customerId: " + customerId);
@@ -79,9 +75,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable
-                                                          @Positive
-                                                          @NotNull Long customerId) {
+    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable Long customerId) {
 
         try {
 

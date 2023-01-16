@@ -4,10 +4,7 @@ import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -37,6 +34,7 @@ public class Person extends BaseIdCreationDateEntity {
     )
     @NotNull(message = "Date of birth is required.")
     @Past(message = "The date of birth must be in the past.")
+    @Pattern(regexp = "yyyy-mm-dd", message = "Date of Birth should be in this format. yyyy-mm-dd")
     private LocalDate dateOfBirth;
     @Transient
     private int age;
