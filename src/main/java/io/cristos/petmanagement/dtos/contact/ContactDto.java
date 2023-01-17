@@ -1,15 +1,8 @@
-package io.cristos.petmanagement.models.contact;
+package io.cristos.petmanagement.dtos.contact;
 
-import io.cristos.petmanagement.models.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity(name = "Contact")
-@Table(name = "contact")
-@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_contact", allocationSize = 10)
-public class Contact extends BaseEntity {
+public class ContactDto {
 
     private Long id;
     @NotBlank(message = "Street is required.")
@@ -28,26 +21,13 @@ public class Contact extends BaseEntity {
 //            flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
-    public Contact(String street, int houseNumber, String city, String zipCode,
-                   String mobileNumber, String phoneNumber, String email) {
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.mobileNumber = mobileNumber;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
+    public ContactDto() {
     }
 
-    public Contact() {
-    }
-
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
