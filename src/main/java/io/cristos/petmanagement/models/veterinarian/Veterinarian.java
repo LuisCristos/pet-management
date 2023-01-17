@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.models.veterinarian;
 
 import io.cristos.petmanagement.models.person.Person;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -14,6 +15,11 @@ import java.time.LocalDate;
 @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_veterinarian", allocationSize = 10)
 public class Veterinarian extends Person {
 
+    @Column(
+            name = "speciality",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
     @NotBlank(message = "Speciality is required.")
     @Size(min = 2, max = 255, message = "Speciality must be between 2 - 255 characters.")
     private String speciality;

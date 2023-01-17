@@ -17,6 +17,7 @@ public class Person extends BaseIdCreationDateEntity {
 
     @Column(
             name = "first_name",
+            nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
     @NotBlank(message = "First name is required.")

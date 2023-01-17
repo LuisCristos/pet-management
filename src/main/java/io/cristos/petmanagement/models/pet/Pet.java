@@ -1,10 +1,7 @@
 package io.cristos.petmanagement.models.pet;
 
 import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,12 +13,27 @@ import java.time.Period;
 @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_pet", allocationSize = 10)
 public class Pet extends BaseIdCreationDateEntity {
 
+    @Column(
+            name = "name",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
     @NotBlank(message = "Name is required.")
     @Size(min = 2, max = 255, message = "Name must be between 2 - 255 characters.")
     private String name;
+    @Column(
+            name = "gender",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
     @NotBlank(message = "Gender is required.")
     @Size(min = 2, max = 10, message = "Name must be between 2 - 10 characters.")
     private String gender;
+    @Column(
+            name = "date_of_birth",
+            nullable = false,
+            columnDefinition = "DATE"
+    )
     //    @NotNull(message = "Date of birth is required.")
 //    @Past(message = "The date of birth must be in the past.")
 //    @Pattern(regexp = "yyyy-mm-dd", message = "Date of Birth should be in this format. yyyy-mm-dd")
