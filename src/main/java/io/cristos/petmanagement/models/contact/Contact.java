@@ -13,17 +13,18 @@ import jakarta.validation.constraints.Pattern;
 @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_contact", allocationSize = 10)
 public class Contact extends BaseEntity {
 
-    @NotBlank(message = "Street is required")
+    @NotBlank(message = "Street is required.")
     private String street;
+    @NotBlank(message = "House number is required.")
     private int houseNumber;
-    @NotBlank(message = "City is required")
+    @NotBlank(message = "City is required.")
     private String city;
     private String zipCode;
-    @NotBlank(message = "Mobile phone number is required")
+    @NotBlank(message = "Mobile phone number is required.")
     private String mobileNumber;
     private String phoneNumber;
-    @NotBlank(message = "Email is required")
-    @Email(message = "Please enter email in this format valid@valid.com",
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Please enter email in this format valid@valid.com.",
             regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;

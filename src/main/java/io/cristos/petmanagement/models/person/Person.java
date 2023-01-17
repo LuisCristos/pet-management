@@ -37,6 +37,7 @@ public class Person extends BaseIdCreationDateEntity {
     )
     @NotNull(message = "Date of birth is required.")
     @Past(message = "The date of birth must be in the past.")
+//    @Pattern(regexp = "yyyy-MM-dd", message = "Need be in this pattern")
     private LocalDate dateOfBirth;
     @Transient
     private int age;
