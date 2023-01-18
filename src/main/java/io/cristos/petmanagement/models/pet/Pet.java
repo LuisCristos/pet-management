@@ -3,6 +3,8 @@ package io.cristos.petmanagement.models.pet;
 import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -34,9 +36,8 @@ public class Pet extends BaseIdCreationDateEntity {
             nullable = false,
             columnDefinition = "DATE"
     )
-    //    @NotNull(message = "Date of birth is required.")
-//    @Past(message = "The date of birth must be in the past.")
-//    @Pattern(regexp = "yyyy-mm-dd", message = "Date of Birth should be in this format. yyyy-mm-dd")
+    @NotNull(message = "Date of birth is required.")
+    @Past(message = "Date of Birth must be in the Past.")
     private LocalDate dateOfBirth;
     @Transient
     private int age;

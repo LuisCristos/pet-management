@@ -2,6 +2,8 @@ package io.cristos.petmanagement.dtos.pet;
 
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -17,11 +19,9 @@ public class PetDto implements Serializable {
     @NotBlank(message = "Gender is required.")
     @Size(min = 2, max = 10, message = "Gender must be between 2 - 10 characters.")
     private String gender;
-    //    @NotNull(message = "Date of birth is required.")
-//    @Past(message = "The date of birth must be in the past.")
-//    @Pattern(regexp = "yyyy-mm-dd", message = "Date of Birth should be in this format. yyyy-mm-dd")
+    @NotNull(message = "Date of birth is required.")
+    @Past(message = "Date of Birth must be in the Past.")
     private LocalDate dateOfBirth;
-
     private LocalDate dateOfCreation;
     @Transient
     private int age;

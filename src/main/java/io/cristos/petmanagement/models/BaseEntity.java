@@ -15,7 +15,8 @@ public class BaseEntity implements Serializable {
     @Column(
             name = "id",
             nullable = false,
-            updatable = false
+            updatable = false,
+            unique = true
     )
     private Long id;
 
