@@ -20,10 +20,6 @@ public class BaseIdCreationDateEntity extends BaseEntity {
     public BaseIdCreationDateEntity() {
     }
 
-    public LocalDate getCreationDate() {
-        return dateOfCreation;
-    }
-
     public LocalDate getDateOfCreation() {
         return dateOfCreation;
     }

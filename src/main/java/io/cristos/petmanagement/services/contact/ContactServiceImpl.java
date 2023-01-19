@@ -3,7 +3,7 @@ package io.cristos.petmanagement.services.contact;
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.repositories.ContactRepository;
+import io.cristos.petmanagement.repositories.contact.ContactRepository;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

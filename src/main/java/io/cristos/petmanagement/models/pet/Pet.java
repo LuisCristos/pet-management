@@ -12,7 +12,7 @@ import java.time.Period;
 
 @Entity(name = "Pet")
 @Table(name = "pet")
-@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_pet", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_pet", allocationSize = 10)
 public class Pet extends BaseIdCreationDateEntity {
 
     @Column(

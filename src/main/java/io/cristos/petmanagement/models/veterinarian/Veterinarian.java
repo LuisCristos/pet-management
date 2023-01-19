@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Entity(name = "Veterinarian")
 @Table(name = "veterinarian")
-@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_veterinarian", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_veterinarian", allocationSize = 10)
 public class Veterinarian extends Person {
 
     @Column(

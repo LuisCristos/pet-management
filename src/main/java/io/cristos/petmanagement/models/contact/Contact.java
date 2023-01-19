@@ -9,10 +9,9 @@ import jakarta.validation.constraints.*;
 
 @Entity(name = "Contact")
 @Table(name = "contact")
-@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_contact", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_contact", allocationSize = 10)
 public class Contact extends BaseEntity {
 
-    private Long id;
     @Column(
             name = "street",
             nullable = false,
@@ -80,16 +79,6 @@ public class Contact extends BaseEntity {
     }
 
     public Contact() {
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getStreet() {

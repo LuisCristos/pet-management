@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pets")
+@RequestMapping("/v1/pets")
 public class PetControllerImpl implements PetController {
 
     private final Logger logger = LoggerFactory.getLogger(PetControllerImpl.class);

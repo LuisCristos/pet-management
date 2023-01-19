@@ -10,7 +10,7 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "id_sequence"
+            generator = "id_generator"
     )
     @Column(
             name = "id",

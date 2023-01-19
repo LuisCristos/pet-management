@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/v1/customers")
 public class CustomerControllerImpl implements CustomerController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerControllerImpl.class);

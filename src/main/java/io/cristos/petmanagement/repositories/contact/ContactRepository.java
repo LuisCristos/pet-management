@@ -1,4 +1,4 @@
-package io.cristos.petmanagement.repositories;
+package io.cristos.petmanagement.repositories.contact;
 
 import io.cristos.petmanagement.models.contact.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/contacts")
+@RequestMapping("/v1/contacts")
 public class ContactControllerImpl implements ContactController {
 
     private final Logger logger = LoggerFactory.getLogger(ContactControllerImpl.class);
@@ -64,7 +64,7 @@ public class ContactControllerImpl implements ContactController {
 
     @Override
     @DeleteMapping("/{contactId}")
-    public ResponseEntity<ContactDto> deleteContactById(@PathVariable Long contactId) {
+    public ResponseEntity<ContactDto> deleteContactById(@PathVariable final Long contactId) {
 
         contactService.deleteContactById(contactId);
 

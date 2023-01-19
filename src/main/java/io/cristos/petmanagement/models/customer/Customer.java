@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity(name = "Customer")
 @Table(name = "customer")
-@SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence_customer", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_customer", allocationSize = 10)
 public class Customer extends Person {
 
     // TO_DO_LC: create list of pets
