@@ -58,6 +58,7 @@ public class DiagnosisDto implements Serializable {
                 "id=" + id +
                 ", lastUpdate=" + lastUpdate +
                 ", diagnosis='" + diagnosis + '\'' +
+                ", dateOfCreation=" + dateOfCreation +
                 '}';
     }
 }

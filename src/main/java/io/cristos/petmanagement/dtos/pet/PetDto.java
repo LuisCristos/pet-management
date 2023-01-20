@@ -76,4 +76,16 @@ public class PetDto implements Serializable {
     public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
+
+    @Override
+    public String toString() {
+        return "PetDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfCreation=" + dateOfCreation +
+                ", age=" + age +
+                '}';
+    }
 }

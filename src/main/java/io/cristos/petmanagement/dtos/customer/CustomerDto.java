@@ -75,4 +75,16 @@ public class CustomerDto implements Serializable {
     public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfCreation=" + dateOfCreation +
+                ", age=" + age +
+                '}';
+    }
 }
