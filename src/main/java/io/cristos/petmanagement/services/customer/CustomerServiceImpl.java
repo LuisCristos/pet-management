@@ -30,8 +30,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer saveCustomer(CustomerDto customerDto) {
 
-        logger.info(customerDto + "saved in database");
-
         return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
     }
 
@@ -46,26 +44,20 @@ public class CustomerServiceImpl implements CustomerService {
             return Collections.emptyList();
         }
 
-        logger.info("getAllCustomers(). Retrieved all customers.");
-
         return customerMapper.customerListToCustomerDtoList(customerCollection);
     }
 
     @Override
     public CustomerDto findCustomerById(Long id) {
 
-        Optional<Customer> optionalPerson = customerRepository.findById(id);
+        Optional<Customer> optionalPerson = Optional.ofNullable(customerRepository.findById(id))
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
+                            new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist."));
 
-        if (optionalPerson.isEmpty()) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
-
-            throw new NotFoundException("Customer with id: " + id + " cannot be found.");
-        }
-
-        logger.info("Retrieved customer with id: " + id);
+                    return new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist.");
+                });
 
         return customerMapper.customerToCustomerDto(optionalPerson.get());
     }
@@ -84,8 +76,6 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotFoundException("Customer ID: " + id + " cannot be deleted because it does not exist.");
         }
 
-        logger.info("Deleted customer with id: " + id);
-
         customerRepository.deleteById(id);
     }
 
@@ -101,10 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
                     new NotFoundException("Customer with id: " + id + " not found"));
 
             throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
-
         }
-
-        logger.info("Updated customer with id: " + id);
 
         return customerRepository.save(
                 customerMapper.customerDtoToCustomer(customerDto));

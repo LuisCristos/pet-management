@@ -13,7 +13,7 @@ public class DiagnosisDto implements Serializable {
     @UpdateTimestamp
     private LocalDate lastUpdate;
 
-    @NotBlank
+    @NotBlank(message = "Diagnostic field must not be empty.")
     private String diagnosis;
     private LocalDate dateOfCreation;
 

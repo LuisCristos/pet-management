@@ -30,6 +30,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     @Override
     public Diagnosis saveDiagnosis(DiagnosisDto diagnosisDto) {
+
         return diagnosisRepository.save(diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto));
     }
 
@@ -54,8 +55,9 @@ public class DiagnosisServiceImpl implements DiagnosisService {
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
                             "findDiagnosisById().", "Diagnosis with id: " + diagnosisId + " cannot be found because it does not exist.",
-                            new NotFoundException("Diagnosis with id: " + diagnosisId + " not found"));
-                    return new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be found.");
+                            new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be found because it does not exist."));
+
+                    return new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be found because it does not exist.");
                 }));
 
         return diagnosisMapper.diagnosisToDiagnosisDto(optionalDiagnosis.get());
@@ -89,6 +91,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
             throw new NotFoundException("Diagnosis ID: " + diagnosisId + " cannot be updated because it does not exist.");
         }
+
         return diagnosisRepository.save(diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto));
     }
 }

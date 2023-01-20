@@ -31,8 +31,6 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact saveContact(ContactDto contactDto) {
 
-        logger.info(contactDto + " saved in to Database.");
-
         return contactRepository.save(contactMapper.contactDtoToContact(contactDto));
     }
 
@@ -47,24 +45,20 @@ public class ContactServiceImpl implements ContactService {
             return Collections.emptyList();
         }
 
-        logger.info("getAllContacts(). Retrieved all Contacts.");
-
         return contactMapper.contactListToContactDtoList(contactCollection);
     }
 
     @Override
     public ContactDto findContactById(Long contactId) {
 
-        Optional<Contact> optionalContact = contactRepository.findById(contactId);
+        Optional<Contact> optionalContact = Optional.ofNullable(contactRepository.findById(contactId))
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findContactById().", "Contact with id: " + contactId + " cannot be found because it does not exist.",
+                            new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist."));
 
-        if (optionalContact.isEmpty()) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "findContactById().", "Contact with id: " + contactId + " cannot be found because it does not exist.",
-                    new NotFoundException("Contact with id: " + contactId + " not found"));
-
-            throw new NotFoundException("Contact with id: " + contactId + " cannot be found.");
-        }
+                    return new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist.");
+                });
 
         logger.info("Retrieved contact with id: " + contactId);
 
@@ -84,8 +78,6 @@ public class ContactServiceImpl implements ContactService {
 
             throw new NotFoundException("Contact ID: " + contactId + " cannot be deleted because it does not exist.");
         }
-
-        logger.info("Deleted Contact with id: " + contactId);
 
         contactRepository.deleteById(contactId);
 

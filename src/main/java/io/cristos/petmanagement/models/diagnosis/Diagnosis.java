@@ -26,7 +26,7 @@ public class Diagnosis extends BaseIdCreationDateEntity {
             name = "diagnosis",
             columnDefinition = "TEXT"
     )
-    @NotBlank
+    @NotBlank(message = "Diagnostic field must not be empty.")
     private String diagnosis;
 
     public Diagnosis(LocalDate lastUpdate, String diagnosis) {

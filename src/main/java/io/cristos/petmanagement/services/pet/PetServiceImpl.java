@@ -30,8 +30,6 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet savePet(PetDto petDto) {
 
-        logger.info(petDto + " save in database.");
-
         return petRepository.save(petMapper.petDtoToPet(petDto));
     }
 
@@ -46,26 +44,20 @@ public class PetServiceImpl implements PetService {
             return Collections.emptyList();
         }
 
-        logger.info("getAllPets(). Retrieved all Pets.");
-
         return petMapper.petListToPetDtoList(petCollection);
     }
 
     @Override
     public PetDto findPetById(Long id) throws NotFoundException {
 
-        Optional<Pet> optionalPet = petRepository.findById(id);
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(id))
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + id + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist."));
 
-        if (optionalPet.isEmpty()) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "findCustomerById().", "Pet with id: " + id + " cannot be found because it does not exist.",
-                    new NotFoundException("Pet with id: " + id + " not found"));
-
-            throw new NotFoundException("Pet with id: " + id + " cannot be found.");
-        }
-
-        logger.info("Retrieved pet with id: " + id);
+                    throw new NotFoundException("Pet with id: " + id + " cannot be found.");
+                });
 
         return petMapper.petToPetDto(optionalPet.get());
     }
@@ -79,12 +71,10 @@ public class PetServiceImpl implements PetService {
 
             logger.warn("{}, {}! An exception occurred!",
                     "deletePetById().", "Pet with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Pet with id: " + id + " not found"));
+                    new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist."));
 
             throw new NotFoundException("Pet ID: " + id + " cannot be deleted because it does not exist.");
         }
-
-        logger.info("Deleted Pet with id: " + id);
 
         petRepository.deleteById(id);
     }
@@ -98,7 +88,7 @@ public class PetServiceImpl implements PetService {
 
             logger.warn("{}, {}! An exception occurred!",
                     "updatePet().", "Pet with id: " + id + " cannot be updated because it does not exist.",
-                    new NotFoundException("Pet with id: " + id + " not found"));
+                    new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist."));
 
             throw new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist.");
         }

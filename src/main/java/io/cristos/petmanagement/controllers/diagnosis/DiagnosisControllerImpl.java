@@ -66,6 +66,8 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     @DeleteMapping("/{diagnosisId}")
     public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable Long diagnosisId) {
 
+        diagnosisService.deleteDiagnosis(diagnosisId);
+
         logger.info("Delete Diagnosis by diagnosisId: " + diagnosisId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
