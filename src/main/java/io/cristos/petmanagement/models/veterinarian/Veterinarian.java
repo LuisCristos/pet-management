@@ -1,10 +1,7 @@
 package io.cristos.petmanagement.models.veterinarian;
 
 import io.cristos.petmanagement.models.person.Person;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -12,8 +9,14 @@ import java.time.LocalDate;
 
 @Entity(name = "Veterinarian")
 @Table(name = "veterinarian")
-@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_veterinarian", allocationSize = 10)
+@SequenceGenerator(name = "id_gen_vet", sequenceName = "id_sequence_veterinarian", allocationSize = 10)
 public class Veterinarian extends Person {
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "id_gen_vet"
+    )
+    private Long id;
 
     @Column(
             name = "speciality",

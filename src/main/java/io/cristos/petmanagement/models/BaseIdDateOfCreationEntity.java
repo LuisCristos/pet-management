@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @MappedSuperclass
-public class BaseIdCreationDateEntity extends BaseEntity {
+public abstract class BaseIdDateOfCreationEntity extends BaseEntity {
 
     @Column(
             name = "date_of_creation",
@@ -17,7 +17,7 @@ public class BaseIdCreationDateEntity extends BaseEntity {
     @CreationTimestamp
     private LocalDate dateOfCreation = LocalDate.now();
 
-    public BaseIdCreationDateEntity() {
+    public BaseIdDateOfCreationEntity() {
     }
 
     public LocalDate getDateOfCreation() {
@@ -30,7 +30,7 @@ public class BaseIdCreationDateEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        return "BaseIdCreationDateEntity{" +
+        return "BaseIdDateOfCreationEntity{" +
                 "dateOfCreation=" + dateOfCreation +
                 '}';
     }

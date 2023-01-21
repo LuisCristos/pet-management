@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.models.person;
 
-import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
+import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @MappedSuperclass
-public class Person extends BaseIdCreationDateEntity {
+public abstract class Person extends BaseIdDateOfCreationEntity {
 
     @Column(
             name = "first_name",

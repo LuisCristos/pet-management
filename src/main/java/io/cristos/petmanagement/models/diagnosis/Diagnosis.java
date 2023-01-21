@@ -1,10 +1,8 @@
 package io.cristos.petmanagement.models.diagnosis;
 
-import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
+import io.cristos.petmanagement.models.pet.Pet;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,8 +10,14 @@ import java.time.LocalDate;
 
 @Entity(name = "Diagnosis")
 @Table(name = "diagnosis")
-@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
-public class Diagnosis extends BaseIdCreationDateEntity {
+@SequenceGenerator(name = "id_gen_diagnosis", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
+public class Diagnosis extends BaseIdDateOfCreationEntity {
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "id_gen_diagnosis"
+    )
+    private Long id;
 
     @Column(
             name = "last_update",
@@ -28,6 +32,8 @@ public class Diagnosis extends BaseIdCreationDateEntity {
     )
     @NotBlank(message = "Diagnostic field must not be empty.")
     private String diagnosis;
+    @ManyToOne
+    private Pet pet;
 
     public Diagnosis(LocalDate lastUpdate, String diagnosis) {
         this.lastUpdate = lastUpdate;
@@ -51,5 +57,13 @@ public class Diagnosis extends BaseIdCreationDateEntity {
 
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 }

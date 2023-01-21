@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.models.pet;
 
-import io.cristos.petmanagement.models.BaseIdCreationDateEntity;
+import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
+import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,11 +10,19 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Pet")
 @Table(name = "pet")
-@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_pet", allocationSize = 10)
-public class Pet extends BaseIdCreationDateEntity {
+@SequenceGenerator(name = "id_gen_pet", sequenceName = "id_sequence_pet", allocationSize = 10)
+public class Pet extends BaseIdDateOfCreationEntity {
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "id_gen_pet"
+    )
+    private Long id;
 
     @Column(
             name = "name",
@@ -41,6 +50,9 @@ public class Pet extends BaseIdCreationDateEntity {
     private LocalDate dateOfBirth;
     @Transient
     private int age;
+
+    @OneToMany(mappedBy = "pet")
+    private List<Diagnosis> diagnosisList = new ArrayList<>();
 
     public Pet(String name, String gender, LocalDate dateOfBirth) {
         this.name = name;
@@ -77,6 +89,18 @@ public class Pet extends BaseIdCreationDateEntity {
 
     public int getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public List<Diagnosis> getDiagnosisList() {
+        return diagnosisList;
+    }
+
+    public void removeDiagnosis(Diagnosis diagnosis) {
+        this.diagnosisList.remove(diagnosis);
+    }
+
+    public void addDiagnosis(Diagnosis diagnosis) {
+        this.diagnosisList.add(diagnosis);
     }
 
     @Override
