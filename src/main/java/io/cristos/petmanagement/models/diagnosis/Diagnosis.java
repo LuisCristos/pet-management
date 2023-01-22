@@ -10,14 +10,8 @@ import java.time.LocalDate;
 
 @Entity(name = "Diagnosis")
 @Table(name = "diagnosis")
-@SequenceGenerator(name = "id_gen_diagnosis", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
 public class Diagnosis extends BaseIdDateOfCreationEntity {
-
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_gen_diagnosis"
-    )
-    private Long id;
 
     @Column(
             name = "last_update",

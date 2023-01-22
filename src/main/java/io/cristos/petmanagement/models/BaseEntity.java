@@ -1,8 +1,6 @@
 package io.cristos.petmanagement.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
@@ -15,6 +13,10 @@ public abstract class BaseEntity implements Serializable {
             nullable = false,
             updatable = false,
             unique = true
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "id_generator"
     )
     private Long id;
 

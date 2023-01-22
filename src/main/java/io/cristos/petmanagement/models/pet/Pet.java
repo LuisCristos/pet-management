@@ -15,14 +15,8 @@ import java.util.List;
 
 @Entity(name = "Pet")
 @Table(name = "pet")
-@SequenceGenerator(name = "id_gen_pet", sequenceName = "id_sequence_pet", allocationSize = 10)
+@SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_pet", allocationSize = 10)
 public class Pet extends BaseIdDateOfCreationEntity {
-
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_gen_pet"
-    )
-    private Long id;
 
     @Column(
             name = "name",

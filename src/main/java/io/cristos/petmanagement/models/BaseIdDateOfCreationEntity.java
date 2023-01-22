@@ -27,11 +27,4 @@ public abstract class BaseIdDateOfCreationEntity extends BaseEntity {
     public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
-
-    @Override
-    public String toString() {
-        return "BaseIdDateOfCreationEntity{" +
-                "dateOfCreation=" + dateOfCreation +
-                '}';
-    }
 }
