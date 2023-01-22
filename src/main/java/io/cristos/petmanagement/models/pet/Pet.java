@@ -45,7 +45,12 @@ public class Pet extends BaseIdDateOfCreationEntity {
     @Transient
     private int age;
 
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(
+            mappedBy = "pet",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     private List<Diagnosis> diagnosisList = new ArrayList<>();
 
     public Pet(String name, String gender, LocalDate dateOfBirth) {
