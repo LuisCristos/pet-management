@@ -85,7 +85,7 @@ public class ContactServiceImpl implements ContactService {
     public Contact updateContact(Long contactId, ContactDto contactDto) {
 
         boolean exists = contactRepository.existsById(contactId);
-        logger.warn(exists + " does it exists UPDATE");
+
         if (!exists) {
 
             logger.warn("{}, {}! An exception occurred!",

@@ -50,14 +50,14 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetDto findPetById(Long id) throws NotFoundException {
 
-        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(id))
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
                             "findCustomerById().", "Pet with id: " + id + " cannot be found because it does not exist.",
-                            new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist."));
+                            new NotFoundException("Pet ID: " + id + " cannot be found because it does not exist."));
 
                     throw new NotFoundException("Pet with id: " + id + " cannot be found.");
-                });
+                }));
 
         return petMapper.petToPetDto(optionalPet.get());
     }
@@ -71,7 +71,7 @@ public class PetServiceImpl implements PetService {
 
             logger.warn("{}, {}! An exception occurred!",
                     "deletePetById().", "Pet with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Pet ID: " + id + " cannot be updated because it does not exist."));
+                    new NotFoundException("Pet ID: " + id + " cannot be deleted because it does not exist."));
 
             throw new NotFoundException("Pet ID: " + id + " cannot be deleted because it does not exist.");
         }

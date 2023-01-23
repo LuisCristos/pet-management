@@ -71,7 +71,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         if (!exists) {
             logger.warn("{}, {}! An exception occurred!",
                     "deleteDiagnosis().", "Diagnosis with id: " + diagnosisID + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Diagnosis with id: " + diagnosisID + " not found"));
+                    new NotFoundException("Diagnosis with id: " + diagnosisID + " cannot be deleted because it does not exist."));
 
             throw new NotFoundException("Diagnosis ID: " + diagnosisID + " cannot be deleted because it does not exist.");
         }
@@ -87,7 +87,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         if (!exists) {
             logger.warn("{}, {}! An exception occurred!",
                     "updateDiagnosis().", "Diagnosis with id: " + diagnosisId + " cannot be updated because it does not exist.",
-                    new NotFoundException("Diagnosis with id: " + diagnosisId + " not found"));
+                    new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be deleted because it does not exist."));
 
             throw new NotFoundException("Diagnosis ID: " + diagnosisId + " cannot be updated because it does not exist.");
         }

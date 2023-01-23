@@ -50,14 +50,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto findCustomerById(Long id) {
 
-        Optional<Customer> optionalPerson = Optional.ofNullable(customerRepository.findById(id))
+        Optional<Customer> optionalPerson = Optional.ofNullable(customerRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
                             "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
                             new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist."));
 
                     return new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist.");
-                });
+                }));
 
         return customerMapper.customerToCustomerDto(optionalPerson.get());
     }
@@ -71,9 +71,9 @@ public class CustomerServiceImpl implements CustomerService {
 
             logger.warn("{}, {}! An exception occurred!",
                     "deleteCustomerById().", "Customer with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
+                    new NotFoundException("Customer with id: " + id + " cannot be deleted because it does not exist."));
 
-            throw new NotFoundException("Customer ID: " + id + " cannot be deleted because it does not exist.");
+            throw new NotFoundException("Customer with id: " + id + " cannot be deleted because it does not exist.");
         }
 
         customerRepository.deleteById(id);
@@ -88,9 +88,9 @@ public class CustomerServiceImpl implements CustomerService {
 
             logger.warn("{}, {}! An exception occurred!",
                     "updateCustomer().", "Customer with id: " + id + " cannot be updated because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " not found"));
+                    new NotFoundException("Customer with id: " + id + " cannot be updated because it does not exist."));
 
-            throw new NotFoundException("Customer ID: " + id + " cannot be updated because it does not exist.");
+            throw new NotFoundException("Customer with id: " + id + " cannot be updated because it does not exist.");
         }
 
         return customerRepository.save(
