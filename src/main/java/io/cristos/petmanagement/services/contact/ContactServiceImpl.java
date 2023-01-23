@@ -51,16 +51,14 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactDto findContactById(Long contactId) {
 
-        Optional<Contact> optionalContact = Optional.ofNullable(contactRepository.findById(contactId))
+        Optional<Contact> optionalContact = Optional.ofNullable(contactRepository.findById(contactId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
                             "findContactById().", "Contact with id: " + contactId + " cannot be found because it does not exist.",
                             new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist."));
 
                     return new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist.");
-                });
-
-        logger.info("Retrieved contact with id: " + contactId);
+                }));
 
         return contactMapper.contactToContactDto(optionalContact.get());
     }
@@ -76,7 +74,7 @@ public class ContactServiceImpl implements ContactService {
                     "deleteContactById().", "Contact with id: " + contactId + " cannot be deleted because it does not exist.",
                     new NotFoundException("Contact with id: " + contactId + " not found"));
 
-            throw new NotFoundException("Contact ID: " + contactId + " cannot be deleted because it does not exist.");
+            throw new NotFoundException("Contact with id: " + contactId + " cannot be deleted because it does not exist.");
         }
 
         contactRepository.deleteById(contactId);
@@ -87,14 +85,14 @@ public class ContactServiceImpl implements ContactService {
     public Contact updateContact(Long contactId, ContactDto contactDto) {
 
         boolean exists = contactRepository.existsById(contactId);
-
+        logger.warn(exists + " does it exists UPDATE");
         if (!exists) {
 
             logger.warn("{}, {}! An exception occurred!",
                     "updateContact().", "Contact with id: " + contactId + " cannot be updated because it does not exist.",
                     new NotFoundException("Contact with id: " + contactId + " not found"));
 
-            throw new NotFoundException("Contact ID: " + contactId + " cannot be updated because it does not exist.");
+            throw new NotFoundException("Contact with id: " + contactId + " cannot be updated because it does not exist.");
         }
 
         return contactRepository.save(contactMapper.contactDtoToContact(contactDto));
