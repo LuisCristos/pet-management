@@ -38,10 +38,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         Optional<Pet> optionalPet = petRepository.findById(petId);
 
         if (optionalPet.isEmpty()) {
-            throw new IllegalStateException("Nothing");
+            throw new NotFoundException("Not Found.");
         }
-        logger.info(petId + " petid");
-        logger.info(optionalPet.toString());
 
         Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
 

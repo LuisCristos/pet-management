@@ -61,4 +61,13 @@ public class Diagnosis extends BaseIdDateOfCreationEntity {
     public void setPet(Pet pet) {
         this.pet = pet;
     }
+
+    @Override
+    public String toString() {
+        return "Diagnosis{" +
+                "lastUpdate=" + lastUpdate +
+                ", diagnosis='" + diagnosis + '\'' +
+                ", pet=" + pet +
+                "} " + super.toString();
+    }
 }

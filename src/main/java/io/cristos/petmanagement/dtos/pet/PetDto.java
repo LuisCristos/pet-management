@@ -1,5 +1,6 @@
 package io.cristos.petmanagement.dtos.pet;
 
+import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +9,8 @@ import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PetDto implements Serializable {
 
@@ -25,6 +27,19 @@ public class PetDto implements Serializable {
     private LocalDate dateOfCreation;
     @Transient
     private int age;
+
+    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
+
+    public PetDto(Long id, String name, String gender, LocalDate dateOfBirth,
+                  LocalDate dateOfCreation, int age, List<DiagnosisDto> diagnosisList) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfCreation = dateOfCreation;
+        this.age = age;
+        this.diagnosisList = diagnosisList;
+    }
 
     public PetDto() {
     }
@@ -61,20 +76,32 @@ public class PetDto implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public LocalDate getDateOfCreation() {
         return dateOfCreation;
     }
 
     public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public List<DiagnosisDto> getDiagnosisDtoList() {
+        return diagnosisList;
+    }
+
+    public void addDiagnosis(DiagnosisDto diagnosisDto) {
+        this.diagnosisList.add(diagnosisDto);
+    }
+
+    public void removeDiagnosis(DiagnosisDto diagnosisDto) {
+        this.diagnosisList.remove(diagnosisDto);
     }
 
     @Override
@@ -86,6 +113,7 @@ public class PetDto implements Serializable {
                 ", dateOfBirth=" + dateOfBirth +
                 ", dateOfCreation=" + dateOfCreation +
                 ", age=" + age +
+                ", diagnosisDtoList=" + diagnosisList +
                 '}';
     }
 }
