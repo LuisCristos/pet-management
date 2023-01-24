@@ -1,7 +1,11 @@
 package io.cristos.petmanagement.utilities.mapper.pet;
 
+import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import io.cristos.petmanagement.dtos.pet.PetDto;
+import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.models.pet.Pet;
+import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,6 +14,14 @@ import java.util.List;
 
 @Component
 public class PetMapperImpl implements PetMapper {
+
+    private final DiagnosisMapper diagnosisMapper;
+
+    @Autowired
+    public PetMapperImpl(DiagnosisMapper diagnosisMapper) {
+        this.diagnosisMapper = diagnosisMapper;
+    }
+
     @Override
     public PetDto petToPetDto(Pet pet) {
 
@@ -46,6 +58,13 @@ public class PetMapperImpl implements PetMapper {
         for (Pet pet : petCollection) {
 
             PetDto petDto = petToPetDto(pet);
+
+            for (Diagnosis diagnosis : pet.getDiagnosisList()) {
+
+                DiagnosisDto diagnosisDto = diagnosisMapper.diagnosisToDiagnosisDto(diagnosis);
+
+                petDto.addDiagnosis(diagnosisDto);
+            }
 
             petToPetDtoList.add(petDto);
         }

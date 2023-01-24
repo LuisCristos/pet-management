@@ -1,5 +1,6 @@
 package io.cristos.petmanagement.dtos.pet;
 
+import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PetDto implements Serializable {
 
@@ -25,6 +28,8 @@ public class PetDto implements Serializable {
     private LocalDate dateOfCreation;
     @Transient
     private int age;
+
+    private List<DiagnosisDto> diagnosisDtoList = new ArrayList<>();
 
     public PetDto(Long id, String name, String gender, LocalDate dateOfBirth,
                   LocalDate dateOfCreation, int age) {
@@ -85,6 +90,18 @@ public class PetDto implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public List<DiagnosisDto> getDiagnosisDtoList() {
+        return diagnosisDtoList;
+    }
+
+    public void addDiagnosis(DiagnosisDto diagnosisDto) {
+        this.diagnosisDtoList.add(diagnosisDto);
+    }
+
+    public void removeDiagnosis(DiagnosisDto diagnosisDto) {
+        this.diagnosisDtoList.remove(diagnosisDto);
     }
 
     @Override

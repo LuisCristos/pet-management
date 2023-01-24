@@ -19,7 +19,6 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
         diagnosisDto.setDiagnosis(diagnosis.getDiagnosis());
         diagnosisDto.setLastUpdate(diagnosis.getLastUpdate());
         diagnosisDto.setDateOfCreation(diagnosis.getDateOfCreation());
-        diagnosisDto.setPet(diagnosis.getPet());
 
         return diagnosisDto;
     }
@@ -33,7 +32,6 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
         diagnosis.setDiagnosis(diagnosisDto.getDiagnosis());
         diagnosis.setLastUpdate(diagnosisDto.getLastUpdate());
         diagnosis.setDateOfCreation(diagnosisDto.getDateOfCreation());
-        diagnosis.setPet(diagnosisDto.getPet());
 
         return diagnosis;
     }

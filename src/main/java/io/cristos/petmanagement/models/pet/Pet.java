@@ -110,6 +110,6 @@ public class Pet extends BaseIdDateOfCreationEntity {
                 ", dateOfBirth=" + dateOfBirth +
                 ", age=" + age +
                 ", diagnosisList=" + diagnosisList +
-                "} " + super.toString();
+                '}';
     }
 }
