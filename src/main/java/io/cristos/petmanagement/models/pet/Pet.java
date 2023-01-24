@@ -94,12 +94,12 @@ public class Pet extends BaseIdDateOfCreationEntity {
         return diagnosisList;
     }
 
-    public void removeDiagnosis(Diagnosis diagnosis) {
-        this.diagnosisList.remove(diagnosis);
-    }
-
     public void addDiagnosis(Diagnosis diagnosis) {
         this.diagnosisList.add(diagnosis);
+    }
+
+    public void removeDiagnosis(Diagnosis diagnosis) {
+        this.diagnosisList.remove(diagnosis);
     }
 
     @Override
@@ -107,8 +107,9 @@ public class Pet extends BaseIdDateOfCreationEntity {
         return "Pet{" +
                 "name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
-                ", dateOfBirt=" + dateOfBirth +
+                ", dateOfBirth=" + dateOfBirth +
                 ", age=" + age +
+                ", diagnosisList=" + diagnosisList +
                 "} " + super.toString();
     }
 }

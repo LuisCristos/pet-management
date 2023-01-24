@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class DiagnosisDto implements Serializable {
 
     private Long id;
+    private Long petId;
 
     @UpdateTimestamp
     private LocalDate lastUpdate;
@@ -26,6 +27,14 @@ public class DiagnosisDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPetId() {
+        return petId;
+    }
+
+    public void setPetId(Long petId) {
+        this.petId = petId;
     }
 
     public LocalDate getLastUpdate() {

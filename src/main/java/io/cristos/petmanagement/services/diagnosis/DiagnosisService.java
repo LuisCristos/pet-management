@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DiagnosisService {
 
-    Diagnosis saveDiagnosis(DiagnosisDto diagnosisDto);
+    Diagnosis saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto);
 
     List<DiagnosisDto> getAllDiagnosis();
 

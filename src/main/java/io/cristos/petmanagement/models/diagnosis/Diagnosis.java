@@ -26,7 +26,8 @@ public class Diagnosis extends BaseIdDateOfCreationEntity {
     )
     @NotBlank(message = "Diagnostic field must not be empty.")
     private String diagnosis;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Pet pet;
 
     public Diagnosis(LocalDate lastUpdate, String diagnosis) {

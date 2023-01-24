@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/diagnosis")
+@RequestMapping("/v1")
 public class DiagnosisControllerImpl implements DiagnosisController {
 
     private final Logger logger = LoggerFactory.getLogger(DiagnosisControllerImpl.class);
@@ -28,10 +28,12 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @PostMapping
-    public ResponseEntity<DiagnosisDto> saveDiagnosis(@Valid @RequestBody DiagnosisDto diagnosisDto) {
+    @PostMapping(value = "/pets/{petId}/diagnosis")
+    public ResponseEntity<DiagnosisDto> saveDiagnosisToPet(@PathVariable Long petId,
+                                                           @Valid
+                                                           @RequestBody DiagnosisDto diagnosisDto) {
 
-        Diagnosis diagnosis = diagnosisService.saveDiagnosis(diagnosisDto);
+        Diagnosis diagnosis = diagnosisService.saveDiagnosisToPet(petId, diagnosisDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -45,7 +47,7 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @GetMapping
+    @GetMapping("/diagnosis")
     public ResponseEntity<List<DiagnosisDto>> getAllDiagnosis() {
 
         logger.info("getAllDiagnosis(). Retrieved all Diagnosis.");
@@ -54,7 +56,7 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @GetMapping("/{diagnosisId}")
+    @GetMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisDto> findDiagnosisById(@PathVariable Long diagnosisId) {
 
         logger.info("Find Diagnosis by diagnosisId: " + diagnosisId);
@@ -63,7 +65,7 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @DeleteMapping("/{diagnosisId}")
+    @DeleteMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable Long diagnosisId) {
 
         diagnosisService.deleteDiagnosis(diagnosisId);
@@ -74,7 +76,7 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @PutMapping("/{diagnosisId}")
+    @PutMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisDto> updateDiagnosisById(@PathVariable Long diagnosisId,
                                                             @Valid
                                                             @RequestBody DiagnosisDto diagnosisDto) {

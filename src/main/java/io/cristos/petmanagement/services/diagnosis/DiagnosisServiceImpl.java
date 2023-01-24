@@ -3,7 +3,9 @@ package io.cristos.petmanagement.services.diagnosis;
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
+import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.repositories.diagnosis.DiagnosisRepository;
+import io.cristos.petmanagement.repositories.pet.PetRepository;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +22,35 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     private final Logger logger = LoggerFactory.getLogger(DiagnosisServiceImpl.class);
     private final DiagnosisRepository diagnosisRepository;
+    private final PetRepository petRepository;
     private final DiagnosisMapper diagnosisMapper;
 
     @Autowired
-    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, DiagnosisMapper diagnosisMapper) {
+    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, PetRepository petRepository, DiagnosisMapper diagnosisMapper) {
         this.diagnosisRepository = diagnosisRepository;
+        this.petRepository = petRepository;
         this.diagnosisMapper = diagnosisMapper;
     }
 
     @Override
-    public Diagnosis saveDiagnosis(DiagnosisDto diagnosisDto) {
+    public Diagnosis saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto) {
 
-        return diagnosisRepository.save(diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto));
+        Optional<Pet> optionalPet = petRepository.findById(petId);
+
+        if (optionalPet.isEmpty()) {
+            throw new IllegalStateException("Nothing");
+        }
+        logger.info(petId + " petid");
+        logger.info(optionalPet.toString());
+
+        Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
+
+        Pet pet = optionalPet.get();
+
+        diagnosis.setPet(pet);
+        pet.addDiagnosis(diagnosis);
+
+        return diagnosisRepository.save(diagnosis);
     }
 
     @Override

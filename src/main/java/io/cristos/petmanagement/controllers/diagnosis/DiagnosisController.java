@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DiagnosisController {
 
-    ResponseEntity<DiagnosisDto> saveDiagnosis(DiagnosisDto diagnosisDto);
+    ResponseEntity<DiagnosisDto> saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto);
 
     ResponseEntity<List<DiagnosisDto>> getAllDiagnosis();
 
