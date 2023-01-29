@@ -11,9 +11,9 @@ public interface DiagnosisService {
 
     List<DiagnosisDto> getAllDiagnosis();
 
-    DiagnosisDto findDiagnosisById(Long diagnosisId);
+    DiagnosisDto findDiagnosisById(Long petId, Long diagnosisId);
 
-    void deleteDiagnosis(Long diagnosisID);
+    void deleteDiagnosis(Long petId, Long diagnosisID);
 
-    Diagnosis updateDiagnosis(Long diagnosisId, DiagnosisDto diagnosisDto);
+    Diagnosis updateDiagnosis(Long petId, Long diagnosisId, DiagnosisDto diagnosisDto);
 }

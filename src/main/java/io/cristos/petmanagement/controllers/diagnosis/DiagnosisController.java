@@ -11,9 +11,9 @@ public interface DiagnosisController {
 
     ResponseEntity<List<DiagnosisDto>> getAllDiagnosis();
 
-    ResponseEntity<DiagnosisDto> findDiagnosisById(Long diagnosisId);
+    ResponseEntity<DiagnosisDto> findDiagnosisById(Long petId, Long diagnosisId);
 
-    ResponseEntity<DiagnosisDto> deleteDiagnosisById(Long diagnosisId);
+    ResponseEntity<DiagnosisDto> deleteDiagnosisById(Long petId, Long diagnosisId);
 
-    ResponseEntity<DiagnosisDto> updateDiagnosisById(Long diagnosisId, DiagnosisDto diagnosisDto);
+    ResponseEntity<DiagnosisDto> updateDiagnosisById(Long petId, Long diagnosisId, DiagnosisDto diagnosisDto);
 }

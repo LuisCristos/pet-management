@@ -56,7 +56,7 @@ public class PetServiceImpl implements PetService {
                             "findCustomerById().", "Pet with id: " + id + " cannot be found because it does not exist.",
                             new NotFoundException("Pet ID: " + id + " cannot be found because it does not exist."));
 
-                    throw new NotFoundException("Pet with id: " + id + " cannot be found.");
+                    throw new NotFoundException("Pet ID: " + id + " cannot be found because it does not exist.");
                 }));
 
         return petMapper.petToPetDto(optionalPet.get());

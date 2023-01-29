@@ -56,19 +56,21 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @GetMapping("/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> findDiagnosisById(@PathVariable Long diagnosisId) {
+    @GetMapping("/pets/{petId}/diagnosis/{diagnosisId}")
+    public ResponseEntity<DiagnosisDto> findDiagnosisById(@PathVariable Long petId,
+                                                          @PathVariable Long diagnosisId) {
 
         logger.info("Find Diagnosis by diagnosisId: " + diagnosisId);
 
-        return ResponseEntity.ok(diagnosisService.findDiagnosisById(diagnosisId));
+        return ResponseEntity.ok(diagnosisService.findDiagnosisById(petId, diagnosisId));
     }
 
     @Override
-    @DeleteMapping("/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable Long diagnosisId) {
+    @DeleteMapping("/pets/{petId}/diagnosis/{diagnosisId}")
+    public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable Long petId,
+                                                            @PathVariable Long diagnosisId) {
 
-        diagnosisService.deleteDiagnosis(diagnosisId);
+        diagnosisService.deleteDiagnosis(petId, diagnosisId);
 
         logger.info("Delete Diagnosis by diagnosisId: " + diagnosisId);
 
@@ -76,11 +78,12 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @PutMapping("/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> updateDiagnosisById(@PathVariable Long diagnosisId,
+    @PutMapping("/pets/{petId}/diagnosis/{diagnosisId}")
+    public ResponseEntity<DiagnosisDto> updateDiagnosisById(@PathVariable Long petId,
+                                                            @PathVariable Long diagnosisId,
                                                             @Valid
                                                             @RequestBody DiagnosisDto diagnosisDto) {
-        diagnosisService.updateDiagnosis(diagnosisId, diagnosisDto);
+        diagnosisService.updateDiagnosis(petId, diagnosisId, diagnosisDto);
 
         logger.info("Updated Diagnosis with diagnosisId: " + diagnosisId);
 

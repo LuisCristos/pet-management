@@ -35,11 +35,14 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public Diagnosis saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto) {
 
-        Optional<Pet> optionalPet = petRepository.findById(petId);
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
 
-        if (optionalPet.isEmpty()) {
-            throw new NotFoundException("Not Found.");
-        }
+                    throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
+                }));
 
         Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
 
@@ -66,7 +69,18 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public DiagnosisDto findDiagnosisById(Long diagnosisId) {
+    public DiagnosisDto findDiagnosisById(Long petId, Long diagnosisId) {
+
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
+
+                    throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
+                }));
+
+        boolean exists = diagnosisRepository.existsById(diagnosisId);
 
         Optional<Diagnosis> optionalDiagnosis = Optional.ofNullable(diagnosisRepository.findById(diagnosisId)
                 .orElseThrow(() -> {
@@ -81,7 +95,16 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public void deleteDiagnosis(Long diagnosisID) {
+    public void deleteDiagnosis(Long petId, Long diagnosisID) {
+
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
+
+                    throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
+                }));
 
         boolean exists = diagnosisRepository.existsById(diagnosisID);
 
@@ -97,7 +120,16 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public Diagnosis updateDiagnosis(Long diagnosisId, DiagnosisDto diagnosisDto) {
+    public Diagnosis updateDiagnosis(Long petId, Long diagnosisId, DiagnosisDto diagnosisDto) {
+
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
+
+                    throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
+                }));
 
         boolean exists = diagnosisRepository.existsById(diagnosisId);
 
@@ -109,6 +141,13 @@ public class DiagnosisServiceImpl implements DiagnosisService {
             throw new NotFoundException("Diagnosis ID: " + diagnosisId + " cannot be updated because it does not exist.");
         }
 
-        return diagnosisRepository.save(diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto));
+        Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
+
+        Pet pet = optionalPet.get();
+
+        diagnosis.setPet(pet);
+        pet.addDiagnosis(diagnosis);
+
+        return diagnosisRepository.save(diagnosis);
     }
 }
