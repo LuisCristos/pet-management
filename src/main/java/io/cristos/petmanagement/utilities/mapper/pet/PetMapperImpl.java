@@ -33,6 +33,13 @@ public class PetMapperImpl implements PetMapper {
         petDto.setDateOfBirth(pet.getDateOfBirth());
         petDto.setDateOfCreation(pet.getDateOfCreation());
 
+        for (Diagnosis diagnosis : pet.getDiagnosisList()) {
+
+            DiagnosisDto diagnosisDto = diagnosisMapper.diagnosisToDiagnosisDto(diagnosis);
+
+            petDto.addDiagnosis(diagnosisDto);
+        }
+
         return petDto;
     }
 
@@ -58,13 +65,6 @@ public class PetMapperImpl implements PetMapper {
         for (Pet pet : petCollection) {
 
             PetDto petDto = petToPetDto(pet);
-
-            for (Diagnosis diagnosis : pet.getDiagnosisList()) {
-
-                DiagnosisDto diagnosisDto = diagnosisMapper.diagnosisToDiagnosisDto(diagnosis);
-
-                petDto.addDiagnosis(diagnosisDto);
-            }
 
             petToPetDtoList.add(petDto);
         }
