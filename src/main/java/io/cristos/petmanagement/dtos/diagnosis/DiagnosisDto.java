@@ -1,6 +1,5 @@
 package io.cristos.petmanagement.dtos.diagnosis;
 
-import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,16 +16,6 @@ public class DiagnosisDto implements Serializable {
     @NotBlank(message = "Diagnostic field must not be empty.")
     private String diagnosis;
     private LocalDate dateOfCreation;
-
-    private Pet pet;
-
-    public DiagnosisDto(Long id, LocalDate lastUpdate, String diagnosis, LocalDate dateOfCreation, Pet pet) {
-        this.id = id;
-        this.lastUpdate = lastUpdate;
-        this.diagnosis = diagnosis;
-        this.dateOfCreation = dateOfCreation;
-        this.pet = pet;
-    }
 
     public DiagnosisDto() {
     }
@@ -63,18 +52,4 @@ public class DiagnosisDto implements Serializable {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public void setPet(Pet pet) {
-        this.pet = pet;
-    }
-
-    @Override
-    public String toString() {
-        return "DiagnosisDto{" +
-                "id=" + id +
-                ", lastUpdate=" + lastUpdate +
-                ", diagnosis='" + diagnosis + '\'' +
-                ", dateOfCreation=" + dateOfCreation +
-                ", pet=" + pet +
-                '}';
-    }
 }

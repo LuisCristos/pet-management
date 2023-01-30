@@ -1,15 +1,14 @@
 package io.cristos.petmanagement.controllers.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.pet.PetDto;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 public interface DiagnosisController {
 
     ResponseEntity<DiagnosisDto> saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto);
 
-    ResponseEntity<List<DiagnosisDto>> getAllDiagnosis();
+    ResponseEntity<PetDto> getAllDiagnosis(Long petId);
 
     ResponseEntity<DiagnosisDto> findDiagnosisById(Long petId, Long diagnosisId);
 

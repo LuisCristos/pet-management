@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.controllers.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.services.diagnosis.DiagnosisService;
 import jakarta.validation.Valid;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -47,12 +47,12 @@ public class DiagnosisControllerImpl implements DiagnosisController {
     }
 
     @Override
-    @GetMapping("/diagnosis")
-    public ResponseEntity<List<DiagnosisDto>> getAllDiagnosis() {
+    @GetMapping("/pets/{petId}/diagnosis")
+    public ResponseEntity<PetDto> getAllDiagnosis(@PathVariable Long petId) {
 
         logger.info("getAllDiagnosis(). Retrieved all Diagnosis.");
 
-        return ResponseEntity.ok(diagnosisService.getAllDiagnosis());
+        return ResponseEntity.ok(diagnosisService.getAllDiagnosis(petId));
     }
 
     @Override

@@ -1,15 +1,14 @@
 package io.cristos.petmanagement.services.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
-
-import java.util.List;
 
 public interface DiagnosisService {
 
     Diagnosis saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto);
 
-    List<DiagnosisDto> getAllDiagnosis();
+    PetDto getAllDiagnosis(Long petId);
 
     DiagnosisDto findDiagnosisById(Long petId, Long diagnosisId);
 

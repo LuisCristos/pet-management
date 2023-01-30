@@ -1,19 +1,19 @@
 package io.cristos.petmanagement.services.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.repositories.diagnosis.DiagnosisRepository;
 import io.cristos.petmanagement.repositories.pet.PetRepository;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
+import io.cristos.petmanagement.utilities.mapper.pet.PetMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +24,14 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
     private final PetRepository petRepository;
     private final DiagnosisMapper diagnosisMapper;
+    private final PetMapper petMapper;
 
     @Autowired
-    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, PetRepository petRepository, DiagnosisMapper diagnosisMapper) {
+    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, PetRepository petRepository, DiagnosisMapper diagnosisMapper, PetMapper petMapper) {
         this.diagnosisRepository = diagnosisRepository;
         this.petRepository = petRepository;
         this.diagnosisMapper = diagnosisMapper;
+        this.petMapper = petMapper;
     }
 
     @Override
@@ -55,18 +57,27 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public List<DiagnosisDto> getAllDiagnosis() {
+    public PetDto getAllDiagnosis(Long petId) {
 
-        Collection<Diagnosis> diagnosisCollection = diagnosisRepository.findAll();
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
 
-        if (diagnosisCollection.isEmpty()) {
+                    throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
+                }));
 
-            logger.info("getAllDiagnosis(). Retrieved an empty List.");
-            return Collections.emptyList();
+        List<Diagnosis> diagnosisList = diagnosisRepository.findDiagnosisByPetId(petId);
+
+        if (diagnosisList.isEmpty()) {
+
+            return petMapper.petToPetDto(optionalPet.get());
         }
 
-        return diagnosisMapper.diagnosisListToDiagnosisDtoList(diagnosisCollection);
+        return diagnosisMapper.diagnosisToPetDto(diagnosisList);
     }
+
 
     @Override
     public DiagnosisDto findDiagnosisById(Long petId, Long diagnosisId) {
