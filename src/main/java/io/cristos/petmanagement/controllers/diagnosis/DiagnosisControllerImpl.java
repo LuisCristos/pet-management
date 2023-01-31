@@ -5,11 +5,13 @@ import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.services.diagnosis.DiagnosisService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/v1")
+@Validated
 public class DiagnosisControllerImpl implements DiagnosisController {
 
     private final Logger logger = LoggerFactory.getLogger(DiagnosisControllerImpl.class);
@@ -29,7 +32,8 @@ public class DiagnosisControllerImpl implements DiagnosisController {
 
     @Override
     @PostMapping(value = "/pets/{petId}/diagnosis")
-    public ResponseEntity<DiagnosisDto> saveDiagnosisToPet(@PathVariable Long petId,
+    public ResponseEntity<DiagnosisDto> saveDiagnosisToPet(@PathVariable(name = "petId")
+                                                           @Min(1) Long petId,
                                                            @Valid
                                                            @RequestBody DiagnosisDto diagnosisDto) {
 
@@ -48,7 +52,8 @@ public class DiagnosisControllerImpl implements DiagnosisController {
 
     @Override
     @GetMapping("/pets/{petId}/diagnosis")
-    public ResponseEntity<PetDto> getAllDiagnosis(@PathVariable Long petId) {
+    public ResponseEntity<PetDto> getAllDiagnosis(@PathVariable(name = "petId")
+                                                  @Min(1) Long petId) {
 
         logger.info("getAllDiagnosis(). Retrieved all Diagnosis.");
 
@@ -57,8 +62,10 @@ public class DiagnosisControllerImpl implements DiagnosisController {
 
     @Override
     @GetMapping("/pets/{petId}/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> findDiagnosisById(@PathVariable Long petId,
-                                                          @PathVariable Long diagnosisId) {
+    public ResponseEntity<DiagnosisDto> findDiagnosisById(@PathVariable(name = "petId")
+                                                          @Min(1) Long petId,
+                                                          @PathVariable(name = "diagnosisId")
+                                                          @Min(1) Long diagnosisId) {
 
         logger.info("Find Diagnosis by diagnosisId: " + diagnosisId);
 
@@ -67,8 +74,10 @@ public class DiagnosisControllerImpl implements DiagnosisController {
 
     @Override
     @DeleteMapping("/pets/{petId}/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable Long petId,
-                                                            @PathVariable Long diagnosisId) {
+    public ResponseEntity<DiagnosisDto> deleteDiagnosisById(@PathVariable("petId")
+                                                            @Min(1) Long petId,
+                                                            @PathVariable("diagnosisId")
+                                                            @Min(1) Long diagnosisId) {
 
         diagnosisService.deleteDiagnosis(petId, diagnosisId);
 
@@ -79,10 +88,13 @@ public class DiagnosisControllerImpl implements DiagnosisController {
 
     @Override
     @PutMapping("/pets/{petId}/diagnosis/{diagnosisId}")
-    public ResponseEntity<DiagnosisDto> updateDiagnosisById(@PathVariable Long petId,
-                                                            @PathVariable Long diagnosisId,
+    public ResponseEntity<DiagnosisDto> updateDiagnosisById(@PathVariable(name = "petId")
+                                                            @Min(1) Long petId,
+                                                            @PathVariable(name = "diagnosisId")
+                                                            @Min(1) Long diagnosisId,
                                                             @Valid
                                                             @RequestBody DiagnosisDto diagnosisDto) {
+
         diagnosisService.updateDiagnosis(petId, diagnosisId, diagnosisDto);
 
         logger.info("Updated Diagnosis with diagnosisId: " + diagnosisId);
