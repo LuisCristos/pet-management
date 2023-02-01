@@ -32,7 +32,7 @@ public class Pet extends BaseIdDateOfCreationEntity {
             nullable = false,
             columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
     )
-    @NotBlank(message = "Gender is required.")
+    @NotNull(message = "Gender is required.")
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(

@@ -2,6 +2,7 @@ package io.cristos.petmanagement.exceptions;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.UnexpectedTypeException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -102,6 +103,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
+
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
+    }
+
+    @ExceptionHandler({UnexpectedTypeException.class})
+    public ResponseEntity<Object> handleUnexpectedTypeException(
+            UnexpectedTypeException ex, WebRequest request) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String error = ex.getMessage();
 
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }

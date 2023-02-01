@@ -19,8 +19,7 @@ public class PetDto implements Serializable {
     @NotBlank(message = "Name is required.")
     @Size(min = 2, max = 255, message = "Name must be between 2 - 255 characters.")
     private String name;
-    @NotBlank(message = "Gender is required.")
-    @Size(min = 2, max = 10, message = "Gender must be between 2 - 10 characters.")
+    @NotNull(message = "Gender is required.")
     private String gender;
     @NotNull(message = "Date of birth is required.")
     @Past(message = "Date of Birth must be in the Past.")
