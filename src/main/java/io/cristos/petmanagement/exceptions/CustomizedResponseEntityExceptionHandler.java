@@ -1,5 +1,6 @@
 package io.cristos.petmanagement.exceptions;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -8,13 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
@@ -29,13 +35,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                "Total Errors: " + ex.getErrorCount() + " First Error: " + ex.getFieldError().getDefaultMessage(),
-                request.getDescription(false),
-                httpStatus);
+        List<String> errorsList = new ArrayList<>();
 
-        return new ResponseEntity<>(errorDetails, httpStatus);
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            errorsList.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
+        }
+
+        for (ObjectError objectError : ex.getBindingResult().getGlobalErrors()) {
+            errorsList.add(objectError.getObjectName() + ": " + objectError.getDefaultMessage());
+        }
+
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), errorsList));
     }
 
     @Override
@@ -44,13 +54,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                request.getDescription(false),
-                httpStatus);
+        String error = ex.getMessage();
 
-        return new ResponseEntity<>(errorDetails, httpStatus);
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
     @ExceptionHandler(Exception.class)
@@ -58,13 +64,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                request.getDescription(false),
-                httpStatus);
+        String error = ex.getMessage();
 
-        return new ResponseEntity<>(errorDetails, httpStatus);
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -72,26 +74,40 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                request.getDescription(false),
-                httpStatus);
+        String error = ex.getMessage();
 
-        return new ResponseEntity<>(errorDetails, httpStatus);
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
 
-        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                request.getDescription(false),
-                httpStatus);
+        List<String> errorsList = new ArrayList<>();
 
-        return new ResponseEntity<>(errorDetails, httpStatus);
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errorsList.add(violation.getRootBeanClass().getName()
+                    + " " + violation.getPropertyPath()
+                    + ": " + violation.getMessage());
+        }
+
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), errorsList));
     }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex, WebRequest request) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
+
+        return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
+    }
+
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, apiError.getHttpStatus());
+    }
+
 }
