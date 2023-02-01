@@ -63,7 +63,7 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
 
             petDto.setId(diagnosis.getPet().getId());
             petDto.setName(diagnosis.getPet().getName());
-            petDto.setGender(diagnosis.getPet().getGender());
+//            petDto.setGender(diagnosis.getPet().getGender());
             petDto.setDateOfBirth(diagnosis.getPet().getDateOfBirth());
             petDto.setDateOfCreation(diagnosis.getPet().getDateOfCreation());
             petDto.setAge(diagnosis.getPet().getAge());

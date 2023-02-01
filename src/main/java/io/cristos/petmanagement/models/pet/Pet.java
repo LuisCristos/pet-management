@@ -2,6 +2,7 @@ package io.cristos.petmanagement.models.pet;
 
 import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
+import io.cristos.petmanagement.models.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,11 +30,11 @@ public class Pet extends BaseIdDateOfCreationEntity {
     @Column(
             name = "gender",
             nullable = false,
-            columnDefinition = "VARCHAR(255)"
+            columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
     )
     @NotBlank(message = "Gender is required.")
-    @Size(min = 2, max = 10, message = "Name must be between 2 - 10 characters.")
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @Column(
             name = "date_of_birth",
             nullable = false,
@@ -53,7 +54,7 @@ public class Pet extends BaseIdDateOfCreationEntity {
     )
     private List<Diagnosis> diagnosisList = new ArrayList<>();
 
-    public Pet(String name, String gender, LocalDate dateOfBirth) {
+    public Pet(String name, Gender gender, LocalDate dateOfBirth) {
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
@@ -70,11 +71,11 @@ public class Pet extends BaseIdDateOfCreationEntity {
         this.name = name;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

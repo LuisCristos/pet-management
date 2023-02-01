@@ -29,7 +29,7 @@ public class PetMapperImpl implements PetMapper {
 
         petDto.setId(pet.getId());
         petDto.setName(pet.getName());
-        petDto.setGender(pet.getGender());
+//        petDto.setGender(pet.getGender());
         petDto.setDateOfBirth(pet.getDateOfBirth());
         petDto.setDateOfCreation(pet.getDateOfCreation());
 
@@ -50,7 +50,7 @@ public class PetMapperImpl implements PetMapper {
 
         pet.setId(petDto.getId());
         pet.setName(petDto.getName());
-        pet.setGender(petDto.getGender());
+//        pet.setGender(petDto.getGender());
         pet.setDateOfBirth(petDto.getDateOfBirth());
         pet.setDateOfCreation(petDto.getDateOfCreation());
 
