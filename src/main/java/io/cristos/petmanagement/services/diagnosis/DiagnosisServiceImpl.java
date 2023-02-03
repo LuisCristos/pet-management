@@ -116,7 +116,6 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
             throw new NotFoundException("Diagnosis ID: " + diagnosisId + " cannot be updated because it does not exist.");
         }
-
     }
 
     private void checkIfPetExists(Long petId) {
