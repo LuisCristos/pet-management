@@ -68,7 +68,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
         checkIfPetExists(petId);
 
-        Optional<Diagnosis> optionalDiagnosis = Optional.ofNullable(diagnosisRepository.findById(diagnosisId)
+        Optional<Diagnosis> optionalDiagnosis = Optional.of(diagnosisRepository.findById(diagnosisId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
                             "findDiagnosisById().", "Diagnosis with id: " + diagnosisId + " cannot be found because it does not exist.",
