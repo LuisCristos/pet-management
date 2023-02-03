@@ -1,8 +1,9 @@
 package io.cristos.petmanagement.utilities.mapper.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
-import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
+import io.cristos.petmanagement.utilities.mapper.pet.GenderConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,6 +12,14 @@ import java.util.List;
 
 @Component
 public class DiagnosisMapperImpl implements DiagnosisMapper {
+
+    private final GenderConverter genderConverter;
+
+    @Autowired
+    public DiagnosisMapperImpl(GenderConverter genderConverter) {
+        this.genderConverter = genderConverter;
+    }
+
     @Override
     public DiagnosisDto diagnosisToDiagnosisDto(Diagnosis diagnosis) {
 
@@ -50,35 +59,5 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
         }
 
         return diagnosisToDiagnosisDtoList;
-    }
-
-    @Override
-    public PetDto diagnosisToPetDto(Collection<Diagnosis> diagnosisList) {
-
-        PetDto petDto = null;
-        DiagnosisDto diagnosisDto;
-
-        for (Diagnosis diagnosis : diagnosisList) {
-            petDto = new PetDto();
-
-            petDto.setId(diagnosis.getPet().getId());
-            petDto.setName(diagnosis.getPet().getName());
-//            petDto.setGender(diagnosis.getPet().getGender());
-            petDto.setDateOfBirth(diagnosis.getPet().getDateOfBirth());
-            petDto.setDateOfCreation(diagnosis.getPet().getDateOfCreation());
-            petDto.setAge(diagnosis.getPet().getAge());
-
-            for (Diagnosis diagnosis1 : diagnosisList) {
-                diagnosisDto = new DiagnosisDto();
-
-                diagnosisDto.setId(diagnosis1.getId());
-                diagnosisDto.setDiagnosis(diagnosis1.getDiagnosis());
-                diagnosisDto.setDateOfCreation(diagnosis1.getDateOfCreation());
-                diagnosisDto.setLastUpdate(diagnosis1.getLastUpdate());
-
-                petDto.addDiagnosis(diagnosisDto);
-            }
-        }
-        return petDto;
     }
 }

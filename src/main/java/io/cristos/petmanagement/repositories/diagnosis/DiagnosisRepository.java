@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
 
-//    Optional<Diagnosis> findDiagnosisByPetId(Long petId);
-
     List<Diagnosis> findDiagnosisByPetId(Long petId);
 }
