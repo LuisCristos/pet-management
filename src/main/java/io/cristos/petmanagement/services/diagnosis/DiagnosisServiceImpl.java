@@ -7,7 +7,6 @@ import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.repositories.diagnosis.DiagnosisRepository;
 import io.cristos.petmanagement.repositories.pet.PetRepository;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
-import io.cristos.petmanagement.utilities.mapper.pet.PetMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +23,13 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
     private final PetRepository petRepository;
     private final DiagnosisMapper diagnosisMapper;
-    private final PetMapper petMapper;
 
     @Autowired
     public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, PetRepository petRepository,
-                                DiagnosisMapper diagnosisMapper, PetMapper petMapper) {
+                                DiagnosisMapper diagnosisMapper) {
         this.diagnosisRepository = diagnosisRepository;
         this.petRepository = petRepository;
         this.diagnosisMapper = diagnosisMapper;
-        this.petMapper = petMapper;
     }
 
     @Override

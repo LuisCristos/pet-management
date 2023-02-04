@@ -27,8 +27,7 @@ public class PetDto implements Serializable {
     private LocalDate dateOfCreation;
     @Transient
     private int age;
-
-    private List<DiagnosisDto> diagnosisDtoList = new ArrayList<>();
+    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
 
     public PetDto(Long id, String name, String gender, LocalDate dateOfBirth,
                   LocalDate dateOfCreation, int age) {
@@ -91,16 +90,16 @@ public class PetDto implements Serializable {
         this.age = age;
     }
 
-    public List<DiagnosisDto> getDiagnosisDtoList() {
-        return diagnosisDtoList;
+    public List<DiagnosisDto> getDiagnosisList() {
+        return diagnosisList;
     }
 
     public void addDiagnosis(DiagnosisDto diagnosisDto) {
-        this.diagnosisDtoList.add(diagnosisDto);
+        this.diagnosisList.add(diagnosisDto);
     }
 
     public void removeDiagnosis(DiagnosisDto diagnosisDto) {
-        this.diagnosisDtoList.remove(diagnosisDto);
+        this.diagnosisList.remove(diagnosisDto);
     }
 
     @Override
