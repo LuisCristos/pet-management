@@ -37,7 +37,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public Diagnosis saveDiagnosisToPet(Long petId, DiagnosisDto diagnosisDto) {
 
-        Pet pet = getPetToSaveOrUpdateDiagnosis(petId);
+        final String methodName = "saveDiagnosisToPet()";
+        Pet pet = getPetToSaveOrUpdateDiagnosis(petId, methodName);
 
         Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
 
@@ -50,7 +51,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public List<DiagnosisDto> getAllDiagnosisFromPet(Long petId) {
 
-        checkIfPetExists(petId);
+        final String methodName = "getAllDiagnosisFromPet()";
+        checkIfPetExists(petId, methodName);
 
         List<Diagnosis> diagnosisList = diagnosisRepository.findDiagnosisByPetId(petId);
 
@@ -65,7 +67,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public DiagnosisDto findDiagnosisByPetId(Long petId, Long diagnosisId) {
 
-        checkIfPetExists(petId);
+        final String methodName = "findDiagnosisByPetId()";
+        checkIfPetExists(petId, methodName);
 
         Optional<Diagnosis> optionalDiagnosis = Optional.of(diagnosisRepository.findById(diagnosisId)
                 .orElseThrow(() -> {
@@ -82,9 +85,11 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public void deleteDiagnosisFromPet(Long petId, Long diagnosisId) {
 
-        checkIfPetExists(petId);
+        final String methodName = "deleteDiagnosisFromPet()";
+        final String deleteOrUpdate = "deleted";
+        checkIfPetExists(petId, methodName);
 
-        checkIfDiagnosisExists(diagnosisId);
+        checkIfDiagnosisExists(diagnosisId, methodName, deleteOrUpdate);
 
         diagnosisRepository.deleteById(diagnosisId);
     }
@@ -92,9 +97,11 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public Diagnosis updateDiagnosisFromPet(Long petId, Long diagnosisId, DiagnosisDto diagnosisDto) {
 
-        Pet pet = getPetToSaveOrUpdateDiagnosis(petId);
+        final String methodName = "saveDiagnosisToPet()";
+        final String deleteOrUpdate = "updated";
+        Pet pet = getPetToSaveOrUpdateDiagnosis(petId, methodName);
 
-        checkIfDiagnosisExists(diagnosisId);
+        checkIfDiagnosisExists(diagnosisId, methodName, deleteOrUpdate);
 
         Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
 
@@ -104,39 +111,39 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         return diagnosisRepository.save(diagnosis);
     }
 
-    private void checkIfDiagnosisExists(Long diagnosisId) {
+    private void checkIfDiagnosisExists(Long diagnosisId, String methodName, String deleteOrUpdate) {
 
         boolean exists = diagnosisRepository.existsById(diagnosisId);
 
         if (!exists) {
             logger.warn("{}, {}! An exception occurred!",
-                    "updateDiagnosis().", "Diagnosis with id: " + diagnosisId + " cannot be updated because it does not exist.",
-                    new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be deleted because it does not exist."));
+                    "" + methodName + ".", "Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist.",
+                    new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist."));
 
-            throw new NotFoundException("Diagnosis ID: " + diagnosisId + " cannot be updated because it does not exist.");
+            throw new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist.");
         }
     }
 
-    private void checkIfPetExists(Long petId) {
+    private void checkIfPetExists(Long petId, String methodName) {
 
         boolean petExists = petRepository.existsById(petId);
 
         if (!petExists) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                    "" + methodName + ".", "Pet with id: " + petId + " cannot be found because it does not exist.",
                     new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
 
             throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
         }
     }
 
-    private Pet getPetToSaveOrUpdateDiagnosis(Long petId) {
+    private Pet getPetToSaveOrUpdateDiagnosis(Long petId, String methodName) {
 
         Optional<Pet> optionalPet = Optional.of(petRepository.findById(petId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
-                            "findCustomerById().", "Pet with id: " + petId + " cannot be found because it does not exist.",
+                            "" + methodName + ".", "Pet with id: " + petId + " cannot be found because it does not exist.",
                             new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist."));
 
                     throw new NotFoundException("Pet ID: " + petId + " cannot be found because it does not exist.");
