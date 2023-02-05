@@ -1,8 +1,15 @@
 package io.cristos.petmanagement.dtos.contact;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.*;
 
-public class ContactDto {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContactDto implements Serializable {
 
     private Long id;
     @NotBlank(message = "Street is required.")
@@ -15,11 +22,11 @@ public class ContactDto {
     private String city;
     @NotBlank(message = "Zipcode is required.")
     private String zipCode;
-    @NotBlank(message = "Mobile phone number is required.")
-    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
-            message = "Please enter a Mobile number in this format: +4916012345678")
-    private String mobileNumber;
-    private String phoneNumber;
+    @ElementCollection
+    @CollectionTable(name = "contact_phone_numbers",
+            joinColumns = @JoinColumn(name = "contact_id"))
+    @NotEmpty(message = "At least one phone number is required")
+    private List<@NotBlank(message = "Phone number is required.") String> phoneNumberList = new ArrayList<>();
     @NotBlank(message = "Email is required.")
     @Email(message = "Please enter email in this format valid@valid.com.",
             regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
@@ -69,20 +76,16 @@ public class ContactDto {
         this.zipCode = zipCode;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public void addPhoneNumber(String phoneNumber) {
+        this.phoneNumberList.add(phoneNumber);
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void removePhoneNumber(String phoneNumber) {
+        this.phoneNumberList.remove(phoneNumber);
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public List<String> getPhoneNumberList() {
+        return phoneNumberList;
     }
 
     public String getEmail() {
@@ -101,8 +104,7 @@ public class ContactDto {
                 ", houseNumber=" + houseNumber +
                 ", city='" + city + '\'' +
                 ", zipCode='" + zipCode + '\'' +
-                ", mobileNumber='" + mobileNumber + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", phoneNumberList=" + phoneNumberList +
                 ", email='" + email + '\'' +
                 '}';
     }

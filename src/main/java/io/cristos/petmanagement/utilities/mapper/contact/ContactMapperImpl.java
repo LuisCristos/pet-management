@@ -17,12 +17,14 @@ public class ContactMapperImpl implements ContactMapper {
 
         contactDto.setId(contact.getId());
         contactDto.setEmail(contact.getEmail());
-        contactDto.setMobileNumber(contact.getMobileNumber());
-        contactDto.setPhoneNumber(contact.getPhoneNumber());
         contactDto.setStreet(contact.getStreet());
         contactDto.setHouseNumber(contact.getHouseNumber());
         contactDto.setCity(contact.getCity());
         contactDto.setZipCode(contact.getZipCode());
+
+        for (String phoneNumber : contact.getPhoneNumberList()) {
+            contactDto.addPhoneNumber(phoneNumber);
+        }
 
         return contactDto;
     }
@@ -34,12 +36,14 @@ public class ContactMapperImpl implements ContactMapper {
 
         contact.setId(contactDto.getId());
         contact.setEmail(contactDto.getEmail());
-        contact.setMobileNumber(contactDto.getMobileNumber());
-        contact.setPhoneNumber(contactDto.getPhoneNumber());
         contact.setStreet(contactDto.getStreet());
         contact.setHouseNumber(contactDto.getHouseNumber());
         contact.setCity(contactDto.getCity());
         contact.setZipCode(contactDto.getZipCode());
+
+        for (String phoneNumberInList : contactDto.getPhoneNumberList()) {
+            contact.addPhoneNumber(phoneNumberInList);
+        }
 
         return contact;
     }

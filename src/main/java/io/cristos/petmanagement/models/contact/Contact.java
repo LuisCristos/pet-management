@@ -1,11 +1,11 @@
 package io.cristos.petmanagement.models.contact;
 
 import io.cristos.petmanagement.models.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Contact")
 @Table(name = "contact")
@@ -42,20 +42,14 @@ public class Contact extends BaseEntity {
     )
     @NotBlank(message = "Zipcode is required.")
     private String zipCode;
-    @Column(
-            name = "mobile_number",
-            nullable = false,
-            columnDefinition = "VARCHAR(255)"
-    )
-    @NotBlank(message = "Mobile phone number is required.")
-    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
-            message = "Please enter a Mobile number in this format: +4916012345678")
-    private String mobileNumber;
-    @Column(
-            name = "phone_number",
-            columnDefinition = "VARCHAR(255)"
-    )
-    private String phoneNumber;
+    @ElementCollection
+    @CollectionTable(name = "contact_phone_numbers",
+            joinColumns = @JoinColumn(name = "contact_id"))
+    @Column(nullable = false,
+            columnDefinition = "VARCHAR(15)",
+            name = "phone_number")
+    @NotEmpty(message = "At least one phone number is required")
+    private List<@NotBlank(message = "Phone number is required.") String> phoneNumberList = new ArrayList<>();
     @Column(
             name = "email",
             nullable = false,
@@ -67,14 +61,11 @@ public class Contact extends BaseEntity {
             flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
-    public Contact(String street, int houseNumber, String city, String zipCode,
-                   String mobileNumber, String phoneNumber, String email) {
+    public Contact(String street, int houseNumber, String city, String zipCode, String email) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.city = city;
         this.zipCode = zipCode;
-        this.mobileNumber = mobileNumber;
-        this.phoneNumber = phoneNumber;
         this.email = email;
     }
 
@@ -113,20 +104,16 @@ public class Contact extends BaseEntity {
         this.zipCode = zipCode;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public void addPhoneNumber(String phoneNumber) {
+        this.phoneNumberList.add(phoneNumber);
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void removePhoneNumber(String phoneNumber) {
+        this.phoneNumberList.remove(phoneNumber);
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public List<String> getPhoneNumberList() {
+        return phoneNumberList;
     }
 
     public String getEmail() {
@@ -135,5 +122,17 @@ public class Contact extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", phoneNumberList=" + phoneNumberList +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
