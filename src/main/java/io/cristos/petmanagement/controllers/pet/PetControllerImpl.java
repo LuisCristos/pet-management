@@ -75,9 +75,9 @@ public class PetControllerImpl implements PetController {
 
     @Override
     @PutMapping("/{petId}")
-    public ResponseEntity<PetDto> updatePet(@PathVariable Long petId, @Valid @RequestBody PetDto petDto) {
+    public ResponseEntity<PetDto> updatePetById(@PathVariable Long petId, @Valid @RequestBody PetDto petDto) {
 
-        petService.updatePet(petId, petDto);
+        petService.updatePetById(petId, petDto);
 
         logger.info("Updated Pet with petId: " + petId);
 

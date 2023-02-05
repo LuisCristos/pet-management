@@ -15,6 +15,6 @@ public interface PetController {
 
     ResponseEntity<PetDto> deletePetById(Long petId);
 
-    ResponseEntity<PetDto> updatePet(Long petId, PetDto petDto);
+    ResponseEntity<PetDto> updatePetById(Long petId, PetDto petDto);
 
 }
