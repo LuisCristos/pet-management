@@ -4,6 +4,8 @@ import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.services.pet.PetService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,9 @@ public class PetControllerImpl implements PetController {
 
     @Override
     @GetMapping("/{petId}")
-    public ResponseEntity<PetDto> findPetById(@PathVariable Long petId) {
+    public ResponseEntity<PetDto> findPetById(@PathVariable(name = "petId")
+                                              @NotNull
+                                              @Min(1) Long petId) {
 
         logger.info("Find Pet with petId: " + petId);
 
@@ -64,7 +68,9 @@ public class PetControllerImpl implements PetController {
 
     @Override
     @DeleteMapping("/{petId}")
-    public ResponseEntity<PetDto> deletePetById(@PathVariable Long petId) {
+    public ResponseEntity<PetDto> deletePetById(@PathVariable(name = "petId")
+                                                @NotNull
+                                                @Min(1) Long petId) {
 
         petService.deletePetById(petId);
 
@@ -75,7 +81,11 @@ public class PetControllerImpl implements PetController {
 
     @Override
     @PutMapping("/{petId}")
-    public ResponseEntity<PetDto> updatePetById(@PathVariable Long petId, @Valid @RequestBody PetDto petDto) {
+    public ResponseEntity<PetDto> updatePetById(@PathVariable(name = "petId")
+                                                @NotNull
+                                                @Min(1) Long petId,
+                                                @Valid
+                                                @RequestBody PetDto petDto) {
 
         petService.updatePetById(petId, petDto);
 
