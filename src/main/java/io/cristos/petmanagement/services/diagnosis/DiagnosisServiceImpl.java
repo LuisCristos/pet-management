@@ -85,11 +85,11 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public void deleteDiagnosisFromPet(Long petId, Long diagnosisId) {
 
+        final String action = "deleted";
         final String methodName = "deleteDiagnosisFromPet()";
-        final String deleteOrUpdate = "deleted";
         checkIfPetExists(petId, methodName);
 
-        checkIfDiagnosisExists(diagnosisId, methodName, deleteOrUpdate);
+        checkIfDiagnosisExists(diagnosisId, methodName, action);
 
         diagnosisRepository.deleteById(diagnosisId);
     }
@@ -97,11 +97,11 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public Diagnosis updateDiagnosisFromPet(Long petId, Long diagnosisId, DiagnosisDto diagnosisDto) {
 
+        final String action = "updated";
         final String methodName = "saveDiagnosisToPet()";
-        final String deleteOrUpdate = "updated";
         Pet pet = getPetToSaveOrUpdateDiagnosis(petId, methodName);
 
-        checkIfDiagnosisExists(diagnosisId, methodName, deleteOrUpdate);
+        checkIfDiagnosisExists(diagnosisId, methodName, action);
 
         Diagnosis diagnosis = diagnosisMapper.diagnosisDtoToDiagnosis(diagnosisDto);
 
@@ -111,16 +111,16 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         return diagnosisRepository.save(diagnosis);
     }
 
-    private void checkIfDiagnosisExists(Long diagnosisId, String methodName, String deleteOrUpdate) {
+    private void checkIfDiagnosisExists(Long diagnosisId, String methodName, String action) {
 
         boolean exists = diagnosisRepository.existsById(diagnosisId);
 
         if (!exists) {
             logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist.",
-                    new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist."));
+                    "" + methodName + ".", "Diagnosis with id: " + diagnosisId + " cannot be " + action + " because it does not exist.",
+                    new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + action + " because it does not exist."));
 
-            throw new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + deleteOrUpdate + " because it does not exist.");
+            throw new NotFoundException("Diagnosis with id: " + diagnosisId + " cannot be " + action + " because it does not exist.");
         }
     }
 

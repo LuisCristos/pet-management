@@ -65,9 +65,9 @@ public class PetServiceImpl implements PetService {
     @Override
     public void deletePetById(Long petId) {
 
-        final String deleted = "deleted";
+        final String action = "deleted";
         final String methodName = "deletePetById()";
-        checkIfPetExistsById(petId, methodName, deleted);
+        checkIfPetExistsById(petId, methodName, action);
 
         petRepository.deleteById(petId);
     }
@@ -75,24 +75,24 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet updatePetById(Long petId, PetDto petDto) {
 
-        final String updated = "updated";
+        final String action = "updated";
         final String methodName = "updatePetById()";
-        checkIfPetExistsById(petId, methodName, updated);
+        checkIfPetExistsById(petId, methodName, action);
 
         return petRepository.save(petMapper.petDtoToPet(petDto));
     }
 
-    private void checkIfPetExistsById(Long petId, String methodName, String value) {
+    private void checkIfPetExistsById(Long petId, String methodName, String action) {
 
         boolean exists = petRepository.existsById(petId);
 
         if (!exists) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Pet with id: " + petId + " cannot be " + value + " because it does not exist.",
-                    new NotFoundException("Pet ID: " + petId + " cannot be " + value + " because it does not exist."));
+                    "" + methodName + ".", "Pet with id: " + petId + " cannot be " + action + " because it does not exist.",
+                    new NotFoundException("Pet ID: " + petId + " cannot be " + action + " because it does not exist."));
 
-            throw new NotFoundException("Pet ID: " + petId + " cannot be " + value + " because it does not exist.");
+            throw new NotFoundException("Pet ID: " + petId + " cannot be " + action + " because it does not exist.");
         }
 
     }

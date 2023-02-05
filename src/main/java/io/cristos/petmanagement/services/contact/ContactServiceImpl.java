@@ -66,9 +66,9 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void deleteContactById(Long contactId) {
 
-        final String delete = "deleted";
+        final String action = "deleted";
         final String methodName = "deleteContactById()";
-        checkIfContactExistsById(contactId, methodName, delete);
+        checkIfContactExistsById(contactId, methodName, action);
 
         contactRepository.deleteById(contactId);
     }
@@ -76,24 +76,24 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact updateContactById(Long contactId, ContactDto contactDto) {
 
-        final String update = "updated";
+        final String action = "updated";
         final String methodName = "updateContactById()";
-        checkIfContactExistsById(contactId, methodName, update);
+        checkIfContactExistsById(contactId, methodName, action);
 
         return contactRepository.save(contactMapper.contactDtoToContact(contactDto));
     }
 
-    private void checkIfContactExistsById(Long contactId, String methodName, String value) {
+    private void checkIfContactExistsById(Long contactId, String methodName, String action) {
 
         boolean exists = contactRepository.existsById(contactId);
 
         if (!exists) {
 
             logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Contact with id: " + contactId + " cannot be " + value + " because it does not exist.",
-                    new NotFoundException("Contact with id: " + contactId + " cannot be " + value + " because it does not exist."));
+                    "" + methodName + ".", "Contact with id: " + contactId + " cannot be " + action + " because it does not exist.",
+                    new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist."));
 
-            throw new NotFoundException("Contact with id: " + contactId + " cannot be " + value + " because it does not exist.");
+            throw new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist.");
         }
     }
 }
