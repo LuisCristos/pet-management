@@ -15,5 +15,5 @@ public interface ContactService {
 
     void deleteContactById(Long contactId);
 
-    Contact updateContact(Long contactId, ContactDto contactDto);
+    Contact updateContactById(Long contactId, ContactDto contactDto);
 }

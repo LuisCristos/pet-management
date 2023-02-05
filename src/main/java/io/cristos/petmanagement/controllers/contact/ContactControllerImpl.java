@@ -44,7 +44,7 @@ public class ContactControllerImpl implements ContactController {
                 .buildAndExpand(contact.getId())
                 .toUri();
 
-        logger.info(contactDto + " saved in to Database.");
+        logger.info(contactDto + " Contact has been saved to the database.");
 
         return ResponseEntity.created(location).build();
     }
@@ -53,7 +53,7 @@ public class ContactControllerImpl implements ContactController {
     @GetMapping
     public ResponseEntity<List<ContactDto>> getAllContacts() {
 
-        logger.info("getAllContacts(). Retrieved all contacts.");
+        logger.info("getAllContacts(). Contacts were retrieved from the database.");
 
         return ResponseEntity.ok(contactService.getAllContacts());
     }
@@ -77,7 +77,7 @@ public class ContactControllerImpl implements ContactController {
 
         contactService.deleteContactById(contactId);
 
-        logger.info("Deleted Contact with contactId: " + contactId);
+        logger.info("Deleted contact with contactId: " + contactId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -89,9 +89,9 @@ public class ContactControllerImpl implements ContactController {
                                                         @Min(1) Long contactId,
                                                         @Valid
                                                         @RequestBody ContactDto contactDto) {
-        contactService.updateContact(contactId, contactDto);
+        contactService.updateContactById(contactId, contactDto);
 
-        logger.info("Updated Contact with contactId: " + contactId);
+        logger.info("Updated contact with contactId: " + contactId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
