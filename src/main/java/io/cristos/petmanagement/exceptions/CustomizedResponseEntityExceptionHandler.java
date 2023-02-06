@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -49,6 +51,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), errorsList));
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -60,6 +63,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) throws Exception {
 
@@ -70,6 +74,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
 
@@ -80,6 +85,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
 
@@ -96,6 +102,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), errorsList));
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -107,6 +114,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return buildResponseEntity(new ApiError(LocalDateTime.now(), httpStatus, ex.getLocalizedMessage(), error));
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({UnexpectedTypeException.class})
     public ResponseEntity<Object> handleUnexpectedTypeException(
             UnexpectedTypeException ex, WebRequest request) {
