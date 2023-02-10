@@ -13,6 +13,14 @@ import java.util.List;
 
 public interface ContactController {
 
+    ResponseEntity<ContactDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                           @Min(1)
+                                                           @NotNull
+                                                           Long veterinarianId,
+                                                           @Valid
+                                                           @RequestBody ContactDto contactDto);
+
+
     ResponseEntity<ContactDto> saveContact(@Valid
                                            @RequestBody ContactDto contactDto);
 

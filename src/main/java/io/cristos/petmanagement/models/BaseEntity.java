@@ -1,37 +1,72 @@
 package io.cristos.petmanagement.models;
 
-import jakarta.persistence.*;
+import io.cristos.petmanagement.models.enums.Gender;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
-import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity extends BaseIdCreationDate {
 
-    @Id
     @Column(
-            name = "id",
+            name = "date_of_birth",
             nullable = false,
-            updatable = false,
-            unique = true
+            columnDefinition = "DATE"
     )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_generator"
+    @NotNull(message = "Date of birth is required.")
+    @Past(message = "The date of birth must be in the past.")
+    private LocalDate dateOfBirth;
+    @Transient
+    private int age;
+    @Column(
+            name = "gender",
+            nullable = false,
+            columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
     )
-    private Long id;
+    private Gender gender;
 
-    public BaseEntity(Long id) {
-        this.id = id;
+    public BaseEntity(Long id, LocalDate dateOfCreation, LocalDate dateOfBirth, int age, Gender gender) {
+        super(id, dateOfCreation);
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public BaseEntity(LocalDate dateOfBirth, int age, Gender gender) {
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
+        this.gender = gender;
     }
 
     public BaseEntity() {
     }
 
-    public Long getId() {
-        return id;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public int getAge() {
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

@@ -1,23 +1,20 @@
 package io.cristos.petmanagement.models.pet;
 
-import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
+import io.cristos.petmanagement.models.BaseEntity;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.models.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Pet")
 @Table(name = "pet")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_pet", allocationSize = 10)
-public class Pet extends BaseIdDateOfCreationEntity {
+public class Pet extends BaseEntity {
 
     @Column(
             name = "name",
@@ -27,25 +24,6 @@ public class Pet extends BaseIdDateOfCreationEntity {
     @NotBlank(message = "Name is required.")
     @Size(min = 2, max = 255, message = "Name must be between 2 - 255 characters.")
     private String name;
-    @Column(
-            name = "gender",
-            nullable = false,
-            columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
-    )
-    @NotNull(message = "Gender is required.")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    @Column(
-            name = "date_of_birth",
-            nullable = false,
-            columnDefinition = "DATE"
-    )
-    @NotNull(message = "Date of birth is required.")
-    @Past(message = "Date of Birth must be in the Past.")
-    private LocalDate dateOfBirth;
-    @Transient
-    private int age;
-
     @OneToMany(
             mappedBy = "pet",
             cascade = CascadeType.ALL,
@@ -54,10 +32,15 @@ public class Pet extends BaseIdDateOfCreationEntity {
     )
     private List<Diagnosis> diagnosisList = new ArrayList<>();
 
-    public Pet(String name, Gender gender, LocalDate dateOfBirth) {
+    public Pet(LocalDate dateOfBirth, int age, Gender gender, String name, List<Diagnosis> diagnosisList) {
+        super(dateOfBirth, age, gender);
         this.name = name;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
+        this.diagnosisList = diagnosisList;
+    }
+
+    public Pet(String name, List<Diagnosis> diagnosisList) {
+        this.name = name;
+        this.diagnosisList = diagnosisList;
     }
 
     public Pet() {
@@ -69,26 +52,6 @@ public class Pet extends BaseIdDateOfCreationEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirt) {
-        this.dateOfBirth = dateOfBirt;
-    }
-
-    public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
     public List<Diagnosis> getDiagnosisList() {
@@ -107,9 +70,6 @@ public class Pet extends BaseIdDateOfCreationEntity {
     public String toString() {
         return "Pet{" +
                 "name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", age=" + age +
                 ", diagnosisList=" + diagnosisList +
                 '}';
     }

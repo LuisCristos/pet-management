@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.models.contact;
 
-import io.cristos.petmanagement.models.BaseEntity;
+import io.cristos.petmanagement.models.BaseIdCreationDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -10,7 +10,8 @@ import java.util.List;
 @Entity(name = "Contact")
 @Table(name = "contact")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_contact", allocationSize = 10)
-public class Contact extends BaseEntity {
+@AttributeOverride(name = "id", column = @Column(name = "contactId"))
+public class Contact extends BaseIdCreationDate {
 
     @Column(
             name = "street",
@@ -60,6 +61,7 @@ public class Contact extends BaseEntity {
             regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
             flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
+
 
     public Contact(String street, int houseNumber, String city, String zipCode, String email) {
         this.street = street;

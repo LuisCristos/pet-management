@@ -2,14 +2,25 @@ package io.cristos.petmanagement.utilities.mapper.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ContactMapperImpl implements ContactMapper {
+
+    @Override
+    public ContactDto getContactFromVeterinarian(Optional<Veterinarian> optionalVeterinarian) {
+
+
+        return null;
+    }
+
+
     @Override
     public ContactDto contactToContactDto(Contact contact) {
 

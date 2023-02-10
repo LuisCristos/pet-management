@@ -31,6 +31,20 @@ public class ContactControllerImpl implements ContactController {
         this.contactService = contactService;
     }
 
+
+    @Override
+    public ResponseEntity<ContactDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long veterinarianId,
+                                                                  @Valid
+                                                                  @RequestBody ContactDto contactDto) {
+
+        logger.info("Find Contact by veterinarianId " + veterinarianId);
+
+        return null;
+    }
+
     @Override
     @PostMapping
     public ResponseEntity<ContactDto> saveContact(@Valid

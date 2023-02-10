@@ -3,7 +3,9 @@ package io.cristos.petmanagement.services.contact;
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
+import io.cristos.petmanagement.repositories.veterinarian.VeterinarianRepository;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +22,47 @@ public class ContactServiceImpl implements ContactService {
 
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
+    private final VeterinarianRepository veterinarianRepository;
     private final ContactMapper contactMapper;
 
     @Autowired
-    public ContactServiceImpl(ContactRepository contactRepository, ContactMapper contactMapper) {
+    public ContactServiceImpl(ContactRepository contactRepository, VeterinarianRepository veterinarianRepository,
+                              ContactMapper contactMapper) {
         this.contactRepository = contactRepository;
+        this.veterinarianRepository = veterinarianRepository;
         this.contactMapper = contactMapper;
+    }
+
+    @Override
+    public Contact findContactByVeterinarianId(Long veterinarianId, ContactDto contactDto) {
+
+        final String action = "found";
+        final String methodName = "findContactByVeterinarianId";
+
+        Optional<Veterinarian> optionalVeterinarian = Optional.of(veterinarianRepository.findById(veterinarianId))
+                .orElseThrow(() -> {
+                    logger.warn(
+                            "{}, {}! An exception occurred!",
+                            methodName + ".", " Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
+                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
+
+                    return new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
+                });
+
+
+//        boolean exists = veterinarianRepository.existsById(veterinarianId);
+//
+//        if (!exists) {
+//            logger.warn(
+//                    "{}, {}! An exception occurred!",
+//                    methodName + ".", " Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
+//                    new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
+//
+//            throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
+//        }
+
+
+        return new Contact();
     }
 
     @Override

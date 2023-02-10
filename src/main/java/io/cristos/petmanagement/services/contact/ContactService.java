@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface ContactService {
 
+
+    Contact findContactByVeterinarianId(Long veterinarianId, ContactDto contactDto);
+
+
     Contact saveContact(ContactDto contactDto);
 
     List<ContactDto> getAllContacts();

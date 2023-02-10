@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.models.diagnosis;
 
-import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
+import io.cristos.petmanagement.models.BaseEntity;
 import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity(name = "Diagnosis")
 @Table(name = "diagnosis")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
-public class Diagnosis extends BaseIdDateOfCreationEntity {
+public class Diagnosis extends BaseEntity {
 
     @Column(
             name = "last_update",

@@ -1,19 +1,16 @@
 package io.cristos.petmanagement.models.person;
 
-import io.cristos.petmanagement.models.BaseIdDateOfCreationEntity;
+import io.cristos.petmanagement.models.BaseEntity;
+import io.cristos.petmanagement.models.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 @MappedSuperclass
-public abstract class Person extends BaseIdDateOfCreationEntity {
+public abstract class Person extends BaseEntity {
 
     @Column(
             name = "first_name",
@@ -31,21 +28,11 @@ public abstract class Person extends BaseIdDateOfCreationEntity {
     @NotBlank(message = "Last name is required.")
     @Size(min = 2, max = 255, message = "Last name must be between 2 - 255 characters.")
     private String lastName;
-    @Column(
-            name = "date_of_birth",
-            nullable = false,
-            columnDefinition = "DATE"
-    )
-    @NotNull(message = "Date of birth is required.")
-    @Past(message = "The date of birth must be in the past.")
-    private LocalDate dateOfBirth;
-    @Transient
-    private int age;
 
-    public Person(String firstName, String lastName, LocalDate dateOfBirth) {
+    public Person(LocalDate dateOfBirth, int age, Gender gender, String firstName, String lastName) {
+        super(dateOfBirth, age, gender);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
     }
 
     public Person() {
@@ -67,19 +54,11 @@ public abstract class Person extends BaseIdDateOfCreationEntity {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public int getAge() {
-        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
