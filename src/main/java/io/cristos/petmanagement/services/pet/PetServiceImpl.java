@@ -48,7 +48,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public PetDto findPetById(Long id) throws NotFoundException {
+    public PetDto findPetById(Long id) {
 
         Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(id)
                 .orElseThrow(() -> {
@@ -94,6 +94,5 @@ public class PetServiceImpl implements PetService {
 
             throw new NotFoundException("Pet ID: " + petId + " cannot be " + action + " because it does not exist.");
         }
-
     }
 }
