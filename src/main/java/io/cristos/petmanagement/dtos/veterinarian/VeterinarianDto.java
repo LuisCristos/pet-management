@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Component
 public class VeterinarianDto implements Serializable {
 
-    private Long id;
+    private Long veterinarianId;
 
     @NotBlank(message = "First name is required.")
     @Size(min = 2, max = 255, message = "First name must be between 2 - 255 characters.")
@@ -31,6 +31,8 @@ public class VeterinarianDto implements Serializable {
     @NotBlank(message = "Speciality is required.")
     @Size(min = 2, max = 255, message = "Speciality must be between 2 - 255 characters.")
     private String speciality;
+    @NotNull(message = "Gender is required.")
+    private String gender;
 
     @Transient
     private int age;
@@ -38,12 +40,12 @@ public class VeterinarianDto implements Serializable {
     public VeterinarianDto() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getVeterinarianId() {
+        return veterinarianId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVeterinarianId(Long veterinarianId) {
+        this.veterinarianId = veterinarianId;
     }
 
     public String getFirstName() {
@@ -94,15 +96,24 @@ public class VeterinarianDto implements Serializable {
         this.age = age;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "VeterinarianDto{" +
-                "id=" + id +
+                "veterinarianId=" + veterinarianId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", dateOfCreation=" + dateOfCreation +
                 ", speciality='" + speciality + '\'' +
+                ", gender=" + gender +
                 ", age=" + age +
                 '}';
     }

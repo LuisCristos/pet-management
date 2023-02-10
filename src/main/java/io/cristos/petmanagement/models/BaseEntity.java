@@ -1,9 +1,7 @@
 package io.cristos.petmanagement.models;
 
 import io.cristos.petmanagement.models.enums.Gender;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
@@ -28,6 +26,8 @@ public abstract class BaseEntity extends BaseIdCreationDate {
             nullable = false,
             columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
     )
+    @NotNull(message = "Gender is required.")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     public BaseEntity(Long id, LocalDate dateOfCreation, LocalDate dateOfBirth, int age, Gender gender) {

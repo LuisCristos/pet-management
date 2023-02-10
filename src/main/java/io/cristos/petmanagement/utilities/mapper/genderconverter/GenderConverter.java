@@ -1,4 +1,4 @@
-package io.cristos.petmanagement.utilities.mapper.pet;
+package io.cristos.petmanagement.utilities.mapper.genderconverter;
 
 import io.cristos.petmanagement.models.enums.Gender;
 import jakarta.persistence.AttributeConverter;

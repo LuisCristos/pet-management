@@ -5,6 +5,7 @@ import io.cristos.petmanagement.dtos.pet.PetDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
+import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

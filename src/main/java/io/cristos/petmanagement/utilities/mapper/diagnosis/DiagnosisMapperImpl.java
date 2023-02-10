@@ -2,7 +2,7 @@ package io.cristos.petmanagement.utilities.mapper.diagnosis;
 
 import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
-import io.cristos.petmanagement.utilities.mapper.pet.GenderConverter;
+import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
