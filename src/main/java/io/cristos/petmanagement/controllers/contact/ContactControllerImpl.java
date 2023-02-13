@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
-@RequestMapping("/v1/contacts")
+@RequestMapping("/v1")
 @Validated
 public class ContactControllerImpl implements ContactController {
 
@@ -33,80 +32,79 @@ public class ContactControllerImpl implements ContactController {
 
 
     @Override
+    @GetMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
     public ResponseEntity<ContactDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
                                                                   @Min(1)
                                                                   @NotNull
                                                                   Long veterinarianId,
-                                                                  @Valid
-                                                                  @RequestBody ContactDto contactDto) {
+                                                                  @PathVariable(name = "contactId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long contactId) {
 
-        logger.info("Find Contact by veterinarianId " + veterinarianId);
+        logger.info("Find contact for veterinarian with id: " + veterinarianId);
 
-        return null;
+        return ResponseEntity.ok(contactService.findContactByVeterinarianId(veterinarianId, contactId));
     }
 
     @Override
-    @PostMapping
-    public ResponseEntity<ContactDto> saveContact(@Valid
-                                                  @RequestBody ContactDto contactDto) {
+    @PostMapping("/veterinarians/{veterinarianId}/contacts")
+    public ResponseEntity<ContactDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
+                                                                    @Min(1)
+                                                                    @NotNull
+                                                                    Long veterinarianId,
+                                                                    @Valid
+                                                                    @RequestBody ContactDto contactDto) {
 
-        Contact contact = contactService.saveContact(contactDto);
+        Contact contact = contactService.saveContactToVeterinarianByID(veterinarianId, contactDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/contactId")
+                .path("/{contactId}")
                 .buildAndExpand(contact.getId())
                 .toUri();
 
-        logger.info(contactDto + " Contact has been saved to the database.");
+        logger.info("Saved contact for veterinarian with id " + veterinarianId + " contact " + contactDto);
 
         return ResponseEntity.created(location).build();
     }
 
     @Override
-    @GetMapping
-    public ResponseEntity<List<ContactDto>> getAllContacts() {
+    @PutMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
+    public ResponseEntity<ContactDto> updateContactToVeterinarianById(@PathVariable(name = "veterinarianId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long veterinarianId,
+                                                                      @Valid
+                                                                      @RequestBody ContactDto contactDto,
+                                                                      @PathVariable(name = "contactId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long contactId) {
 
-        logger.info("getAllContacts(). Contacts were retrieved from the database.");
+        contactService.updateContactToVeterinarianById(veterinarianId, contactDto, contactId);
 
-        return ResponseEntity.ok(contactService.getAllContacts());
-    }
-
-    @Override
-    @GetMapping("/{contactId}")
-    public ResponseEntity<ContactDto> findContactById(@PathVariable(name = "contactId")
-                                                      @NotNull
-                                                      @Min(1) Long contactId) {
-
-        logger.info("Find contact with id: " + contactId);
-
-        return ResponseEntity.ok(contactService.findContactById(contactId));
-    }
-
-    @Override
-    @DeleteMapping("/{contactId}")
-    public ResponseEntity<ContactDto> deleteContactById(@PathVariable(name = "contactId")
-                                                        @NotNull
-                                                        @Min(1) Long contactId) {
-
-        contactService.deleteContactById(contactId);
-
-        logger.info("Deleted contact with contactId: " + contactId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @Override
-    @PutMapping("/{contactId}")
-    public ResponseEntity<ContactDto> updateContactById(@PathVariable(name = "contactId")
-                                                        @NotNull
-                                                        @Min(1) Long contactId,
-                                                        @Valid
-                                                        @RequestBody ContactDto contactDto) {
-        contactService.updateContactById(contactId, contactDto);
-
-        logger.info("Updated contact with contactId: " + contactId);
+        logger.info("Updated contact with contactId: " + contactId + " for veterinarian with id: " + veterinarianId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @DeleteMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
+    public ResponseEntity<ContactDto> deleteContactToVeterinarianById(@PathVariable(name = "veterinarianId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long veterinarianId,
+                                                                      @PathVariable(name = "contactId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long contactId) {
+
+
+        contactService.deleteContactToVeterinarianById(veterinarianId, contactId);
+
+        logger.info("Deleted contact with contactId: " + contactId + " for veterinarian with id: " + veterinarianId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

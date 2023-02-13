@@ -2,6 +2,7 @@ package io.cristos.petmanagement.utilities.mapper.veterinarian;
 
 import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
+import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,14 @@ import java.util.List;
 public class VeterinarianMapperImpl implements VeterinarianMapper {
 
     private final GenderConverter genderConverter;
+    private final ContactMapper contactMapper;
 
     @Autowired
-    public VeterinarianMapperImpl(GenderConverter genderConverter) {
+    public VeterinarianMapperImpl(GenderConverter genderConverter, ContactMapper contactMapper) {
         this.genderConverter = genderConverter;
+        this.contactMapper = contactMapper;
     }
+
 
     @Override
     public VeterinarianDto veterinarianToVeterinarianDto(Veterinarian veterinarian) {
@@ -33,6 +37,10 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         veterinarianDto.setDateOfCreation(veterinarian.getDateOfCreation());
         veterinarianDto.setAge(veterinarian.getAge());
         veterinarianDto.setGender(genderConverter.convertToDatabaseColumn(veterinarian.getGender()));
+
+        if (veterinarian.getContact() != null) {
+            veterinarianDto.setContactDto(contactMapper.contactToContactDto(veterinarian.getContact()));
+        }
 
         return veterinarianDto;
     }
@@ -50,6 +58,10 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         veterinarian.setDateOfCreation(veterinarianDto.getDateOfCreation());
         veterinarian.setAge(veterinarianDto.getAge());
         veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianDto.getGender()));
+
+        if (veterinarianDto.getContactDto() != null) {
+            veterinarian.setContact(contactMapper.contactDtoToContact(veterinarianDto.getContactDto()));
+        }
 
         return veterinarian;
     }

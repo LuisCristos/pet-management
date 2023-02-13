@@ -9,34 +9,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
 public interface ContactController {
 
     ResponseEntity<ContactDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
                                                            @Min(1)
                                                            @NotNull
                                                            Long veterinarianId,
-                                                           @Valid
-                                                           @RequestBody ContactDto contactDto);
+                                                           @PathVariable(name = "contactId")
+                                                           @Min(1)
+                                                           @NotNull
+                                                           Long contactId);
 
+    ResponseEntity<ContactDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
+                                                             @Min(1)
+                                                             @NotNull
+                                                             Long veterinarianId,
+                                                             @Valid
+                                                             @RequestBody ContactDto contactDto);
 
-    ResponseEntity<ContactDto> saveContact(@Valid
-                                           @RequestBody ContactDto contactDto);
+    ResponseEntity<ContactDto> updateContactToVeterinarianById(@PathVariable(name = "veterinarianId")
+                                                               @Min(1)
+                                                               @NotNull
+                                                               Long veterinarianId,
+                                                               @Valid
+                                                               @RequestBody ContactDto contactDto,
+                                                               @PathVariable(name = "contactId")
+                                                               @Min(1)
+                                                               @NotNull
+                                                               Long contactId);
 
-    ResponseEntity<List<ContactDto>> getAllContacts();
-
-    ResponseEntity<ContactDto> findContactById(@PathVariable(name = "contactId")
-                                               @NotNull
-                                               @Min(1) Long contactId);
-
-    ResponseEntity<ContactDto> deleteContactById(@PathVariable(name = "contactId")
-                                                 @NotNull
-                                                 @Min(1) Long contactId);
-
-    ResponseEntity<ContactDto> updateContactById(@PathVariable(name = "contactId")
-                                                 @NotNull
-                                                 @Min(1) Long contactId,
-                                                 @Valid
-                                                 @RequestBody ContactDto contactDto);
+    ResponseEntity<ContactDto> deleteContactToVeterinarianById(@PathVariable(name = "veterinarianId")
+                                                               @Min(1)
+                                                               @NotNull
+                                                               Long veterinarianId,
+                                                               @PathVariable(name = "contactId")
+                                                               @Min(1)
+                                                               @NotNull
+                                                               Long contactId);
 }

@@ -24,7 +24,7 @@ public class Veterinarian extends Person {
     @Size(min = 2, max = 255, message = "Speciality must be between 2 - 255 characters.")
     private String speciality;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contactId", referencedColumnName = "contactId")
     private Contact contact;
 

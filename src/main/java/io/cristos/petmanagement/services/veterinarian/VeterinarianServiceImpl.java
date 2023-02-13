@@ -49,7 +49,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public VeterinarianDto findVeterinarianById(Long id) throws NotFoundException {
+    public VeterinarianDto findVeterinarianById(Long id) {
 
         Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(id)
                 .orElseThrow(() -> {
@@ -64,7 +64,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public void deleteVeterinarianById(Long id) throws NotFoundException {
+    public void deleteVeterinarianById(Long id) {
 
         boolean exists = veterinarianRepository.existsById(id);
 
@@ -82,7 +82,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public Veterinarian updateVeterinarian(Long id, VeterinarianDto veterinarianDto) throws NotFoundException {
+    public Veterinarian updateVeterinarian(Long id, VeterinarianDto veterinarianDto) {
 
         boolean exists = veterinarianRepository.existsById(id);
 

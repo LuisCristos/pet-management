@@ -3,21 +3,15 @@ package io.cristos.petmanagement.services.contact;
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.models.contact.Contact;
 
-import java.util.List;
-
 public interface ContactService {
 
 
-    Contact findContactByVeterinarianId(Long veterinarianId, ContactDto contactDto);
+    ContactDto findContactByVeterinarianId(Long veterinarianId, Long contactId);
 
+    Contact saveContactToVeterinarianByID(Long veterinarianId, ContactDto contactDto);
 
-    Contact saveContact(ContactDto contactDto);
+    Contact updateContactToVeterinarianById(Long veterinarianId, ContactDto contactDto, Long contactId);
 
-    List<ContactDto> getAllContacts();
+    void deleteContactToVeterinarianById(Long veterinarianId, Long contactId);
 
-    ContactDto findContactById(Long contactId);
-
-    void deleteContactById(Long contactId);
-
-    Contact updateContactById(Long contactId, ContactDto contactDto);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ContactDto implements Serializable {
 
-    private Long id;
+    private Long contactId;
     @NotBlank(message = "Street is required.")
     @Size(min = 2, max = 255, message = "Street must be between 2 -255 characters.")
     private String street;
@@ -36,12 +36,12 @@ public class ContactDto implements Serializable {
     public ContactDto() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public String getStreet() {
@@ -99,7 +99,7 @@ public class ContactDto implements Serializable {
     @Override
     public String toString() {
         return "ContactDto{" +
-                "id=" + id +
+                "contactId=" + contactId +
                 ", street='" + street + '\'' +
                 ", houseNumber=" + houseNumber +
                 ", city='" + city + '\'' +

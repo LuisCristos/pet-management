@@ -1,136 +1,113 @@
 package io.cristos.petmanagement.services.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
+import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
-import io.cristos.petmanagement.repositories.veterinarian.VeterinarianRepository;
+import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ContactServiceImpl implements ContactService {
 
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
-    private final VeterinarianRepository veterinarianRepository;
+    private final VeterinarianService veterinarianService;
     private final ContactMapper contactMapper;
 
     @Autowired
-    public ContactServiceImpl(ContactRepository contactRepository, VeterinarianRepository veterinarianRepository,
+    public ContactServiceImpl(ContactRepository contactRepository, VeterinarianService veterinarianService,
                               ContactMapper contactMapper) {
         this.contactRepository = contactRepository;
-        this.veterinarianRepository = veterinarianRepository;
+        this.veterinarianService = veterinarianService;
         this.contactMapper = contactMapper;
     }
 
     @Override
-    public Contact findContactByVeterinarianId(Long veterinarianId, ContactDto contactDto) {
+    public ContactDto findContactByVeterinarianId(Long veterinarianId, Long contactId) {
+
+        getVeterinarianById(veterinarianId);
 
         final String action = "found";
-        final String methodName = "findContactByVeterinarianId";
+        Contact contact = returnContactIfExists(contactId, action);
 
-        Optional<Veterinarian> optionalVeterinarian = Optional.of(veterinarianRepository.findById(veterinarianId))
-                .orElseThrow(() -> {
-                    logger.warn(
-                            "{}, {}! An exception occurred!",
-                            methodName + ".", " Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
-                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
-
-                    return new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
-                });
-
-
-//        boolean exists = veterinarianRepository.existsById(veterinarianId);
-//
-//        if (!exists) {
-//            logger.warn(
-//                    "{}, {}! An exception occurred!",
-//                    methodName + ".", " Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
-//                    new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
-//
-//            throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
-//        }
-
-
-        return new Contact();
+        return contactMapper.contactToContactDto(contact);
     }
 
     @Override
-    public Contact saveContact(ContactDto contactDto) {
+    public Contact saveContactToVeterinarianByID(Long veterinarianId, ContactDto contactDto) {
 
-        return contactRepository.save(contactMapper.contactDtoToContact(contactDto));
-    }
+        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
 
-    @Override
-    public List<ContactDto> getAllContacts() {
+        if (Objects.nonNull(veterinarianDto.getContactDto())) {
 
-        Collection<Contact> contactCollection = contactRepository.findAll();
+            logger.warn("{}, {}!",
+                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
 
-        if (contactCollection.isEmpty()) {
-
-            logger.info("getAllContacts(). Retrieved an empty List.");
-            return Collections.emptyList();
+            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
         }
 
-        return contactMapper.contactListToContactDtoList(contactCollection);
+        veterinarianDto.setContactDto(contactDto);
+
+        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
     }
 
-    @Override
-    public ContactDto findContactById(Long contactId) {
-
-        Optional<Contact> optionalContact = Optional.ofNullable(contactRepository.findById(contactId)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}! An exception occurred!",
-                            "findContactById().", "Contact with id: " + contactId + " cannot be found because it does not exist.",
-                            new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist."));
-
-                    return new NotFoundException("Contact with id: " + contactId + " cannot be found because it does not exist.");
-                }));
-
-        return contactMapper.contactToContactDto(optionalContact.get());
-    }
 
     @Override
-    public void deleteContactById(Long contactId) {
+    public Contact updateContactToVeterinarianById(Long veterinarianId, ContactDto contactDto, Long contactId) {
 
-        final String action = "deleted";
-        final String methodName = "deleteContactById()";
-        checkIfContactExistsById(contactId, methodName, action);
-
-        contactRepository.deleteById(contactId);
-    }
-
-    @Override
-    public Contact updateContactById(Long contactId, ContactDto contactDto) {
+        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
 
         final String action = "updated";
-        final String methodName = "updateContactById()";
-        checkIfContactExistsById(contactId, methodName, action);
+        returnContactIfExists(contactId, action);
 
-        return contactRepository.save(contactMapper.contactDtoToContact(contactDto));
+        veterinarianDto.setContactDto(contactDto);
+
+        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
     }
 
-    private void checkIfContactExistsById(Long contactId, String methodName, String action) {
+    @Override
+    public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
 
-        boolean exists = contactRepository.existsById(contactId);
+        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
 
-        if (!exists) {
+        final String action = "deleted";
+        Contact contact = returnContactIfExists(contactId, action);
 
-            logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Contact with id: " + contactId + " cannot be " + action + " because it does not exist.",
-                    new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist."));
+        veterinarianDto.setContactDto(null);
 
-            throw new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist.");
-        }
+        veterinarianService.saveVeterinarian(veterinarianDto);
+
+        contactRepository.delete(contact);
+    }
+
+
+    private VeterinarianDto getVeterinarianById(Long veterinarianId) {
+
+        return veterinarianService.findVeterinarianById(veterinarianId);
+    }
+
+    private Contact returnContactIfExists(Long contactId, String action) {
+
+        Optional<Contact> optionalContact = Optional.of(contactRepository.findById(contactId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Contact with id: " + contactId + " cannot be " + action + " because it does not exist.",
+                            new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist."));
+
+                    return new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist.");
+                }));
+
+        return optionalContact.get();
     }
 }
