@@ -50,7 +50,7 @@ public class VeterinarianControllerImpl implements VeterinarianController {
     @GetMapping
     public ResponseEntity<List<VeterinarianDto>> getAllVeterinarians() {
 
-        logger.info("getAllVeterinarians(). Retrieved all veterinarians.");
+        logger.info("Retrieved all veterinarians.");
 
         return ResponseEntity.ok(veterinarianService.getAllVeterinarians());
     }
@@ -61,7 +61,7 @@ public class VeterinarianControllerImpl implements VeterinarianController {
                                                                 @Positive
                                                                 @NotNull Long veterinarianId) {
 
-        logger.info("Retrieved veterinarian with customerId: " + veterinarianId);
+        logger.info("Retrieved veterinarian with veterinarianId: " + veterinarianId);
 
         return ResponseEntity.ok(veterinarianService.findVeterinarianById(veterinarianId));
     }
@@ -86,7 +86,7 @@ public class VeterinarianControllerImpl implements VeterinarianController {
                                                                   @RequestBody VeterinarianDto veterinarianDto) {
         veterinarianService.updateVeterinarian(veterinarianId, veterinarianDto);
 
-        logger.info("Updated Veterinarian with customerID: " + veterinarianId);
+        logger.info("Updated veterinarian with veterinarianId: " + veterinarianId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

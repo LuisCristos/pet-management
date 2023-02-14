@@ -49,53 +49,47 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public VeterinarianDto findVeterinarianById(Long id) {
+    public VeterinarianDto findVeterinarianById(Long veterinarianId) {
 
-        Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}! An exception occurred!",
-                            "findVeterinarianById().", "Veterinarian with id: " + id + " cannot be found because it does not exist.",
-                            new NotFoundException("Veterinarian with id: " + id + " cannot be found because it does not exist."));
+        final String action = "found";
+        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId, action);
 
-                    throw new NotFoundException("Veterinarian with id: " + id + " cannot be found because it does not exist.");
-                }));
-
-        return veterinarianMapper.veterinarianToVeterinarianDto(optionalVeterinarian.get());
+        return veterinarianMapper.veterinarianToVeterinarianDto(veterinarian);
     }
 
     @Override
-    public void deleteVeterinarianById(Long id) {
+    public void deleteVeterinarianById(Long veterinarianId) {
 
-        boolean exists = veterinarianRepository.existsById(id);
+        final String action = "deleted";
+        returnVeterinarianIfExists(veterinarianId, action);
 
-        if (!exists) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "deleteVeterinarianById().", "Veterinarian with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Veterinarian with id: " + id + " cannot be found because it does not exist."));
-
-            throw new NotFoundException("Veterinarian ID: " + id + " cannot be deleted because it does not exist.");
-        }
-
-        veterinarianRepository.deleteById(id);
-
+        veterinarianRepository.deleteById(veterinarianId);
     }
 
     @Override
-    public Veterinarian updateVeterinarian(Long id, VeterinarianDto veterinarianDto) {
+    public Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianDto veterinarianDto) {
 
-        boolean exists = veterinarianRepository.existsById(id);
-
-        if (!exists) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "updateVeterinarian().", "Veterinarian with id: " + id + " cannot be updated because it does not exist.",
-                    new NotFoundException("Veterinarian with id: " + id + " cannot be updated because it does not exist."));
-
-            throw new NotFoundException("Veterinarian ID: " + id + " cannot be updated because it does not exist.");
-        }
+        final String action = "updated";
+        returnVeterinarianIfExists(veterinarianId, action);
 
         return veterinarianRepository.save(
                 veterinarianMapper.veterinarianDtoToVeterinarian(veterinarianDto));
     }
+
+    @Override
+    public Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action) {
+
+        Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(veterinarianId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
+                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
+
+                    throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
+                }));
+
+        return optionalVeterinarian.get();
+    }
+
+
 }

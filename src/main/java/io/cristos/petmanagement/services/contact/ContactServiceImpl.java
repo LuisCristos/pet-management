@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class ContactServiceImpl implements ContactService {
 
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
@@ -36,7 +35,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactDto findContactByVeterinarianId(Long veterinarianId, Long contactId) {
 
-        getVeterinarianById(veterinarianId);
+        returnVeterinarianDtoIfExists(veterinarianId);
 
         final String action = "found";
         Contact contact = returnContactIfExists(contactId, action);
@@ -45,9 +44,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    @Transactional
     public Contact saveContactToVeterinarianByID(Long veterinarianId, ContactDto contactDto) {
 
-        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
+        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
 
         if (Objects.nonNull(veterinarianDto.getContactDto())) {
 
@@ -64,9 +64,10 @@ public class ContactServiceImpl implements ContactService {
 
 
     @Override
+    @Transactional
     public Contact updateContactToVeterinarianById(Long veterinarianId, ContactDto contactDto, Long contactId) {
 
-        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
+        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
 
         final String action = "updated";
         returnContactIfExists(contactId, action);
@@ -77,9 +78,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    @Transactional
     public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
 
-        VeterinarianDto veterinarianDto = getVeterinarianById(veterinarianId);
+        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
 
         final String action = "deleted";
         Contact contact = returnContactIfExists(contactId, action);
@@ -91,13 +93,13 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.delete(contact);
     }
 
-
-    private VeterinarianDto getVeterinarianById(Long veterinarianId) {
-
+    @Override
+    public VeterinarianDto returnVeterinarianDtoIfExists(Long veterinarianId) {
         return veterinarianService.findVeterinarianById(veterinarianId);
     }
 
-    private Contact returnContactIfExists(Long contactId, String action) {
+    @Override
+    public Contact returnContactIfExists(Long contactId, String action) {
 
         Optional<Contact> optionalContact = Optional.of(contactRepository.findById(contactId)
                 .orElseThrow(() -> {

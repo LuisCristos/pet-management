@@ -16,4 +16,6 @@ public interface VeterinarianService {
     void deleteVeterinarianById(Long id);
 
     Veterinarian updateVeterinarian(Long id, VeterinarianDto veterinarianDto);
+
+    Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action);
 }
