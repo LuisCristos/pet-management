@@ -11,11 +11,11 @@ public interface VeterinarianService {
 
     List<VeterinarianDto> getAllVeterinarians();
 
-    VeterinarianDto findVeterinarianById(Long id);
+    VeterinarianDto findVeterinarianById(Long veterinarianId);
 
-    void deleteVeterinarianById(Long id);
+    void deleteVeterinarianById(Long veterinarianId);
 
-    Veterinarian updateVeterinarian(Long id, VeterinarianDto veterinarianDto);
+    Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianDto veterinarianDto);
 
     Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action);
 }

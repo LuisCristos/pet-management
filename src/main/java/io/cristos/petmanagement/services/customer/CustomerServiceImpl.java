@@ -48,52 +48,44 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto findCustomerById(Long id) {
+    public CustomerDto findCustomerById(Long customerId) {
 
-        Optional<Customer> optionalPerson = Optional.ofNullable(customerRepository.findById(id)
+        final String action = "found";
+        Customer customer = returnCustomerIfExists(customerId, action);
+
+        return customerMapper.customerToCustomerDto(customer);
+    }
+
+    @Override
+    public void deleteCustomerById(Long customerId) {
+
+        final String action = "found";
+        returnCustomerIfExists(customerId, action);
+
+        customerRepository.deleteById(customerId);
+    }
+
+    @Override
+    public Customer updateCustomer(Long customerId, CustomerDto customerDto) {
+
+        final String action = "found";
+        returnCustomerIfExists(customerId, action);
+
+        return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
+    }
+
+    @Override
+    public Customer returnCustomerIfExists(Long customerId, String action) {
+
+        Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
-                            "findCustomerById().", "Customer with id: " + id + " cannot be found because it does not exist.",
-                            new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist."));
+                            "findCustomerById().", "Customer with id: " + customerId + " cannot be " + action + " because it does not exist.",
+                            new NotFoundException("Customer with id: " + customerId + " cannot be " + action + " because it does not exist."));
 
-                    return new NotFoundException("Customer with id: " + id + " cannot be found because it does not exist.");
+                    return new NotFoundException("Customer with id: " + customerId + " cannot be " + action + " because it does not exist.");
                 }));
 
-        return customerMapper.customerToCustomerDto(optionalPerson.get());
-    }
-
-    @Override
-    public void deleteCustomerById(Long id) {
-
-        boolean exists = customerRepository.existsById(id);
-
-        if (!exists) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "deleteCustomerById().", "Customer with id: " + id + " cannot be deleted because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " cannot be deleted because it does not exist."));
-
-            throw new NotFoundException("Customer with id: " + id + " cannot be deleted because it does not exist.");
-        }
-
-        customerRepository.deleteById(id);
-    }
-
-    @Override
-    public Customer updateCustomer(Long id, CustomerDto customerDto) {
-
-        boolean exists = customerRepository.existsById(id);
-
-        if (!exists) {
-
-            logger.warn("{}, {}! An exception occurred!",
-                    "updateCustomer().", "Customer with id: " + id + " cannot be updated because it does not exist.",
-                    new NotFoundException("Customer with id: " + id + " cannot be updated because it does not exist."));
-
-            throw new NotFoundException("Customer with id: " + id + " cannot be updated because it does not exist.");
-        }
-
-        return customerRepository.save(
-                customerMapper.customerDtoToCustomer(customerDto));
+        return optionalCustomer.get();
     }
 }

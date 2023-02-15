@@ -30,7 +30,7 @@ public class ContactControllerImpl implements ContactController {
         this.contactService = contactService;
     }
 
-
+// veterinarian
     @Override
     @GetMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
     public ResponseEntity<ContactDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
@@ -104,6 +104,84 @@ public class ContactControllerImpl implements ContactController {
         contactService.deleteContactToVeterinarianById(veterinarianId, contactId);
 
         logger.info("Deleted contact with contactId: " + contactId + " for veterinarian with id: " + veterinarianId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+//    customer ******************************
+
+    @Override
+    @GetMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactDto> findContactByCustomerId(@PathVariable(name = "customerId")
+                                                              @Min(1)
+                                                              @NotNull
+                                                              Long customerId,
+                                                              @PathVariable(name = "contactId")
+                                                              @Min(1)
+                                                              @NotNull
+                                                              Long contactId) {
+
+        logger.info("Find contact for customer with id: " + customerId);
+
+        return ResponseEntity.ok(contactService.findContactByCustomerId(customerId, contactId));
+    }
+
+    @Override
+    @PostMapping("/customers/{customerId}/contacts")
+    public ResponseEntity<ContactDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
+                                                                @Min(1)
+                                                                @NotNull
+                                                                Long customerId,
+                                                                @Valid
+                                                                @RequestBody ContactDto contactDto) {
+
+        Contact contact = contactService.saveContactToCustomerByID(customerId, contactDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{contactId}")
+                .buildAndExpand(contact.getId())
+                .toUri();
+
+        logger.info("Saved contact for customer with id " + customerId + " contact " + contactDto);
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @Override
+    @PutMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactDto> updateContactToCustomerById(@PathVariable(name = "customerId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long customerId,
+                                                                  @Valid
+                                                                  @RequestBody ContactDto contactDto,
+                                                                  @PathVariable(name = "contactId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long contactId) {
+
+        contactService.updateContactToCustomerById(customerId, contactDto, contactId);
+
+        logger.info("Updated contact with contactId: " + contactId + " for customer with id: " + customerId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @DeleteMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactDto> deleteContactToCustomerById(@PathVariable(name = "customerId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long customerId,
+                                                                  @PathVariable(name = "contactId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long contactId) {
+
+        contactService.deleteContactToCustomerById(customerId, contactId);
+
+        logger.info("Deleted contact with contactId: " + contactId + " for customer with id: " + customerId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

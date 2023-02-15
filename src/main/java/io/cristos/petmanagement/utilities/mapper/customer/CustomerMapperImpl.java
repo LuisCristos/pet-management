@@ -2,6 +2,9 @@ package io.cristos.petmanagement.utilities.mapper.customer;
 
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.models.customer.Customer;
+import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
+import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,16 +14,30 @@ import java.util.List;
 @Component
 public class CustomerMapperImpl implements CustomerMapper {
 
+    private final GenderConverter genderConverter;
+    private final ContactMapper contactMapper;
+
+    @Autowired
+    public CustomerMapperImpl(GenderConverter genderConverter, ContactMapper contactMapper) {
+        this.genderConverter = genderConverter;
+        this.contactMapper = contactMapper;
+    }
+
     @Override
     public CustomerDto customerToCustomerDto(Customer customer) {
 
         CustomerDto customerDto = new CustomerDto();
 
-        customerDto.setId(customer.getId());
+        customerDto.setCustomerId(customer.getId());
         customerDto.setFirstName(customer.getFirstName());
         customerDto.setLastName(customer.getLastName());
         customerDto.setDateOfBirth(customer.getDateOfBirth());
         customerDto.setDateOfCreation(customer.getDateOfCreation());
+        customerDto.setGender(genderConverter.convertToDatabaseColumn(customer.getGender()));
+
+        if (customer.getContact() != null) {
+            customerDto.setContact(contactMapper.contactToContactDto(customer.getContact()));
+        }
 
         return customerDto;
     }
@@ -30,11 +47,16 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         Customer customer = new Customer();
 
-        customer.setId(customerDto.getId());
+        customer.setId(customerDto.getCustomerId());
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
         customer.setDateOfBirth(customerDto.getDateOfBirth());
         customer.setDateOfCreation(customerDto.getDateOfCreation());
+        customer.setGender(genderConverter.convertToEntityAttribute(customerDto.getGender()));
+
+        if (customerDto.getContact() != null) {
+            customer.setContact(contactMapper.contactDtoToContact(customerDto.getContact()));
+        }
 
         return customer;
     }

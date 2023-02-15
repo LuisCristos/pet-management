@@ -11,10 +11,11 @@ public interface CustomerService {
 
     List<CustomerDto> getAllCustomers();
 
-    CustomerDto findCustomerById(Long id);
+    CustomerDto findCustomerById(Long customerId);
 
-    void deleteCustomerById(Long id);
+    void deleteCustomerById(Long customerId);
 
-    Customer updateCustomer(Long id, CustomerDto customerDto);
+    Customer updateCustomer(Long customerId, CustomerDto customerDto);
 
+    Customer returnCustomerIfExists(Long customerId, String action);
 }
