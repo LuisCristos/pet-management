@@ -30,7 +30,7 @@ public class VeterinarianDto implements Serializable {
     private String speciality;
     @NotNull(message = "Gender is required.")
     private String gender;
-    private ContactDto contactDto;
+    private ContactDto contact;
     @Transient
     private int age;
 
@@ -102,11 +102,11 @@ public class VeterinarianDto implements Serializable {
     }
 
     public ContactDto getContactDto() {
-        return contactDto;
+        return contact;
     }
 
     public void setContactDto(ContactDto contactDto) {
-        this.contactDto = contactDto;
+        this.contact = contactDto;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class VeterinarianDto implements Serializable {
                 ", dateOfCreation=" + dateOfCreation +
                 ", speciality='" + speciality + '\'' +
                 ", gender='" + gender + '\'' +
-                ", contactDto=" + contactDto +
+                ", contactDto=" + contact +
                 ", age=" + age +
                 '}';
     }
