@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.models.pet;
 
 import io.cristos.petmanagement.models.BaseEntity;
+import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.models.enums.Gender;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity(name = "Pet")
 @Table(name = "pet")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_pet", allocationSize = 10)
+@AttributeOverride(name = "id", column = @Column(name = "petId"))
 public class Pet extends BaseEntity {
 
     @Column(
@@ -31,6 +33,10 @@ public class Pet extends BaseEntity {
             fetch = FetchType.LAZY
     )
     private List<Diagnosis> diagnosisList = new ArrayList<>();
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    private Customer customer;
 
     public Pet(LocalDate dateOfBirth, int age, Gender gender, String name, List<Diagnosis> diagnosisList) {
         super(dateOfBirth, age, gender);
@@ -66,11 +72,20 @@ public class Pet extends BaseEntity {
         this.diagnosisList.remove(diagnosis);
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
                 "name='" + name + '\'' +
                 ", diagnosisList=" + diagnosisList +
+                ", customer=" + customer +
                 '}';
     }
 }

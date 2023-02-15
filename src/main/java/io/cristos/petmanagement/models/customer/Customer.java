@@ -3,9 +3,11 @@ package io.cristos.petmanagement.models.customer;
 import io.cristos.petmanagement.models.contact.Contact;
 import io.cristos.petmanagement.models.enums.Gender;
 import io.cristos.petmanagement.models.person.Person;
+import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "Customer")
 @Table(name = "customer")
@@ -13,11 +15,20 @@ import java.time.LocalDate;
 @AttributeOverride(name = "id", column = @Column(name = "customerId"))
 public class Customer extends Person {
 
-    // TO_DO_LC: create list of pets
-//    private List<Pet> pets;
+    @OneToMany(
+            mappedBy = "customer",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private List<Pet> petList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
+    @OneToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "contactId",
+            referencedColumnName = "contactId"
+    )
     private Contact contact;
 
     public Customer(LocalDate dateOfBirth, int age, Gender gender, String firstName, String lastName) {
@@ -25,6 +36,18 @@ public class Customer extends Person {
     }
 
     public Customer() {
+    }
+
+    public List<Pet> getPets() {
+        return petList;
+    }
+
+    public void addPet(Pet pet) {
+        this.petList.add(pet);
+    }
+
+    public void removePet(Pet pet) {
+        this.petList.remove(pet);
     }
 
     public Contact getContact() {
@@ -38,7 +61,8 @@ public class Customer extends Person {
     @Override
     public String toString() {
         return "Customer{" +
-                "contact=" + contact +
+                "petList=" + petList +
+                ", contact=" + contact +
                 '}';
     }
 }
