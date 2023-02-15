@@ -4,6 +4,8 @@ import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,23 +50,27 @@ public class CustomerControllerImpl implements CustomerController {
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
 
-        logger.info("getAllCustomers(). Retrieved all customers.");
+        logger.info("Retrieved all customers.");
 
         return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
     @Override
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable Long customerId) {
+    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable(name = "customerId")
+                                                        @Min(1)
+                                                        @NotNull Long customerId) {
 
-        logger.info("findCustomerById(). Find Customer with customerId." + customerId);
+        logger.info("Find Customer with customerId." + customerId);
 
         return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
 
     @Override
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable Long customerId) {
+    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable(name = "customerId")
+                                                          @Min(1)
+                                                          @NotNull Long customerId) {
 
         customerService.deleteCustomerById(customerId);
 
@@ -74,13 +80,15 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @Override
-    @PutMapping("/{customerID}")
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long customerID,
+    @PutMapping("/{customerId}")
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable(name = "customerId")
+                                                      @Min(1)
+                                                      @NotNull Long customerId,
                                                       @Valid
                                                       @RequestBody CustomerDto customerDto) {
-        customerService.updateCustomer(customerID, customerDto);
+        customerService.updateCustomer(customerId, customerDto);
 
-        logger.info("Updated customer with customerID: " + customerID);
+        logger.info("Updated customer with customerId: " + customerId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
