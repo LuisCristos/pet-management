@@ -16,6 +16,4 @@ public interface VeterinarianMapper {
     VeterinarianResponseDto veterinarianToVeterinarianResponseDto(Veterinarian veterinarian);
 
     List<VeterinarianResponseDto> veterinarianListToVeterinarianResponseDtoList(Collection<Veterinarian> veterinarianCollection);
-
-
 }
