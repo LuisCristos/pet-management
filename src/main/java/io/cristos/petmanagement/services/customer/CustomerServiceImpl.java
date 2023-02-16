@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.services.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerDto;
+import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
+import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
@@ -28,13 +29,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer saveCustomer(CustomerDto customerDto) {
+    public Customer saveCustomer(CustomerRequestDto customerRequestDto) {
 
-        return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
+        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerRequestDto));
     }
 
     @Override
-    public List<CustomerDto> getAllCustomers() {
+    public List<CustomerResponseDto> getAllCustomers() {
 
         Collection<Customer> customerCollection = customerRepository.findAll();
 
@@ -44,34 +45,34 @@ public class CustomerServiceImpl implements CustomerService {
             return Collections.emptyList();
         }
 
-        return customerMapper.customerListToCustomerDtoList(customerCollection);
+        return customerMapper.customerListToCustomerResponseDtoList(customerCollection);
     }
 
     @Override
-    public CustomerDto findCustomerById(Long customerId) {
+    public CustomerResponseDto findCustomerById(Long customerId) {
 
         final String action = "found";
         Customer customer = returnCustomerIfExists(customerId, action);
 
-        return customerMapper.customerToCustomerDto(customer);
+        return customerMapper.customerToCustomerResponseDto(customer);
     }
 
     @Override
     public void deleteCustomerById(Long customerId) {
 
-        final String action = "found";
+        final String action = "deleted";
         returnCustomerIfExists(customerId, action);
 
         customerRepository.deleteById(customerId);
     }
 
     @Override
-    public Customer updateCustomer(Long customerId, CustomerDto customerDto) {
+    public Customer updateCustomer(Long customerId, CustomerRequestDto customerRequestDto) {
 
-        final String action = "found";
+        final String action = "updated";
         returnCustomerIfExists(customerId, action);
 
-        return customerRepository.save(customerMapper.customerDtoToCustomer(customerDto));
+        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerId, customerRequestDto));
     }
 
     @Override

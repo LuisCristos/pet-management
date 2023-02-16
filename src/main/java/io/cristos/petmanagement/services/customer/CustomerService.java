@@ -1,21 +1,22 @@
 package io.cristos.petmanagement.services.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerDto;
+import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
+import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
 
-    Customer saveCustomer(CustomerDto customerDto);
+    Customer saveCustomer(CustomerRequestDto customerRequestDto);
 
-    List<CustomerDto> getAllCustomers();
+    List<CustomerResponseDto> getAllCustomers();
 
-    CustomerDto findCustomerById(Long customerId);
+    CustomerResponseDto findCustomerById(Long customerId);
 
     void deleteCustomerById(Long customerId);
 
-    Customer updateCustomer(Long customerId, CustomerDto customerDto);
+    Customer updateCustomer(Long customerId, CustomerRequestDto customerRequestDto);
 
     Customer returnCustomerIfExists(Long customerId, String action);
 }

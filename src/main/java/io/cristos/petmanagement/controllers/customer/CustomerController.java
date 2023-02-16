@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.controllers.customer;
 
-import io.cristos.petmanagement.dtos.customer.CustomerDto;
+import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
+import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
@@ -31,11 +32,11 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-
     @PostMapping
-    public ResponseEntity<CustomerDto> saveCustomer(@Valid @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<CustomerResponseDto> saveCustomer(@Valid
+                                                            @RequestBody CustomerRequestDto customerRequestDto) {
 
-        Customer customer = customerService.saveCustomer(customerDto);
+        Customer customer = customerService.saveCustomer(customerRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -43,13 +44,26 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
-        logger.info(customerDto + " saved to database.");
+        logger.info(customerRequestDto + " saved to database.");
 
         return ResponseEntity.created(location).build();
     }
 
+    @PutMapping("/{customerId}")
+    public ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable(name = "customerId")
+                                                              @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                              @NotNull Long customerId,
+                                                              @Valid
+                                                              @RequestBody CustomerRequestDto customerRequestDto) {
+        customerService.updateCustomer(customerId, customerRequestDto);
+
+        logger.info("Updated customer with customerId: " + customerId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+    public ResponseEntity<List<CustomerResponseDto>> getAllCustomers() {
 
         logger.info("Retrieved all customers.");
 
@@ -57,9 +71,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> findCustomerById(@PathVariable(name = "customerId")
-                                                        @Min(1)
-                                                        @NotNull Long customerId) {
+    public ResponseEntity<CustomerResponseDto> findCustomerById(@PathVariable(name = "customerId")
+                                                                @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                @NotNull Long customerId) {
 
         logger.info("Find Customer with customerId." + customerId);
 
@@ -67,9 +81,9 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable(name = "customerId")
-                                                          @Min(1)
-                                                          @NotNull Long customerId) {
+    public ResponseEntity<CustomerResponseDto> deleteCustomerById(@PathVariable(name = "customerId")
+                                                                  @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                  @NotNull Long customerId) {
 
         customerService.deleteCustomerById(customerId);
 
@@ -78,16 +92,4 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable(name = "customerId")
-                                                      @Min(1)
-                                                      @NotNull Long customerId,
-                                                      @Valid
-                                                      @RequestBody CustomerDto customerDto) {
-        customerService.updateCustomer(customerId, customerDto);
-
-        logger.info("Updated customer with customerId: " + customerId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

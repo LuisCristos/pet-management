@@ -149,7 +149,8 @@ public class ContactServiceImpl implements ContactService {
 
         customerDto.setContact(contactDto);
 
-        return customerService.saveCustomer(customerDto).getContact();
+//        return customerService.saveCustomer(customerDto).getContact();
+        return null;
     }
 
     @Override
@@ -162,26 +163,28 @@ public class ContactServiceImpl implements ContactService {
 
         customerDto.setContact(contactDto);
 
-        return customerService.saveCustomer(customerDto).getContact();
+//        return customerService.saveCustomer(customerDto).getContact();
+        return null;
     }
 
     @Override
     public void deleteContactToCustomerById(Long customerId, Long contactId) {
 
-        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
-
-        final String action = "deleted";
-        Contact contact = returnContactIfExists(contactId, action);
-
-        customerDto.setContact(null);
-
-        customerService.saveCustomer(customerDto);
-
-        contactRepository.delete(contact);
+//        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
+//
+//        final String action = "deleted";
+//        Contact contact = returnContactIfExists(contactId, action);
+//
+//        customerDto.setContact(null);
+//
+//        customerService.saveCustomer(customerDto);
+//
+//        contactRepository.delete(contact);
     }
 
     @Override
     public CustomerDto returnCustomerDtoIfExists(Long customerId) {
-        return customerService.findCustomerById(customerId);
+//        return customerService.findCustomerById(customerId);
+        return null;
     }
 }
