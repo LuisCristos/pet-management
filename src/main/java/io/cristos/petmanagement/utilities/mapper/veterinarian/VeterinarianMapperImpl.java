@@ -26,6 +26,20 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
 
 
     @Override
+    public Veterinarian veterinarianRequestDtoToVeterinarian(VeterinarianRequestDto veterinarianRequestDto) {
+
+        Veterinarian veterinarian = new Veterinarian();
+
+        veterinarian.setFirstName(veterinarianRequestDto.firstName());
+        veterinarian.setLastName(veterinarianRequestDto.lastName());
+        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.gender()));
+        veterinarian.setBornAt(veterinarianRequestDto.bornAt());
+        veterinarian.setSpeciality(veterinarianRequestDto.speciality());
+
+        return veterinarian;
+    }
+
+    @Override
     public Veterinarian veterinarianRequestDtoToVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto) {
 
         Veterinarian veterinarian = new Veterinarian();
@@ -43,7 +57,7 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
     @Override
     public VeterinarianResponseDto veterinarianToVeterinarianResponseDto(Veterinarian veterinarian) {
 
-        VeterinarianResponseDto veterinarianResponseDto = new VeterinarianResponseDto(
+        return new VeterinarianResponseDto(
                 veterinarian.getId(),
                 veterinarian.getFirstName(),
                 veterinarian.getLastName(),
@@ -53,8 +67,6 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
                 veterinarian.getCreatedAt(),
                 veterinarian.getAge()
         );
-
-        return veterinarianResponseDto;
     }
 
 

@@ -34,7 +34,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     public Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto) {
 
         return veterinarianRepository.save(
-                veterinarianMapper.veterinarianRequestDtoToVeterinarian(null, veterinarianRequestDto));
+                veterinarianMapper.veterinarianRequestDtoToVeterinarian(veterinarianRequestDto));
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface VeterinarianMapper {
 
+    Veterinarian veterinarianRequestDtoToVeterinarian(VeterinarianRequestDto veterinarianRequestDto);
+
     Veterinarian veterinarianRequestDtoToVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto);
 
     VeterinarianResponseDto veterinarianToVeterinarianResponseDto(Veterinarian veterinarian);
