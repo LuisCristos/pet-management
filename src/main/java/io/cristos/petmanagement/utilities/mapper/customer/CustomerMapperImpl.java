@@ -31,8 +31,8 @@ public class CustomerMapperImpl implements CustomerMapper {
         customerDto.setCustomerId(customer.getId());
         customerDto.setFirstName(customer.getFirstName());
         customerDto.setLastName(customer.getLastName());
-        customerDto.setDateOfBirth(customer.getDateOfBirth());
-        customerDto.setDateOfCreation(customer.getDateOfCreation());
+        customerDto.setDateOfBirth(customer.getBornAt());
+        customerDto.setDateOfCreation(customer.getCreatedAt());
         customerDto.setGender(genderConverter.convertToDatabaseColumn(customer.getGender()));
 
         if (customer.getContact() != null) {
@@ -50,8 +50,8 @@ public class CustomerMapperImpl implements CustomerMapper {
         customer.setId(customerDto.getCustomerId());
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
-        customer.setDateOfBirth(customerDto.getDateOfBirth());
-        customer.setDateOfCreation(customerDto.getDateOfCreation());
+        customer.setBornAt(customerDto.getDateOfBirth());
+        customer.setCreatedAt(customerDto.getDateOfCreation());
         customer.setGender(genderConverter.convertToEntityAttribute(customerDto.getGender()));
 
         if (customerDto.getContact() != null) {

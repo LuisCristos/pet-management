@@ -1,21 +1,22 @@
 package io.cristos.petmanagement.services.veterinarian;
 
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.request.veterinarian.VeterinarianRequestDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 
 import java.util.List;
 
 public interface VeterinarianService {
 
-    Veterinarian saveVeterinarian(VeterinarianDto veterinarianDto);
+    Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto);
 
-    List<VeterinarianDto> getAllVeterinarians();
+    List<VeterinarianResponseDto> getAllVeterinarians();
 
-    VeterinarianDto findVeterinarianById(Long veterinarianId);
+    VeterinarianResponseDto findVeterinarianById(Long veterinarianId);
 
     void deleteVeterinarianById(Long veterinarianId);
 
-    Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianDto veterinarianDto);
+    Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto);
 
     Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action);
 }

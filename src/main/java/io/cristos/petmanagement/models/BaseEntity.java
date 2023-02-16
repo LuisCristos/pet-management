@@ -18,7 +18,7 @@ public abstract class BaseEntity extends BaseIdCreationDate {
     )
     @NotNull(message = "Date of birth is required.")
     @Past(message = "The date of birth must be in the past.")
-    private LocalDate dateOfBirth;
+    private LocalDate bornAt;
     @Transient
     private int age;
     @Column(
@@ -30,15 +30,15 @@ public abstract class BaseEntity extends BaseIdCreationDate {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public BaseEntity(Long id, LocalDate dateOfCreation, LocalDate dateOfBirth, int age, Gender gender) {
-        super(id, dateOfCreation);
-        this.dateOfBirth = dateOfBirth;
+    public BaseEntity(Long id, LocalDate createdAt, LocalDate bornAt, int age, Gender gender) {
+        super(id, createdAt);
+        this.bornAt = bornAt;
         this.age = age;
         this.gender = gender;
     }
 
-    public BaseEntity(LocalDate dateOfBirth, int age, Gender gender) {
-        this.dateOfBirth = dateOfBirth;
+    public BaseEntity(LocalDate bornAt, int age, Gender gender) {
+        this.bornAt = bornAt;
         this.age = age;
         this.gender = gender;
     }
@@ -46,16 +46,16 @@ public abstract class BaseEntity extends BaseIdCreationDate {
     public BaseEntity() {
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+    public LocalDate getBornAt() {
+        return bornAt;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setBornAt(LocalDate bornAt) {
+        this.bornAt = bornAt;
     }
 
     public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+        return Period.between(bornAt, LocalDate.now()).getYears();
     }
 
     public void setAge(int age) {

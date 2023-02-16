@@ -36,8 +36,8 @@ public class PetMapperImpl implements PetMapper {
         petDto.setId(pet.getId());
         petDto.setName(pet.getName());
         petDto.setGender(genderConverter.convertToDatabaseColumn(pet.getGender()));
-        petDto.setDateOfBirth(pet.getDateOfBirth());
-        petDto.setDateOfCreation(pet.getDateOfCreation());
+        petDto.setDateOfBirth(pet.getBornAt());
+        petDto.setDateOfCreation(pet.getCreatedAt());
 
         for (Diagnosis diagnosis : pet.getDiagnosisList()) {
 
@@ -57,8 +57,8 @@ public class PetMapperImpl implements PetMapper {
         pet.setId(petDto.getId());
         pet.setName(petDto.getName());
         pet.setGender(genderConverter.convertToEntityAttribute(petDto.getGender()));
-        pet.setDateOfBirth(petDto.getDateOfBirth());
-        pet.setDateOfCreation(petDto.getDateOfCreation());
+        pet.setBornAt(petDto.getDateOfBirth());
+        pet.setCreatedAt(petDto.getDateOfCreation());
 
         return pet;
     }

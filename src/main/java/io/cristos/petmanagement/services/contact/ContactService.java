@@ -2,7 +2,7 @@ package io.cristos.petmanagement.services.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
 
 public interface ContactService {
@@ -16,7 +16,7 @@ public interface ContactService {
 
     void deleteContactToVeterinarianById(Long veterinarianId, Long contactId);
 
-    VeterinarianDto returnVeterinarianDtoIfExists(Long veterinarianId);
+    VeterinarianResponseDto returnVeterinarianDtoIfExists(Long veterinarianId);
 
     Contact returnContactIfExists(Long contactId, String action);
 

@@ -27,11 +27,11 @@ public abstract class BaseIdCreationDate implements Serializable {
             columnDefinition = "DATE"
     )
     @CreationTimestamp
-    private LocalDate dateOfCreation = LocalDate.now();
+    private LocalDate createdAt = LocalDate.now();
 
-    public BaseIdCreationDate(Long id, LocalDate dateOfCreation) {
+    public BaseIdCreationDate(Long id, LocalDate createdAt) {
         this.id = id;
-        this.dateOfCreation = dateOfCreation;
+        this.createdAt = createdAt;
     }
 
     public BaseIdCreationDate() {
@@ -45,11 +45,11 @@ public abstract class BaseIdCreationDate implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateOfCreation() {
-        return dateOfCreation;
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDateOfCreation(LocalDate dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 }

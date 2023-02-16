@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.veterinarian;
 
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.request.veterinarian.VeterinarianRequestDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 
 import java.util.Collection;
@@ -8,10 +9,11 @@ import java.util.List;
 
 public interface VeterinarianMapper {
 
-    VeterinarianDto veterinarianToVeterinarianDto(Veterinarian veterinarian);
+    Veterinarian veterinarianRequestDtoToVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto);
 
-    Veterinarian veterinarianDtoToVeterinarian(VeterinarianDto veterinarianDto);
+    VeterinarianResponseDto veterinarianToVeterinarianResponseDto(Veterinarian veterinarian);
 
-    List<VeterinarianDto> veterinarianListToVeterinarianDtoList(Collection<Veterinarian> veterinarianCollection);
+    List<VeterinarianResponseDto> veterinarianListToVeterinarianResponseDtoList(Collection<Veterinarian> veterinarianCollection);
+
 
 }

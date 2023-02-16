@@ -18,8 +18,8 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         employeeDto.setId(employee.getId());
         employeeDto.setFirstName(employee.getFirstName());
         employeeDto.setLastName(employee.getLastName());
-        employeeDto.setDateOfBirth(employee.getDateOfBirth());
-        employeeDto.setDateOfCreation(employee.getDateOfCreation());
+        employeeDto.setDateOfBirth(employee.getBornAt());
+        employeeDto.setDateOfCreation(employee.getCreatedAt());
         employeeDto.setAge(employee.getAge());
 
         return employeeDto;
@@ -33,8 +33,8 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         employee.setId(employeeDto.getId());
         employee.setFirstName(employeeDto.getFirstName());
         employee.setLastName(employeeDto.getLastName());
-        employee.setDateOfBirth(employeeDto.getDateOfBirth());
-        employee.setDateOfCreation(employeeDto.getDateOfCreation());
+        employee.setBornAt(employeeDto.getDateOfBirth());
+        employee.setCreatedAt(employeeDto.getDateOfCreation());
         employee.setAge(employeeDto.getAge());
 
         return employee;

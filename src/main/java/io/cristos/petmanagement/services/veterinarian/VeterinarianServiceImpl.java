@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.services.veterinarian;
 
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.request.veterinarian.VeterinarianRequestDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.veterinarian.VeterinarianRepository;
@@ -30,13 +31,14 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public Veterinarian saveVeterinarian(VeterinarianDto veterinarianDto) {
+    public Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto) {
 
-        return veterinarianRepository.save(veterinarianMapper.veterinarianDtoToVeterinarian(veterinarianDto));
+        return veterinarianRepository.save(
+                veterinarianMapper.veterinarianRequestDtoToVeterinarian(null, veterinarianRequestDto));
     }
 
     @Override
-    public List<VeterinarianDto> getAllVeterinarians() {
+    public List<VeterinarianResponseDto> getAllVeterinarians() {
 
         Collection<Veterinarian> veterinarianCollection = veterinarianRepository.findAll();
 
@@ -45,16 +47,16 @@ public class VeterinarianServiceImpl implements VeterinarianService {
             return Collections.emptyList();
         }
 
-        return veterinarianMapper.veterinarianListToVeterinarianDtoList(veterinarianCollection);
+        return veterinarianMapper.veterinarianListToVeterinarianResponseDtoList(veterinarianCollection);
     }
 
     @Override
-    public VeterinarianDto findVeterinarianById(Long veterinarianId) {
+    public VeterinarianResponseDto findVeterinarianById(Long veterinarianId) {
 
         final String action = "found";
         Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId, action);
 
-        return veterinarianMapper.veterinarianToVeterinarianDto(veterinarian);
+        return veterinarianMapper.veterinarianToVeterinarianResponseDto(veterinarian);
     }
 
     @Override
@@ -67,13 +69,13 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianDto veterinarianDto) {
+    public Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto) {
 
         final String action = "updated";
         returnVeterinarianIfExists(veterinarianId, action);
 
         return veterinarianRepository.save(
-                veterinarianMapper.veterinarianDtoToVeterinarian(veterinarianDto));
+                veterinarianMapper.veterinarianRequestDtoToVeterinarian(veterinarianId, veterinarianRequestDto));
     }
 
     @Override
@@ -90,6 +92,4 @@ public class VeterinarianServiceImpl implements VeterinarianService {
 
         return optionalVeterinarian.get();
     }
-
-
 }

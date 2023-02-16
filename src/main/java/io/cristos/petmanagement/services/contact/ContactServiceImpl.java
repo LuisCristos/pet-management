@@ -2,7 +2,7 @@ package io.cristos.petmanagement.services.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
@@ -52,19 +52,20 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public Contact saveContactToVeterinarianByID(Long veterinarianId, ContactDto contactDto) {
 
-        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
+//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
+//
+//        if (Objects.nonNull(veterinarianDto.getContactDto())) {
+//
+//            logger.warn("{}, {}!",
+//                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
+//
+//            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
+//        }
+//
+//        veterinarianDto.setContactDto(contactDto);
 
-        if (Objects.nonNull(veterinarianDto.getContactDto())) {
-
-            logger.warn("{}, {}!",
-                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
-
-            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
-        }
-
-        veterinarianDto.setContactDto(contactDto);
-
-        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
+//        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
+        return null;
     }
 
 
@@ -72,34 +73,35 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public Contact updateContactToVeterinarianById(Long veterinarianId, ContactDto contactDto, Long contactId) {
 
-        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
+//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
+//
+//        final String action = "updated";
+//        returnContactIfExists(contactId, action);
+//
+//        veterinarianDto.setContactDto(contactDto);
 
-        final String action = "updated";
-        returnContactIfExists(contactId, action);
-
-        veterinarianDto.setContactDto(contactDto);
-
-        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
+//        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
+        return null;
     }
 
     @Override
     @Transactional
     public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
 
-        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
-
-        final String action = "deleted";
-        Contact contact = returnContactIfExists(contactId, action);
-
-        veterinarianDto.setContactDto(null);
-
-        veterinarianService.saveVeterinarian(veterinarianDto);
-
-        contactRepository.delete(contact);
+//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
+//
+//        final String action = "deleted";
+//        Contact contact = returnContactIfExists(contactId, action);
+//
+//        veterinarianDto.setContactDto(null);
+//
+////        veterinarianService.saveVeterinarian(veterinarianDto);
+//
+//        contactRepository.delete(contact);
     }
 
     @Override
-    public VeterinarianDto returnVeterinarianDtoIfExists(Long veterinarianId) {
+    public VeterinarianResponseDto returnVeterinarianDtoIfExists(Long veterinarianId) {
         return veterinarianService.findVeterinarianById(veterinarianId);
     }
 
