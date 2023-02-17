@@ -1,7 +1,10 @@
 package io.cristos.petmanagement.controllers.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
+import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
+import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.contact.ContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -47,22 +50,22 @@ public class ContactController {
     }
 
     @PostMapping("/veterinarians/{veterinarianId}/contacts")
-    public ResponseEntity<ContactDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
-                                                                    @Min(1)
-                                                                    @NotNull
-                                                                    Long veterinarianId,
-                                                                    @Valid
-                                                                    @RequestBody ContactDto contactDto) {
+    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
+                                                                            @Min(1)
+                                                                            @NotNull
+                                                                            Long veterinarianId,
+                                                                            @Valid
+                                                                            @RequestBody ContactRequestDto contactRequestDto) {
 
-        Contact contact = contactService.saveContactToVeterinarianByID(veterinarianId, contactDto);
+        Veterinarian veterinarian = contactService.saveContactToVeterinarianByID(veterinarianId, contactRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{contactId}")
-                .buildAndExpand(contact.getId())
+                .buildAndExpand(veterinarian.getContact().getId())
                 .toUri();
 
-        logger.info("Saved contact for veterinarian with id " + veterinarianId + " contact " + contactDto);
+        logger.info("Saved contact for veterinarian with id " + veterinarianId + " contact " + contactRequestDto);
 
         return ResponseEntity.created(location).build();
     }

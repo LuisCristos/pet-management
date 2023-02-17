@@ -37,6 +37,12 @@ public class VeterinarianServiceImpl implements VeterinarianService {
                 veterinarianMapper.veterinarianRequestDtoToVeterinarian(veterinarianRequestDto));
     }
 
+
+    @Override
+    public Veterinarian saveVeterinarianContact(Veterinarian veterinarian) {
+        return veterinarianRepository.save(veterinarian);
+    }
+
     @Override
     public List<VeterinarianResponseDto> getAllVeterinarians() {
 
@@ -88,6 +94,21 @@ public class VeterinarianServiceImpl implements VeterinarianService {
                             new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
 
                     throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
+                }));
+
+        return optionalVeterinarian.get();
+    }
+
+    @Override
+    public Veterinarian returnVeterinarianIfExists(Long veterinarianId) {
+
+        Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(veterinarianId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Veterinarian with id: " + veterinarianId + " cannot be found.",
+                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be found."));
+
+                    throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be found.");
                 }));
 
         return optionalVeterinarian.get();

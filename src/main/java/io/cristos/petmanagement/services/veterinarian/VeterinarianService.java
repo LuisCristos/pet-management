@@ -10,6 +10,8 @@ public interface VeterinarianService {
 
     Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto);
 
+    Veterinarian saveVeterinarianContact(Veterinarian veterinarian);
+
     List<VeterinarianResponseDto> getAllVeterinarians();
 
     VeterinarianResponseDto findVeterinarianById(Long veterinarianId);
@@ -19,4 +21,6 @@ public interface VeterinarianService {
     Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto);
 
     Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action);
+
+    Veterinarian returnVeterinarianIfExists(Long veterinarianId);
 }

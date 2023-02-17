@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
+import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
 import io.cristos.petmanagement.models.contact.Contact;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,24 @@ import java.util.List;
 
 @Component
 public class ContactMapperImpl implements ContactMapper {
+
+    @Override
+    public Contact contactRequestDtoToContact(ContactRequestDto contactRequestDto) {
+
+        Contact contact = new Contact();
+
+        contact.setCity(contactRequestDto.getCity());
+        contact.setStreet(contactRequestDto.getStreet());
+        contact.setHouseNumber(contactRequestDto.getHouseNumber());
+        contact.setZipCode(contactRequestDto.getZipCode());
+        contact.setEmail(contactRequestDto.getEmail());
+
+        for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
+            contact.addPhoneNumber(phoneNumber);
+        }
+
+        return contact;
+    }
 
     @Override
     public ContactDto contactToContactDto(Contact contact) {

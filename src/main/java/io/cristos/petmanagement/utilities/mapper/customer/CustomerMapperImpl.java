@@ -29,10 +29,10 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         Customer customer = new Customer();
 
-        customer.setFirstName(customerRequestDto.firstName());
-        customer.setLastName(customerRequestDto.lastName());
-        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.gender()));
-        customer.setBornAt(customerRequestDto.bornAt());
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.getGender()));
+        customer.setBornAt(customerRequestDto.getBornAt());
 
         return customer;
     }
@@ -43,25 +43,28 @@ public class CustomerMapperImpl implements CustomerMapper {
         Customer customer = new Customer();
 
         customer.setId(customerId);
-        customer.setFirstName(customerRequestDto.firstName());
-        customer.setLastName(customerRequestDto.lastName());
-        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.gender()));
-        customer.setBornAt(customerRequestDto.bornAt());
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.getGender()));
+        customer.setBornAt(customerRequestDto.getBornAt());
 
         return customer;
     }
 
     @Override
     public CustomerResponseDto customerToCustomerResponseDto(Customer customer) {
-        return new CustomerResponseDto(
-                customer.getId(),
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getBornAt(),
-                genderConverter.convertToDatabaseColumn(customer.getGender()),
-                customer.getBornAt(),
-                customer.getAge()
-        );
+
+        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
+
+        customerResponseDto.setCustomerId(customer.getId());
+        customerResponseDto.setFirstName(customer.getFirstName());
+        customerResponseDto.setLastName(customer.getLastName());
+        customerResponseDto.setBornAt(customer.getBornAt());
+        customerResponseDto.setGender(genderConverter.convertToDatabaseColumn(customer.getGender()));
+        customerResponseDto.setCreatedAt(customer.getCreatedAt());
+        customerResponseDto.setAge(customer.getAge());
+
+        return customerResponseDto;
     }
 
     @Override

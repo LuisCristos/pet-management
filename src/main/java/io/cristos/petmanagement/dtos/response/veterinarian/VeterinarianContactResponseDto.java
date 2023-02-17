@@ -1,8 +1,10 @@
 package io.cristos.petmanagement.dtos.response.veterinarian;
 
+import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
+
 import java.time.LocalDate;
 
-public class VeterinarianResponseDto {
+public class VeterinarianContactResponseDto {
 
     private Long veterinarianId;
     private String firstName;
@@ -12,8 +14,9 @@ public class VeterinarianResponseDto {
     private String speciality;
     private LocalDate createdAt;
     private int age;
+    private ContactRequestDto contactRequestDto;
 
-    public VeterinarianResponseDto() {
+    public VeterinarianContactResponseDto() {
     }
 
     public Long getVeterinarianId() {
@@ -78,5 +81,13 @@ public class VeterinarianResponseDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public ContactRequestDto getContactRequestDto() {
+        return contactRequestDto;
+    }
+
+    public void setContactRequestDto(ContactRequestDto contactRequestDto) {
+        this.contactRequestDto = contactRequestDto;
     }
 }

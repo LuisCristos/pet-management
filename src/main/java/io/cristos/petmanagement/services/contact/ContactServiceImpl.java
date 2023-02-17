@@ -2,13 +2,15 @@ package io.cristos.petmanagement.services.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.dtos.customer.CustomerDto;
-import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
+import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
+import io.cristos.petmanagement.utilities.mapper.veterinarian.VeterinarianMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +28,16 @@ public class ContactServiceImpl implements ContactService {
     private final VeterinarianService veterinarianService;
     private final CustomerService customerService;
     private final ContactMapper contactMapper;
+    private final VeterinarianMapper veterinarianMapper;
 
     @Autowired
     public ContactServiceImpl(ContactRepository contactRepository, VeterinarianService veterinarianService,
-                              CustomerService customerService, ContactMapper contactMapper) {
+                              CustomerService customerService, ContactMapper contactMapper, VeterinarianMapper veterinarianMapper) {
         this.contactRepository = contactRepository;
         this.veterinarianService = veterinarianService;
         this.customerService = customerService;
         this.contactMapper = contactMapper;
+        this.veterinarianMapper = veterinarianMapper;
     }
 
     //    veterinarian
@@ -50,22 +54,23 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public Contact saveContactToVeterinarianByID(Long veterinarianId, ContactDto contactDto) {
+    public Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto) {
 
-//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
-//
-//        if (Objects.nonNull(veterinarianDto.getContactDto())) {
-//
-//            logger.warn("{}, {}!",
-//                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
-//
-//            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
-//        }
-//
-//        veterinarianDto.setContactDto(contactDto);
+        Veterinarian veterinarian = returnVeterinarianDtoIfExists(veterinarianId);
 
-//        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
-        return null;
+        if (Objects.nonNull(veterinarian.getContact())) {
+
+            logger.warn("{}, {}!",
+                    "An exception occurred!", "Contact for " + contactRequestDto + " already exists.");
+
+            throw new IllegalArgumentException("Contact for " + contactRequestDto + " already exists.");
+        }
+
+        Contact contact = contactMapper.contactRequestDtoToContact(contactRequestDto);
+
+        veterinarian.setContact(contact);
+
+        return veterinarianService.saveVeterinarianContact(veterinarian);
     }
 
 
@@ -101,8 +106,8 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public VeterinarianResponseDto returnVeterinarianDtoIfExists(Long veterinarianId) {
-        return veterinarianService.findVeterinarianById(veterinarianId);
+    public Veterinarian returnVeterinarianDtoIfExists(Long veterinarianId) {
+        return veterinarianService.returnVeterinarianIfExists(veterinarianId);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package io.cristos.petmanagement.utilities.mapper.veterinarian;
 
+
 import io.cristos.petmanagement.dtos.request.veterinarian.VeterinarianRequestDto;
+import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianContactResponseDto;
 import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class VeterinarianMapperImpl implements VeterinarianMapper {
@@ -30,11 +33,11 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
 
         Veterinarian veterinarian = new Veterinarian();
 
-        veterinarian.setFirstName(veterinarianRequestDto.firstName());
-        veterinarian.setLastName(veterinarianRequestDto.lastName());
-        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.gender()));
-        veterinarian.setBornAt(veterinarianRequestDto.bornAt());
-        veterinarian.setSpeciality(veterinarianRequestDto.speciality());
+        veterinarian.setFirstName(veterinarianRequestDto.getFirstName());
+        veterinarian.setLastName(veterinarianRequestDto.getLastName());
+        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.getGender()));
+        veterinarian.setBornAt(veterinarianRequestDto.getBornAt());
+        veterinarian.setSpeciality(veterinarianRequestDto.getSpeciality());
 
         return veterinarian;
     }
@@ -45,11 +48,11 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         Veterinarian veterinarian = new Veterinarian();
 
         veterinarian.setId(veterinarianId);
-        veterinarian.setFirstName(veterinarianRequestDto.firstName());
-        veterinarian.setLastName(veterinarianRequestDto.lastName());
-        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.gender()));
-        veterinarian.setBornAt(veterinarianRequestDto.bornAt());
-        veterinarian.setSpeciality(veterinarianRequestDto.speciality());
+        veterinarian.setFirstName(veterinarianRequestDto.getFirstName());
+        veterinarian.setLastName(veterinarianRequestDto.getLastName());
+        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.getGender()));
+        veterinarian.setBornAt(veterinarianRequestDto.getBornAt());
+        veterinarian.setSpeciality(veterinarianRequestDto.getSpeciality());
 
         return veterinarian;
     }
@@ -57,18 +60,40 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
     @Override
     public VeterinarianResponseDto veterinarianToVeterinarianResponseDto(Veterinarian veterinarian) {
 
-        return new VeterinarianResponseDto(
-                veterinarian.getId(),
-                veterinarian.getFirstName(),
-                veterinarian.getLastName(),
-                veterinarian.getBornAt(),
-                genderConverter.convertToDatabaseColumn(veterinarian.getGender()),
-                veterinarian.getSpeciality(),
-                veterinarian.getCreatedAt(),
-                veterinarian.getAge()
-        );
+        VeterinarianResponseDto veterinarianResponseDto = new VeterinarianResponseDto();
+
+        veterinarianResponseDto.setVeterinarianId(veterinarian.getId());
+        veterinarianResponseDto.setFirstName(veterinarian.getFirstName());
+        veterinarianResponseDto.setLastName(veterinarian.getLastName());
+        veterinarianResponseDto.setBornAt(veterinarian.getBornAt());
+        veterinarianResponseDto.setGender(genderConverter.convertToDatabaseColumn(veterinarian.getGender()));
+        veterinarianResponseDto.setSpeciality(veterinarian.getSpeciality());
+        veterinarianResponseDto.setCreatedAt(veterinarian.getCreatedAt());
+        veterinarianResponseDto.setAge(veterinarian.getAge());
+
+        return veterinarianResponseDto;
     }
 
+    @Override
+    public VeterinarianContactResponseDto veterinarianToVeterinarianContactResponseDto(Veterinarian veterinarian) {
+
+        VeterinarianContactResponseDto veterinarianContactResponseDto = new VeterinarianContactResponseDto();
+
+        veterinarianContactResponseDto.setVeterinarianId(veterinarian.getId());
+        veterinarianContactResponseDto.setFirstName(veterinarian.getFirstName());
+        veterinarianContactResponseDto.setLastName(veterinarian.getLastName());
+        veterinarianContactResponseDto.setBornAt(veterinarian.getBornAt());
+        veterinarianContactResponseDto.setGender(genderConverter.convertToDatabaseColumn(veterinarian.getGender()));
+        veterinarianContactResponseDto.setSpeciality(veterinarian.getSpeciality());
+        veterinarianContactResponseDto.setCreatedAt(veterinarian.getCreatedAt());
+        veterinarianContactResponseDto.setAge(veterinarian.getAge());
+
+        if (Objects.nonNull(veterinarian.getContact())) {
+//            veterinarianContactResponseDto.setContactRequestDto(veterinarian.getContact());
+        }
+
+        return veterinarianContactResponseDto;
+    }
 
     @Override
     public List<VeterinarianResponseDto> veterinarianListToVeterinarianResponseDtoList(Collection<Veterinarian> veterinarianCollection) {
