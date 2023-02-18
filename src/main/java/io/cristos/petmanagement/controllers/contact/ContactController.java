@@ -48,7 +48,7 @@ public class ContactController {
                 .buildAndExpand(veterinarian.getContact().getId())
                 .toUri();
 
-        logger.info("Saved contact for veterinarian with id " + veterinarianId + " contact " + contactRequestDto);
+        logger.info("Saved contact for veterinarian with id " + veterinarianId);
 
         return ResponseEntity.created(location).build();
     }
@@ -78,7 +78,7 @@ public class ContactController {
 
         contactService.updateContactToVeterinarianById(veterinarianId, contactRequestDto, contactId);
 
-        logger.info("Updated contact with contactId: " + contactId + " for veterinarian with id: " + veterinarianId);
+        logger.info("Updated contact for veterinarian with id " + veterinarianId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -96,7 +96,7 @@ public class ContactController {
 
         contactService.deleteContactToVeterinarianById(veterinarianId, contactId);
 
-        logger.info("Deleted contact with contactId: " + contactId + " for veterinarian with id: " + veterinarianId);
+        logger.info("Deleted contact for veterinarian with id " + veterinarianId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
