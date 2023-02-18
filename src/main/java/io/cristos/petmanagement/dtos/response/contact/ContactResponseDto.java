@@ -74,4 +74,17 @@ public class ContactResponseDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "ContactResponseDto{" +
+                "contactId=" + contactId +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", phoneNumberList=" + phoneNumberList +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

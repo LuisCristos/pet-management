@@ -65,4 +65,15 @@ public class VeterinarianRequestDto {
         public void setSpeciality(String speciality) {
                 this.speciality = speciality;
         }
+
+        @Override
+        public String toString() {
+                return "VeterinarianRequestDto{" +
+                        "firstName='" + firstName + '\'' +
+                        ", lastName='" + lastName + '\'' +
+                        ", bornAt=" + bornAt +
+                        ", gender='" + gender + '\'' +
+                        ", speciality='" + speciality + '\'' +
+                        '}';
+        }
 }

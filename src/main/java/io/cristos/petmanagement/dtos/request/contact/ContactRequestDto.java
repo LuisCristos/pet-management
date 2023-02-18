@@ -78,4 +78,16 @@ public class ContactRequestDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "ContactRequestDto{" +
+                "street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", phoneNumberList=" + phoneNumberList +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

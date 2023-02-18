@@ -3,7 +3,6 @@ package io.cristos.petmanagement.dtos.response.veterinarian;
 import java.time.LocalDate;
 
 public class VeterinarianResponseDto {
-
     private Long veterinarianId;
     private String firstName;
     private String lastName;
@@ -78,5 +77,19 @@ public class VeterinarianResponseDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "VeterinarianResponseDto{" +
+                "veterinarianId=" + veterinarianId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", bornAt=" + bornAt +
+                ", gender='" + gender + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", createdAt=" + createdAt +
+                ", age=" + age +
+                '}';
     }
 }
