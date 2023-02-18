@@ -1,5 +1,6 @@
 package io.cristos.petmanagement.dtos.response.contact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactResponseDto {
@@ -8,7 +9,7 @@ public class ContactResponseDto {
     private int houseNumber;
     private String city;
     private String zipCode;
-    private List<String> phoneNumberList;
+    private List<String> phoneNumberList = new ArrayList<>();
     private String email;
 
     public ContactResponseDto() {

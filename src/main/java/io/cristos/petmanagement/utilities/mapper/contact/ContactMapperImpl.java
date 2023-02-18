@@ -2,7 +2,7 @@ package io.cristos.petmanagement.utilities.mapper.contact;
 
 import io.cristos.petmanagement.dtos.contact.ContactDto;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
-import io.cristos.petmanagement.dtos.veterinarian.VeterinarianDto;
+import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +29,45 @@ public class ContactMapperImpl implements ContactMapper {
         }
 
         return contact;
+    }
+
+    @Override
+    public Contact contactRequestDtoToContact(Long contactId, ContactRequestDto contactRequestDto) {
+
+        Contact contactToUpdate = new Contact();
+
+        contactToUpdate.setId(contactId);
+        contactToUpdate.setCity(contactRequestDto.getCity());
+        contactToUpdate.setStreet(contactRequestDto.getStreet());
+        contactToUpdate.setHouseNumber(contactRequestDto.getHouseNumber());
+        contactToUpdate.setZipCode(contactRequestDto.getZipCode());
+        contactToUpdate.setEmail(contactRequestDto.getEmail());
+
+        for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
+            contactToUpdate.addPhoneNumber(phoneNumber);
+        }
+
+        return contactToUpdate;
+    }
+
+    @Override
+    public ContactResponseDto contactToContactResponseDto(Contact contact) {
+
+        ContactResponseDto contactResponseDto = new ContactResponseDto();
+
+        contactResponseDto.setContactId(contact.getId());
+        contactResponseDto.setStreet(contact.getStreet());
+        contactResponseDto.setHouseNumber(contact.getHouseNumber());
+        contactResponseDto.setCity(contact.getCity());
+        contactResponseDto.setZipCode(contact.getZipCode());
+
+        for (String phoneNumber : contact.getPhoneNumberList()) {
+            contactResponseDto.addPhoneNumber(phoneNumber);
+        }
+
+        contactResponseDto.setEmail(contact.getEmail());
+
+        return contactResponseDto;
     }
 
     @Override
@@ -82,20 +121,6 @@ public class ContactMapperImpl implements ContactMapper {
         }
 
         return contactListToContactDtoList;
-    }
-
-    @Override
-    public ContactDto getContactDtoFromVeterinarianDto(VeterinarianDto veterinarianDto) {
-
-        ContactDto contactDto = new ContactDto();
-        contactDto.setContactId(veterinarianDto.getContactDto().getContactId());
-        contactDto.setStreet(veterinarianDto.getContactDto().getStreet());
-        contactDto.setHouseNumber(veterinarianDto.getContactDto().getHouseNumber());
-        contactDto.setCity(veterinarianDto.getContactDto().getCity());
-        contactDto.setZipCode(veterinarianDto.getContactDto().getZipCode());
-        contactDto.setEmail(veterinarianDto.getContactDto().getEmail());
-
-        return contactDto;
     }
 
 }
