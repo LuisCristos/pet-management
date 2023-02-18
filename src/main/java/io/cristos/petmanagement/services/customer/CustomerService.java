@@ -10,6 +10,8 @@ public interface CustomerService {
 
     Customer saveCustomer(CustomerRequestDto customerRequestDto);
 
+    Customer saveCustomerWithContact(Customer customer);
+
     List<CustomerResponseDto> getAllCustomers();
 
     CustomerResponseDto findCustomerById(Long customerId);
@@ -18,5 +20,5 @@ public interface CustomerService {
 
     Customer updateCustomer(Long customerId, CustomerRequestDto customerRequestDto);
 
-    Customer returnCustomerIfExists(Long customerId, String action);
+    Customer returnCustomerIfExists(Long customerId);
 }

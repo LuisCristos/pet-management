@@ -7,6 +7,7 @@ import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Customer")
@@ -20,7 +21,7 @@ public class Customer extends Person {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private List<Pet> petList;
+    private List<Pet> petList = new ArrayList<>();
 
     @OneToOne(
             cascade = CascadeType.ALL

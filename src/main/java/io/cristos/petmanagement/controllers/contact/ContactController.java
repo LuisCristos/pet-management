@@ -2,6 +2,7 @@ package io.cristos.petmanagement.controllers.contact;
 
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
+import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.contact.ContactService;
 import jakarta.validation.Valid;
@@ -102,76 +103,76 @@ public class ContactController {
     }
 
 //    customer ******************************
-//
-//    @GetMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactDto> findContactByCustomerId(@PathVariable(name = "customerId")
-//                                                              @Min(1)
-//                                                              @NotNull
-//                                                              Long customerId,
-//                                                              @PathVariable(name = "contactId")
-//                                                              @Min(1)
-//                                                              @NotNull
-//                                                              Long contactId) {
-//
-//        logger.info("Find contact for customer with id: " + customerId);
-//
-//        return ResponseEntity.ok(contactService.findContactByCustomerId(customerId, contactId));
-//    }
-//
-//    @PostMapping("/customers/{customerId}/contacts")
-//    public ResponseEntity<ContactDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
-//                                                                @Min(1)
-//                                                                @NotNull
-//                                                                Long customerId,
-//                                                                @Valid
-//                                                                @RequestBody ContactDto contactDto) {
-//
-//        Contact contact = contactService.saveContactToCustomerByID(customerId, contactDto);
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{contactId}")
-//                .buildAndExpand(contact.getId())
-//                .toUri();
-//
-//        logger.info("Saved contact for customer with id " + customerId + " contact " + contactDto);
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @PutMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactDto> updateContactToCustomerById(@PathVariable(name = "customerId")
-//                                                                  @Min(1)
-//                                                                  @NotNull
-//                                                                  Long customerId,
-//                                                                  @Valid
-//                                                                  @RequestBody ContactDto contactDto,
-//                                                                  @PathVariable(name = "contactId")
-//                                                                  @Min(1)
-//                                                                  @NotNull
-//                                                                  Long contactId) {
-//
-//        contactService.updateContactToCustomerById(customerId, contactDto, contactId);
-//
-//        logger.info("Updated contact with contactId: " + contactId + " for customer with id: " + customerId);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactDto> deleteContactToCustomerById(@PathVariable(name = "customerId")
-//                                                                  @Min(1)
-//                                                                  @NotNull
-//                                                                  Long customerId,
-//                                                                  @PathVariable(name = "contactId")
-//                                                                  @Min(1)
-//                                                                  @NotNull
-//                                                                  Long contactId) {
-//
-//        contactService.deleteContactToCustomerById(customerId, contactId);
-//
-//        logger.info("Deleted contact with contactId: " + contactId + " for customer with id: " + customerId);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+
+    @GetMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactResponseDto> findContactByCustomerId(@PathVariable(name = "customerId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long customerId,
+                                                                      @PathVariable(name = "contactId")
+                                                                      @Min(1)
+                                                                      @NotNull
+                                                                      Long contactId) {
+
+        logger.info("Find contact for customer with id: " + customerId);
+
+        return ResponseEntity.ok(contactService.findContactByCustomerId(customerId, contactId));
+    }
+
+    @PostMapping("/customers/{customerId}/contacts")
+    public ResponseEntity<ContactResponseDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
+                                                                        @Min(1)
+                                                                        @NotNull
+                                                                        Long customerId,
+                                                                        @Valid
+                                                                        @RequestBody ContactRequestDto contactRequestDto) {
+
+        Customer customer = contactService.saveContactToCustomerByID(customerId, contactRequestDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{contactId}")
+                .buildAndExpand(customer.getContact().getId())
+                .toUri();
+
+        logger.info("Saved contact for customer with id " + customerId);
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactResponseDto> updateContactToCustomerById(@PathVariable(name = "customerId")
+                                                                          @Min(1)
+                                                                          @NotNull
+                                                                          Long customerId,
+                                                                          @Valid
+                                                                          @RequestBody ContactRequestDto contactRequestDto,
+                                                                          @PathVariable(name = "contactId")
+                                                                          @Min(1)
+                                                                          @NotNull
+                                                                          Long contactId) {
+
+        contactService.updateContactToCustomerById(customerId, contactRequestDto, contactId);
+
+        logger.info("Updated contact with contactId: " + contactId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/customers/{customerId}/contacts/{contactId}")
+    public ResponseEntity<ContactResponseDto> deleteContactToCustomerById(@PathVariable(name = "customerId")
+                                                                          @Min(1)
+                                                                          @NotNull
+                                                                          Long customerId,
+                                                                          @PathVariable(name = "contactId")
+                                                                          @Min(1)
+                                                                          @NotNull
+                                                                          Long contactId) {
+
+        contactService.deleteContactToCustomerById(customerId, contactId);
+
+        logger.info("Deleted contact with contactId: " + contactId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

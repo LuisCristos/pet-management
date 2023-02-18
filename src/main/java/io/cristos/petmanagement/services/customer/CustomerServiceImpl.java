@@ -35,12 +35,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer saveCustomerWithContact(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    @Override
     public List<CustomerResponseDto> getAllCustomers() {
 
         Collection<Customer> customerCollection = customerRepository.findAll();
 
         if (customerCollection.isEmpty()) {
-
             logger.info("getAllCustomers(). Retrieved empty List.");
             return Collections.emptyList();
         }
@@ -51,8 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDto findCustomerById(Long customerId) {
 
-        final String action = "found";
-        Customer customer = returnCustomerIfExists(customerId, action);
+        Customer customer = returnCustomerIfExists(customerId);
 
         return customerMapper.customerToCustomerResponseDto(customer);
     }
@@ -60,8 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomerById(Long customerId) {
 
-        final String action = "deleted";
-        returnCustomerIfExists(customerId, action);
+        returnCustomerIfExists(customerId);
 
         customerRepository.deleteById(customerId);
     }
@@ -69,22 +71,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomer(Long customerId, CustomerRequestDto customerRequestDto) {
 
-        final String action = "updated";
-        returnCustomerIfExists(customerId, action);
+        returnCustomerIfExists(customerId);
 
         return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerId, customerRequestDto));
     }
 
     @Override
-    public Customer returnCustomerIfExists(Long customerId, String action) {
+    public Customer returnCustomerIfExists(Long customerId) {
 
         Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
-                            "findCustomerById().", "Customer with id: " + customerId + " cannot be " + action + " because it does not exist.",
-                            new NotFoundException("Customer with id: " + customerId + " cannot be " + action + " because it does not exist."));
+                            "findCustomerById().", "Customer with id: " + customerId + " cannot be found.",
+                            new NotFoundException("Customer with id: " + customerId + " cannot be found."));
 
-                    return new NotFoundException("Customer with id: " + customerId + " cannot be " + action + " because it does not exist.");
+                    return new NotFoundException("Customer with id: " + customerId + " cannot be found.");
                 }));
 
         return optionalCustomer.get();
