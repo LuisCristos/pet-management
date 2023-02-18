@@ -1,8 +1,7 @@
 package io.cristos.petmanagement.services.contact;
 
-import io.cristos.petmanagement.dtos.contact.ContactDto;
-import io.cristos.petmanagement.dtos.customer.CustomerDto;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
+import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
@@ -42,17 +41,6 @@ public class ContactServiceImpl implements ContactService {
 
     //    veterinarian
     @Override
-    public ContactDto findContactByVeterinarianId(Long veterinarianId, Long contactId) {
-
-        returnVeterinarianDtoIfExists(veterinarianId);
-
-        final String action = "found";
-        Contact contact = returnContactIfExists(contactId, action);
-
-        return contactMapper.contactToContactDto(contact);
-    }
-
-    @Override
     @Transactional
     public Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto) {
 
@@ -73,36 +61,40 @@ public class ContactServiceImpl implements ContactService {
         return veterinarianService.saveVeterinarianContact(veterinarian);
     }
 
+    @Override
+    @Transactional
+    public ContactResponseDto findContactByVeterinarianId(Long veterinarianId) {
+
+        Veterinarian veterinarian = returnVeterinarianDtoIfExists(veterinarianId);
+
+        Contact contact = returnContactIfExists(veterinarian);
+
+        return contactMapper.contactToContactResponseDto(contact);
+    }
 
     @Override
     @Transactional
-    public Contact updateContactToVeterinarianById(Long veterinarianId, ContactDto contactDto, Long contactId) {
+    public Contact updateContactToVeterinarianById(Long veterinarianId,
+                                                   ContactRequestDto contactRequestDto, Long contactId) {
 
-//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
-//
-//        final String action = "updated";
-//        returnContactIfExists(contactId, action);
-//
-//        veterinarianDto.setContactDto(contactDto);
+        Veterinarian veterinarian = returnVeterinarianDtoIfExists(veterinarianId);
 
-//        return veterinarianService.saveVeterinarian(veterinarianDto).getContact();
-        return null;
+        returnContactIfExists(veterinarian);
+
+        Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
+
+        return contactRepository.save(contact);
     }
 
     @Override
     @Transactional
     public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
 
-//        VeterinarianDto veterinarianDto = returnVeterinarianDtoIfExists(veterinarianId);
-//
-//        final String action = "deleted";
-//        Contact contact = returnContactIfExists(contactId, action);
-//
-//        veterinarianDto.setContactDto(null);
-//
-////        veterinarianService.saveVeterinarian(veterinarianDto);
-//
-//        contactRepository.delete(contact);
+        Veterinarian veterinarian = returnVeterinarianDtoIfExists(veterinarianId);
+
+        Contact contact = returnContactIfExists(veterinarian);
+
+        contactRepository.delete(contact);
     }
 
     @Override
@@ -111,85 +103,83 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact returnContactIfExists(Long contactId, String action) {
+    public Contact returnContactIfExists(Veterinarian veterinarian) {
 
-        Optional<Contact> optionalContact = Optional.of(contactRepository.findById(contactId)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}!",
-                            "An exception occurred!", "Contact with id: " + contactId + " cannot be " + action + " because it does not exist.",
-                            new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist."));
+        if (Objects.isNull(veterinarian.getContact())) {
 
-                    return new NotFoundException("Contact with id: " + contactId + " cannot be " + action + " because it does not exist.");
-                }));
+            throw new NotFoundException("Contact for VeterinarianId " + veterinarian.getId() + " cannot be found ");
+        }
+
+        Optional<Contact> optionalContact = contactRepository.findById(veterinarian.getContact().getId());
 
         return optionalContact.get();
     }
 
 //    customer
 
-
-    @Override
-    public ContactDto findContactByCustomerId(Long customerId, Long contactId) {
-
-        returnCustomerDtoIfExists(customerId);
-
-        final String action = "found";
-        Contact contact = returnContactIfExists(contactId, action);
-
-        return contactMapper.contactToContactDto(contact);
-    }
-
-    @Override
-    public Contact saveContactToCustomerByID(Long customerId, ContactDto contactDto) {
-
-        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
-
-        if (Objects.nonNull(customerDto.getContact())) {
-
-            logger.warn("{}, {}!",
-                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
-
-            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
-        }
-
-        customerDto.setContact(contactDto);
-
-//        return customerService.saveCustomer(customerDto).getContact();
-        return null;
-    }
-
-    @Override
-    public Contact updateContactToCustomerById(Long customerId, ContactDto contactDto, Long contactId) {
-
-        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
-
-        final String action = "updated";
-        returnContactIfExists(contactId, action);
-
-        customerDto.setContact(contactDto);
-
-//        return customerService.saveCustomer(customerDto).getContact();
-        return null;
-    }
-
-    @Override
-    public void deleteContactToCustomerById(Long customerId, Long contactId) {
-
-//        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
 //
-//        final String action = "deleted";
+//    @Override
+//    public ContactDto findContactByCustomerId(Long customerId, Long contactId) {
+//
+//        returnCustomerDtoIfExists(customerId);
+//
+//        final String action = "found";
 //        Contact contact = returnContactIfExists(contactId, action);
 //
-//        customerDto.setContact(null);
+//        return contactMapper.contactToContactDto(contact);
+//    }
 //
-//        customerService.saveCustomer(customerDto);
+//    @Override
+//    public Contact saveContactToCustomerByID(Long customerId, ContactDto contactDto) {
 //
-//        contactRepository.delete(contact);
-    }
-
-    @Override
-    public CustomerDto returnCustomerDtoIfExists(Long customerId) {
-//        return customerService.findCustomerById(customerId);
-        return null;
-    }
+//        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
+//
+//        if (Objects.nonNull(customerDto.getContact())) {
+//
+//            logger.warn("{}, {}!",
+//                    "An exception occurred!", "Contact for " + contactDto + " already exists.");
+//
+//            throw new IllegalArgumentException("Contact for " + contactDto + " already exists.");
+//        }
+//
+//        customerDto.setContact(contactDto);
+//
+////        return customerService.saveCustomer(customerDto).getContact();
+//        return null;
+//    }
+//
+//    @Override
+//    public Contact updateContactToCustomerById(Long customerId, ContactDto contactDto, Long contactId) {
+//
+//        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
+//
+//        final String action = "updated";
+//        returnContactIfExists(contactId, action);
+//
+//        customerDto.setContact(contactDto);
+//
+////        return customerService.saveCustomer(customerDto).getContact();
+//        return null;
+//    }
+//
+//    @Override
+//    public void deleteContactToCustomerById(Long customerId, Long contactId) {
+//
+////        CustomerDto customerDto = returnCustomerDtoIfExists(customerId);
+////
+////        final String action = "deleted";
+////        Contact contact = returnContactIfExists(contactId, action);
+////
+////        customerDto.setContact(null);
+////
+////        customerService.saveCustomer(customerDto);
+////
+////        contactRepository.delete(contact);
+//    }
+//
+//    @Override
+//    public CustomerDto returnCustomerDtoIfExists(Long customerId) {
+////        return customerService.findCustomerById(customerId);
+//        return null;
+//    }
 }
