@@ -37,7 +37,6 @@ public class VeterinarianServiceImpl implements VeterinarianService {
                 veterinarianMapper.veterinarianRequestDtoToVeterinarian(veterinarianRequestDto));
     }
 
-
     @Override
     public Veterinarian saveVeterinarianContact(Veterinarian veterinarian) {
         return veterinarianRepository.save(veterinarian);
@@ -59,8 +58,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     @Override
     public VeterinarianResponseDto findVeterinarianById(Long veterinarianId) {
 
-        final String action = "found";
-        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId, action);
+        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
 
         return veterinarianMapper.veterinarianToVeterinarianResponseDto(veterinarian);
     }
@@ -68,8 +66,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     @Override
     public void deleteVeterinarianById(Long veterinarianId) {
 
-        final String action = "deleted";
-        returnVeterinarianIfExists(veterinarianId, action);
+        returnVeterinarianIfExists(veterinarianId);
 
         veterinarianRepository.deleteById(veterinarianId);
     }
@@ -77,26 +74,10 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     @Override
     public Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto) {
 
-        final String action = "updated";
-        returnVeterinarianIfExists(veterinarianId, action);
+        returnVeterinarianIfExists(veterinarianId);
 
         return veterinarianRepository.save(
                 veterinarianMapper.veterinarianRequestDtoToVeterinarian(veterinarianId, veterinarianRequestDto));
-    }
-
-    @Override
-    public Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action) {
-
-        Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(veterinarianId)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}!",
-                            "An exception occurred!", "Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.",
-                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist."));
-
-                    throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be " + action + " because it does not exist.");
-                }));
-
-        return optionalVeterinarian.get();
     }
 
     @Override

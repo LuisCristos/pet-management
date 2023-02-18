@@ -50,21 +50,6 @@ public class VeterinarianController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/{veterinarianId}")
-    public ResponseEntity<VeterinarianResponseDto> updateVeterinarianById(@PathVariable
-                                                                          @NotNull
-                                                                          @Min(value = 1, message = "Must be greater than or equal to 1")
-                                                                          Long veterinarianId,
-                                                                          @Valid
-                                                                          @RequestBody VeterinarianRequestDto veterinarianRequestDto) {
-
-        veterinarianService.updateVeterinarian(veterinarianId, veterinarianRequestDto);
-
-        logger.info("Updated veterinarian with veterinarianId: " + veterinarianId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<List<VeterinarianResponseDto>> getAllVeterinarians() {
 
@@ -85,6 +70,21 @@ public class VeterinarianController {
         return ResponseEntity.ok(veterinarianService.findVeterinarianById(veterinarianId));
     }
 
+    @PutMapping("/{veterinarianId}")
+    public ResponseEntity<VeterinarianResponseDto> updateVeterinarianById(@PathVariable
+                                                                          @NotNull
+                                                                          @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                          Long veterinarianId,
+                                                                          @Valid
+                                                                          @RequestBody VeterinarianRequestDto veterinarianRequestDto) {
+
+        veterinarianService.updateVeterinarian(veterinarianId, veterinarianRequestDto);
+
+        logger.info("Updated veterinarian with veterinarianId: " + veterinarianId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{veterinarianId}")
     public ResponseEntity<VeterinarianResponseDto> deleteVeterinarianById(@PathVariable
                                                                           @Positive
@@ -98,5 +98,4 @@ public class VeterinarianController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

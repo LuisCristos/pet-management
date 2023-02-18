@@ -20,7 +20,5 @@ public interface VeterinarianService {
 
     Veterinarian updateVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto);
 
-    Veterinarian returnVeterinarianIfExists(Long veterinarianId, String action);
-
     Veterinarian returnVeterinarianIfExists(Long veterinarianId);
 }
