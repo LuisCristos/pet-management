@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.controllers.employee;
 
-import io.cristos.petmanagement.dtos.employee.EmployeeDto;
+import io.cristos.petmanagement.dtos.request.employee.EmployeeRequestDto;
+import io.cristos.petmanagement.dtos.response.employee.EmployeeResponseDto;
 import io.cristos.petmanagement.models.employee.Employee;
 import io.cristos.petmanagement.services.employee.EmployeeService;
 import jakarta.validation.Valid;
@@ -30,9 +31,9 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> saveEmployee(@Valid
-                                                    @RequestBody EmployeeDto employeeDto) {
-        Employee employee = employeeService.saveEmployee(employeeDto);
+    public ResponseEntity<EmployeeResponseDto> saveEmployee(@Valid
+                                                            @RequestBody EmployeeRequestDto employeeRequestDto) {
+        Employee employee = employeeService.saveEmployee(employeeRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,13 +41,13 @@ public class EmployeeController {
                 .buildAndExpand(employee.getId())
                 .toUri();
 
-        logger.info(employeeDto + " saved to database.");
+        logger.info(employeeRequestDto + " saved to database.");
 
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees() {
 
         logger.info("getAllEmployees. Retrieved all Employees.");
 
@@ -54,18 +55,18 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDto> findEmployeeById(@PathVariable(name = "employeeId")
-                                                        @NotNull
-                                                        @Min(1) Long employeeId) {
+    public ResponseEntity<EmployeeResponseDto> findEmployeeById(@PathVariable(name = "employeeId")
+                                                                @NotNull
+                                                                @Min(1) Long employeeId) {
         logger.info("Find employee by id: " + employeeId);
 
         return ResponseEntity.ok(employeeService.findEmployeeById(employeeId));
     }
 
     @DeleteMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDto> deleteEmployeeById(@PathVariable(name = "employeeId")
-                                                          @Min(1)
-                                                          @NotNull Long employeeId) {
+    public ResponseEntity<EmployeeResponseDto> deleteEmployeeById(@PathVariable(name = "employeeId")
+                                                                  @Min(1)
+                                                                  @NotNull Long employeeId) {
 
         employeeService.deleteEmployee(employeeId);
 
@@ -75,14 +76,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable(name = "employeeId")
-                                                          @Min(1)
-                                                          @NotNull
-                                                          Long employeeId,
-                                                          @Valid
-                                                          @RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeResponseDto> updateEmployeeById(@PathVariable(name = "employeeId")
+                                                                  @Min(1)
+                                                                  @NotNull
+                                                                  Long employeeId,
+                                                                  @Valid
+                                                                  @RequestBody EmployeeRequestDto employeeRequestDto) {
 
-        employeeService.updateEmployeeById(employeeId, employeeDto);
+        employeeService.updateEmployeeById(employeeId, employeeRequestDto);
 
         logger.info("Updated employee by id: " + employeeId);
 

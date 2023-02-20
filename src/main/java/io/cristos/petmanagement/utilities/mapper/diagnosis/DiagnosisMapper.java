@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.diagnosis;
 
-import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.request.diagnosis.DiagnosisRequestDto;
+import io.cristos.petmanagement.dtos.response.diagnosis.DiagnosisResponseDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 
 import java.util.Collection;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public interface DiagnosisMapper {
 
-    DiagnosisDto diagnosisToDiagnosisDto(Diagnosis diagnosis);
+    Diagnosis diagnosisRequestDtoToDiagnosis(DiagnosisRequestDto diagnosisRequestDto);
 
-    Diagnosis diagnosisDtoToDiagnosis(DiagnosisDto diagnosisDto);
+    Diagnosis diagnosisRequestDtoToDiagnosis(Long diagnosisId, DiagnosisRequestDto diagnosisRequestDto);
 
-    List<DiagnosisDto> diagnosisListToDiagnosisDtoList(Collection<Diagnosis> diagnosisCollection);
+    DiagnosisResponseDto diagnosisToDiagnosisResponseDto(Diagnosis diagnosis);
+
+    List<DiagnosisResponseDto> diagnosisListToDiagnosisResponseDtoList(Collection<Diagnosis> diagnosisCollection);
 }

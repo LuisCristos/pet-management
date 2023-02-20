@@ -1,7 +1,10 @@
 package io.cristos.petmanagement.utilities.mapper.employee;
 
-import io.cristos.petmanagement.dtos.employee.EmployeeDto;
+import io.cristos.petmanagement.dtos.request.employee.EmployeeRequestDto;
+import io.cristos.petmanagement.dtos.response.employee.EmployeeResponseDto;
 import io.cristos.petmanagement.models.employee.Employee;
+import io.cristos.petmanagement.utilities.genderconverter.GenderConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,48 +13,68 @@ import java.util.List;
 
 @Component
 public class EmployeeMapperImpl implements EmployeeMapper {
-    @Override
-    public EmployeeDto employeeToEmployeeDto(Employee employee) {
 
-        EmployeeDto employeeDto = new EmployeeDto();
+    private final GenderConverter genderConverter;
 
-        employeeDto.setId(employee.getId());
-        employeeDto.setFirstName(employee.getFirstName());
-        employeeDto.setLastName(employee.getLastName());
-        employeeDto.setDateOfBirth(employee.getBornAt());
-        employeeDto.setDateOfCreation(employee.getCreatedAt());
-        employeeDto.setAge(employee.getAge());
-
-        return employeeDto;
+    @Autowired
+    public EmployeeMapperImpl(GenderConverter genderConverter) {
+        this.genderConverter = genderConverter;
     }
 
     @Override
-    public Employee employeeDtoToEmployee(EmployeeDto employeeDto) {
+    public Employee employeeRequestDtoToEmployee(EmployeeRequestDto employeeRequestDto) {
 
         Employee employee = new Employee();
 
-        employee.setId(employeeDto.getId());
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setBornAt(employeeDto.getDateOfBirth());
-        employee.setCreatedAt(employeeDto.getDateOfCreation());
-        employee.setAge(employeeDto.getAge());
+        employee.setFirstName(employeeRequestDto.getFirstName());
+        employee.setLastName(employeeRequestDto.getLastName());
+        employee.setBornAt(employeeRequestDto.getBornAt());
+        employee.setGender(genderConverter.convertToEntityAttribute(employeeRequestDto.getGender()));
 
         return employee;
     }
 
     @Override
-    public List<EmployeeDto> employeeListToEmployeeDtoList(Collection<Employee> employeeCollection) {
+    public Employee employeeRequestDtoToEmployee(Long employeeId, EmployeeRequestDto employeeRequestDto) {
 
-        List<EmployeeDto> employeeDtoList = new ArrayList<>();
+        Employee employee = new Employee();
+
+        employee.setId(employeeId);
+        employee.setFirstName(employeeRequestDto.getFirstName());
+        employee.setLastName(employeeRequestDto.getLastName());
+        employee.setBornAt(employeeRequestDto.getBornAt());
+        employee.setGender(genderConverter.convertToEntityAttribute(employeeRequestDto.getGender()));
+
+        return employee;
+    }
+
+    @Override
+    public EmployeeResponseDto employeeToEmployeeResponseDto(Employee employee) {
+
+        EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
+
+        employeeResponseDto.setId(employee.getId());
+        employeeResponseDto.setFirstName(employee.getFirstName());
+        employeeResponseDto.setLastName(employee.getLastName());
+        employeeResponseDto.setAge(employee.getAge());
+        employeeResponseDto.setBornAt(employee.getBornAt());
+        employeeResponseDto.setCreatedAt(employee.getCreatedAt());
+
+        return employeeResponseDto;
+    }
+
+    @Override
+    public List<EmployeeResponseDto> employeeListToEmployeeResponseDtoList(Collection<Employee> employeeCollection) {
+
+        List<EmployeeResponseDto> employeeResponseDtoList = new ArrayList<>();
 
         for (Employee employee : employeeCollection) {
 
-            EmployeeDto employeeDto = employeeToEmployeeDto(employee);
+            EmployeeResponseDto employeeResponseDto = employeeToEmployeeResponseDto(employee);
 
-            employeeDtoList.add(employeeDto);
+            employeeResponseDtoList.add(employeeResponseDto);
         }
 
-        return employeeDtoList;
+        return employeeResponseDtoList;
     }
 }

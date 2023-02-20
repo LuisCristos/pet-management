@@ -1,9 +1,8 @@
 package io.cristos.petmanagement.utilities.mapper.diagnosis;
 
-import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
+import io.cristos.petmanagement.dtos.request.diagnosis.DiagnosisRequestDto;
+import io.cristos.petmanagement.dtos.response.diagnosis.DiagnosisResponseDto;
 import io.cristos.petmanagement.models.diagnosis.Diagnosis;
-import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,51 +12,51 @@ import java.util.List;
 @Component
 public class DiagnosisMapperImpl implements DiagnosisMapper {
 
-    private final GenderConverter genderConverter;
-
-    @Autowired
-    public DiagnosisMapperImpl(GenderConverter genderConverter) {
-        this.genderConverter = genderConverter;
-    }
-
     @Override
-    public DiagnosisDto diagnosisToDiagnosisDto(Diagnosis diagnosis) {
-
-        DiagnosisDto diagnosisDto = new DiagnosisDto();
-
-        diagnosisDto.setId(diagnosis.getId());
-        diagnosisDto.setDiagnosis(diagnosis.getDiagnosis());
-        diagnosisDto.setLastUpdate(diagnosis.getLastUpdate());
-        diagnosisDto.setDateOfCreation(diagnosis.getCreatedAt());
-
-        return diagnosisDto;
-    }
-
-    @Override
-    public Diagnosis diagnosisDtoToDiagnosis(DiagnosisDto diagnosisDto) {
+    public Diagnosis diagnosisRequestDtoToDiagnosis(DiagnosisRequestDto diagnosisRequestDto) {
 
         Diagnosis diagnosis = new Diagnosis();
 
-        diagnosis.setId(diagnosisDto.getId());
-        diagnosis.setDiagnosis(diagnosisDto.getDiagnosis());
-        diagnosis.setLastUpdate(diagnosisDto.getLastUpdate());
-        diagnosis.setCreatedAt(diagnosisDto.getDateOfCreation());
+        diagnosis.setDiagnosis(diagnosisRequestDto.getDiagnosis());
 
         return diagnosis;
     }
 
     @Override
-    public List<DiagnosisDto> diagnosisListToDiagnosisDtoList(Collection<Diagnosis> diagnosisCollection) {
+    public Diagnosis diagnosisRequestDtoToDiagnosis(Long diagnosisId, DiagnosisRequestDto diagnosisRequestDto) {
 
-        List<DiagnosisDto> diagnosisToDiagnosisDtoList = new ArrayList<>();
+        Diagnosis diagnosis = new Diagnosis();
+
+        diagnosis.setId(diagnosisId);
+        diagnosis.setDiagnosis(diagnosisRequestDto.getDiagnosis());
+
+        return diagnosis;
+    }
+
+    @Override
+    public DiagnosisResponseDto diagnosisToDiagnosisResponseDto(Diagnosis diagnosis) {
+
+        DiagnosisResponseDto diagnosisResponseDto = new DiagnosisResponseDto();
+
+        diagnosisResponseDto.setId(diagnosis.getId());
+        diagnosisResponseDto.setDiagnosis(diagnosis.getDiagnosis());
+        diagnosisResponseDto.setDateOfCreation(diagnosis.getCreatedAt());
+        diagnosisResponseDto.setUpdatedAt(diagnosis.getUpdatedAt());
+
+        return diagnosisResponseDto;
+    }
+
+
+    @Override
+    public List<DiagnosisResponseDto> diagnosisListToDiagnosisResponseDtoList(Collection<Diagnosis> diagnosisCollection) {
+
+        List<DiagnosisResponseDto> diagnosisResponseDtoList = new ArrayList<>();
 
         for (Diagnosis diagnosis : diagnosisCollection) {
 
-            DiagnosisDto diagnosisDto = diagnosisToDiagnosisDto(diagnosis);
-
-            diagnosisToDiagnosisDtoList.add(diagnosisDto);
+            diagnosisResponseDtoList.add(diagnosisToDiagnosisResponseDto(diagnosis));
         }
 
-        return diagnosisToDiagnosisDtoList;
+        return diagnosisResponseDtoList;
     }
 }

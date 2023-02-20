@@ -4,8 +4,8 @@ package io.cristos.petmanagement.utilities.mapper.veterinarian;
 import io.cristos.petmanagement.dtos.request.veterinarian.VeterinarianRequestDto;
 import io.cristos.petmanagement.dtos.response.veterinarian.VeterinarianResponseDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
+import io.cristos.petmanagement.utilities.genderconverter.GenderConverter;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
-import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

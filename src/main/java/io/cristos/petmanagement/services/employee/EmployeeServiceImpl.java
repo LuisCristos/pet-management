@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.services.employee;
 
-import io.cristos.petmanagement.dtos.employee.EmployeeDto;
+import io.cristos.petmanagement.dtos.request.employee.EmployeeRequestDto;
+import io.cristos.petmanagement.dtos.response.employee.EmployeeResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.employee.Employee;
 import io.cristos.petmanagement.repositories.employee.EmployeeRepository;
@@ -27,13 +28,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee saveEmployee(EmployeeDto employeeDto) {
+    public Employee saveEmployee(EmployeeRequestDto employeeRequestDto) {
 
-        return employeeRepository.save(employeeMapper.employeeDtoToEmployee(employeeDto));
+        return employeeRepository.save(employeeMapper.employeeRequestDtoToEmployee(employeeRequestDto));
     }
 
     @Override
-    public List<EmployeeDto> getALlEmployees() {
+    public List<EmployeeResponseDto> getALlEmployees() {
 
         Collection<Employee> employeeCollection = employeeRepository.findAll();
 
@@ -42,55 +43,45 @@ public class EmployeeServiceImpl implements EmployeeService {
             return Collections.emptyList();
         }
 
-        return employeeMapper.employeeListToEmployeeDtoList(employeeRepository.findAll());
+        return employeeMapper.employeeListToEmployeeResponseDtoList(employeeRepository.findAll());
     }
 
     @Override
-    public EmployeeDto findEmployeeById(Long employeeId) {
+    public EmployeeResponseDto findEmployeeById(Long employeeId) {
 
-        Optional<Employee> optionalEmployee = Optional.of(employeeRepository.findById(employeeId)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}! An exception occurred!",
-                            "findEmployeeById().", "Employee with id: " + employeeId + " cannot be found because it does not exist.",
-                            new NotFoundException("Employee Id: " + employeeId + " cannot be found because it does not exist."));
+        Employee employee = returnEmployeeIfExists(employeeId);
 
-                    throw new NotFoundException("Employee Id: " + employeeId + " cannot be found because it does not exist.");
-                }));
-
-        return employeeMapper.employeeToEmployeeDto(optionalEmployee.get());
+        return employeeMapper.employeeToEmployeeResponseDto(employee);
     }
 
     @Override
     public void deleteEmployee(Long employeeId) {
 
-        final String action = "deleted";
-        final String methodName = "deleteEmployee()";
-        checkIfEmployeeExistsById(employeeId, methodName, action);
+        returnEmployeeIfExists(employeeId);
 
         employeeRepository.deleteById(employeeId);
     }
 
     @Override
-    public Employee updateEmployeeById(Long employeeId, EmployeeDto employeeDto) {
+    public Employee updateEmployeeById(Long employeeId, EmployeeRequestDto employeeRequestDto) {
 
-        final String action = "updated";
-        final String methodName = "updateEmployeeById()";
-        checkIfEmployeeExistsById(employeeId, methodName, action);
+        returnEmployeeIfExists(employeeId);
 
-        return employeeRepository.save(employeeMapper.employeeDtoToEmployee(employeeDto));
+        return employeeRepository.save(employeeMapper.employeeRequestDtoToEmployee(employeeId, employeeRequestDto));
     }
 
-    private void checkIfEmployeeExistsById(Long employeeId, String methodName, String action) {
+    @Override
+    public Employee returnEmployeeIfExists(Long employeeId) {
 
-        boolean exists = employeeRepository.existsById(employeeId);
+        Optional<Employee> optionalEmployee = Optional.ofNullable(employeeRepository.findById(employeeId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Employee with id: " + employeeId + " cannot be found.",
+                            new NotFoundException("Employee with id: " + employeeId + " cannot be found."));
 
-        if (!exists) {
+                    throw new NotFoundException("Employee with id: " + employeeId + " cannot be found.");
+                }));
 
-            logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Employee with id: " + employeeId + " cannot be " + action + " because it does not exist.",
-                    new NotFoundException("Employee id: " + employeeId + " cannot be " + action + " because it does not exist."));
-
-            throw new NotFoundException("Employee id: " + employeeId + " cannot be " + action + " because it does not exist.");
-        }
+        return optionalEmployee.get();
     }
 }

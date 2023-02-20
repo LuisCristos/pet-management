@@ -3,8 +3,8 @@ package io.cristos.petmanagement.utilities.mapper.customer;
 import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
+import io.cristos.petmanagement.utilities.genderconverter.GenderConverter;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
-import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

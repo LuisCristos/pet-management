@@ -1,6 +1,5 @@
-package io.cristos.petmanagement.dtos.employee;
+package io.cristos.petmanagement.dtos.request.employee;
 
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -8,32 +7,20 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public class EmployeeDto {
-
-    private Long id;
+public class EmployeeRequestDto {
     @NotBlank(message = "First name is required.")
     @Size(min = 2, max = 255, message = "First name must be between 2 - 255 characters.")
     private String firstName;
     @NotBlank(message = "Last name is required.")
     @Size(min = 2, max = 255, message = "Last name must be between 2 - 255 characters.")
     private String lastName;
+    @NotNull(message = "Gender is required.")
+    private String gender;
     @NotNull(message = "Date of birth is required.")
     @Past(message = "The date of birth must be in the past.")
-    private LocalDate dateOfBirth;
-    private LocalDate dateOfCreation;
+    private LocalDate bornAt;
 
-    @Transient
-    private int age;
-
-    public EmployeeDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public EmployeeRequestDto() {
     }
 
     public String getFirstName() {
@@ -52,39 +39,29 @@ public class EmployeeDto {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+    public String getGender() {
+        return gender;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public LocalDate getDateOfCreation() {
-        return dateOfCreation;
+    public LocalDate getBornAt() {
+        return bornAt;
     }
 
-    public void setDateOfCreation(LocalDate dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+    public void setBornAt(LocalDate bornAt) {
+        this.bornAt = bornAt;
     }
 
     @Override
     public String toString() {
-        return "EmployeeDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+        return "EmployeeRequestDto{" +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", dateOfCreation=" + dateOfCreation +
-                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", bornAt=" + bornAt +
                 '}';
     }
 }

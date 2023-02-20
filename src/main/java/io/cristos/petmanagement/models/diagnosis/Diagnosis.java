@@ -1,6 +1,6 @@
 package io.cristos.petmanagement.models.diagnosis;
 
-import io.cristos.petmanagement.models.BaseEntity;
+import io.cristos.petmanagement.models.BaseIdCreationDate;
 import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,14 +11,14 @@ import java.time.LocalDate;
 @Entity(name = "Diagnosis")
 @Table(name = "diagnosis")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_diagnosis", allocationSize = 10)
-public class Diagnosis extends BaseEntity {
+public class Diagnosis extends BaseIdCreationDate {
 
     @Column(
             name = "last_update",
             columnDefinition = "DATE"
     )
     @UpdateTimestamp
-    private LocalDate lastUpdate;
+    private LocalDate updatedAt;
     @Column(
             nullable = false,
             name = "diagnosis",
@@ -33,20 +33,15 @@ public class Diagnosis extends BaseEntity {
     )
     private Pet pet;
 
-    public Diagnosis(LocalDate lastUpdate, String diagnosis) {
-        this.lastUpdate = lastUpdate;
-        this.diagnosis = diagnosis;
-    }
-
     public Diagnosis() {
     }
 
-    public LocalDate getLastUpdate() {
-        return lastUpdate;
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setLastUpdate(LocalDate lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getDiagnosis() {
@@ -68,9 +63,9 @@ public class Diagnosis extends BaseEntity {
     @Override
     public String toString() {
         return "Diagnosis{" +
-                "lastUpdate=" + lastUpdate +
+                "updatedAt=" + updatedAt +
                 ", diagnosis='" + diagnosis + '\'' +
                 ", pet=" + pet +
-                "} " + super.toString();
+                '}';
     }
 }
