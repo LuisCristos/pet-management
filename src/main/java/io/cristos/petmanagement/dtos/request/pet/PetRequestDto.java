@@ -1,14 +1,11 @@
 package io.cristos.petmanagement.dtos.request.pet;
 
-import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PetRequestDto {
     @NotBlank(message = "Name is required.")
@@ -19,7 +16,7 @@ public class PetRequestDto {
     @NotNull(message = "Date of birth is required.")
     @Past(message = "Date of Birth must be in the Past.")
     private LocalDate bornAt;
-    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
+//    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
 
     public PetRequestDto() {
     }
@@ -48,13 +45,13 @@ public class PetRequestDto {
         this.bornAt = bornAt;
     }
 
-    public List<DiagnosisDto> getDiagnosisList() {
-        return diagnosisList;
-    }
-
-    public void setDiagnosisList(List<DiagnosisDto> diagnosisList) {
-        this.diagnosisList = diagnosisList;
-    }
+//    public List<DiagnosisDto> getDiagnosisList() {
+//        return diagnosisList;
+//    }
+//
+//    public void setDiagnosisList(List<DiagnosisDto> diagnosisList) {
+//        this.diagnosisList = diagnosisList;
+//    }
 
     @Override
     public String toString() {
@@ -62,7 +59,6 @@ public class PetRequestDto {
                 "name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
                 ", bornAt=" + bornAt +
-                ", diagnosisList=" + diagnosisList +
                 '}';
     }
 }
