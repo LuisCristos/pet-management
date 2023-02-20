@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.services.pet;
 
-import io.cristos.petmanagement.dtos.pet.PetDto;
+import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.repositories.pet.PetRepository;
@@ -28,13 +29,13 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet savePet(PetDto petDto) {
+    public Pet savePet(PetRequestDto petRequestDto) {
 
-        return petRepository.save(petMapper.petDtoToPet(petDto));
+        return petRepository.save(petMapper.petRequestDtoToPet(petRequestDto));
     }
 
     @Override
-    public List<PetDto> getAllPets() {
+    public List<PetResponseDto> getAllPets() {
 
         Collection<Pet> petCollection = petRepository.findAll();
 
@@ -48,51 +49,41 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public PetDto findPetById(Long id) {
+    public PetResponseDto findPetById(Long petId) {
 
-        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("{}, {}! An exception occurred!",
-                            "findCustomerById().", "Pet with id: " + id + " cannot be found because it does not exist.",
-                            new NotFoundException("Pet ID: " + id + " cannot be found because it does not exist."));
+        Pet pet = returnPetIfExists(petId);
 
-                    throw new NotFoundException("Pet ID: " + id + " cannot be found because it does not exist.");
-                }));
-
-        return petMapper.petToPetDto(optionalPet.get());
+        return petMapper.petToPetResponseDto(pet);
     }
 
     @Override
     public void deletePetById(Long petId) {
 
-        final String action = "deleted";
-        final String methodName = "deletePetById()";
-        checkIfPetExistsById(petId, methodName, action);
+        returnPetIfExists(petId);
 
         petRepository.deleteById(petId);
     }
 
     @Override
-    public Pet updatePetById(Long petId, PetDto petDto) {
+    public Pet updatePetById(Long petId, PetRequestDto petRequestDto) {
 
-        final String action = "updated";
-        final String methodName = "updatePetById()";
-        checkIfPetExistsById(petId, methodName, action);
+        returnPetIfExists(petId);
 
-        return petRepository.save(petMapper.petDtoToPet(petDto));
+        return petRepository.save(petMapper.petRequestDtoToPet(petId, petRequestDto));
     }
 
-    private void checkIfPetExistsById(Long petId, String methodName, String action) {
+    @Override
+    public Pet returnPetIfExists(Long petId) {
 
-        boolean exists = petRepository.existsById(petId);
+        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(petId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Pet with id: " + petId + " cannot be found.",
+                            new NotFoundException("Pet with id: " + petId + " cannot be found."));
 
-        if (!exists) {
+                    throw new NotFoundException("Pet with id: " + petId + " cannot be found.");
+                }));
 
-            logger.warn("{}, {}! An exception occurred!",
-                    "" + methodName + ".", "Pet with id: " + petId + " cannot be " + action + " because it does not exist.",
-                    new NotFoundException("Pet ID: " + petId + " cannot be " + action + " because it does not exist."));
-
-            throw new NotFoundException("Pet ID: " + petId + " cannot be " + action + " because it does not exist.");
-        }
+        return optionalPet.get();
     }
 }

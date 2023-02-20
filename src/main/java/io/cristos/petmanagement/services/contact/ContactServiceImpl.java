@@ -185,6 +185,10 @@ public class ContactServiceImpl implements ContactService {
 
         if (Objects.isNull(customer.getContact())) {
 
+            logger.warn("{}, {}!",
+                    "An exception occurred!", "Contact cannot be found.",
+                    new NotFoundException("Contact cannot be found."));
+
             throw new NotFoundException("Contact for Customer " + customer.getId() + " cannot be found ");
         }
 

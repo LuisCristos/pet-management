@@ -1,6 +1,8 @@
 package io.cristos.petmanagement.controllers.pet;
 
-import io.cristos.petmanagement.dtos.pet.PetDto;
+
+import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.services.pet.PetService;
 import jakarta.validation.Valid;
@@ -30,9 +32,9 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<PetDto> savePet(@Valid @RequestBody PetDto petDto) {
+    public ResponseEntity<PetResponseDto> savePet(@Valid @RequestBody PetRequestDto petRequestDto) {
 
-        Pet pet = petService.savePet(petDto);
+        Pet pet = petService.savePet(petRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,13 +42,13 @@ public class PetController {
                 .buildAndExpand(pet.getId())
                 .toUri();
 
-        logger.info(petDto + " saved to database");
+        logger.info(petRequestDto + " saved to database");
 
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<PetDto>> getAllPets() {
+    public ResponseEntity<List<PetResponseDto>> getAllPets() {
 
         logger.info("getAllPets(). Retrieved all Pets.");
 
@@ -54,9 +56,9 @@ public class PetController {
     }
 
     @GetMapping("/{petId}")
-    public ResponseEntity<PetDto> findPetById(@PathVariable(name = "petId")
-                                              @NotNull
-                                              @Min(1) Long petId) {
+    public ResponseEntity<PetResponseDto> findPetById(@PathVariable(name = "petId")
+                                                      @NotNull
+                                                      @Min(1) Long petId) {
 
         logger.info("Find Pet with petId: " + petId);
 
@@ -64,9 +66,9 @@ public class PetController {
     }
 
     @DeleteMapping("/{petId}")
-    public ResponseEntity<PetDto> deletePetById(@PathVariable(name = "petId")
-                                                @NotNull
-                                                @Min(1) Long petId) {
+    public ResponseEntity<PetResponseDto> deletePetById(@PathVariable(name = "petId")
+                                                        @NotNull
+                                                        @Min(1) Long petId) {
 
         petService.deletePetById(petId);
 
@@ -76,13 +78,13 @@ public class PetController {
     }
 
     @PutMapping("/{petId}")
-    public ResponseEntity<PetDto> updatePetById(@PathVariable(name = "petId")
-                                                @NotNull
-                                                @Min(1) Long petId,
-                                                @Valid
-                                                @RequestBody PetDto petDto) {
+    public ResponseEntity<PetResponseDto> updatePetById(@PathVariable(name = "petId")
+                                                        @NotNull
+                                                        @Min(1) Long petId,
+                                                        @Valid
+                                                        @RequestBody PetRequestDto petRequestDto) {
 
-        petService.updatePetById(petId, petDto);
+        petService.updatePetById(petId, petRequestDto);
 
         logger.info("Updated Pet with petId: " + petId);
 

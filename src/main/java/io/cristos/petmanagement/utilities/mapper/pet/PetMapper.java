@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.pet;
 
-import io.cristos.petmanagement.dtos.pet.PetDto;
+import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.pet.Pet;
 
 import java.util.Collection;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public interface PetMapper {
 
-    PetDto petToPetDto(Pet pet);
+    Pet petRequestDtoToPet(PetRequestDto petRequestDto);
 
-    Pet petDtoToPet(PetDto petDto);
+    Pet petRequestDtoToPet(Long petId, PetRequestDto petRequestDto);
 
-    List<PetDto> petListToPetDtoList(Collection<Pet> petCollection);
+    PetResponseDto petToPetResponseDto(Pet pet);
+
+    List<PetResponseDto> petListToPetDtoList(Collection<Pet> petCollection);
 }

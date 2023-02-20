@@ -1,8 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.pet;
 
-import io.cristos.petmanagement.dtos.diagnosis.DiagnosisDto;
-import io.cristos.petmanagement.dtos.pet.PetDto;
-import io.cristos.petmanagement.models.diagnosis.Diagnosis;
+import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
 import io.cristos.petmanagement.utilities.mapper.genderconverter.GenderConverter;
@@ -28,53 +27,73 @@ public class PetMapperImpl implements PetMapper {
         this.genderConverter = genderConverter;
     }
 
-    @Override
-    public PetDto petToPetDto(Pet pet) {
-
-        PetDto petDto = new PetDto();
-
-        petDto.setId(pet.getId());
-        petDto.setName(pet.getName());
-        petDto.setGender(genderConverter.convertToDatabaseColumn(pet.getGender()));
-        petDto.setDateOfBirth(pet.getBornAt());
-        petDto.setDateOfCreation(pet.getCreatedAt());
-
-        for (Diagnosis diagnosis : pet.getDiagnosisList()) {
-
-            DiagnosisDto diagnosisDto = diagnosisMapper.diagnosisToDiagnosisDto(diagnosis);
-
-            petDto.addDiagnosis(diagnosisDto);
-        }
-
-        return petDto;
-    }
 
     @Override
-    public Pet petDtoToPet(PetDto petDto) {
+    public Pet petRequestDtoToPet(PetRequestDto petRequestDto) {
 
         Pet pet = new Pet();
 
-        pet.setId(petDto.getId());
-        pet.setName(petDto.getName());
-        pet.setGender(genderConverter.convertToEntityAttribute(petDto.getGender()));
-        pet.setBornAt(petDto.getDateOfBirth());
-        pet.setCreatedAt(petDto.getDateOfCreation());
+        pet.setName(petRequestDto.getName());
+        pet.setBornAt(petRequestDto.getBornAt());
+        pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
 
         return pet;
     }
 
     @Override
-    public List<PetDto> petListToPetDtoList(Collection<Pet> petCollection) {
+    public Pet petRequestDtoToPet(Long petId, PetRequestDto petRequestDto) {
+        Pet pet = new Pet();
 
-        List<PetDto> petToPetDtoList = new ArrayList<>();
+        pet.setId(petId);
+        pet.setName(petRequestDto.getName());
+        pet.setBornAt(petRequestDto.getBornAt());
+        pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
+
+        return pet;
+    }
+
+    @Override
+    public PetResponseDto petToPetResponseDto(Pet pet) {
+
+        PetResponseDto petResponseDto = new PetResponseDto();
+
+        petResponseDto.setPetId(pet.getId());
+        petResponseDto.setName(pet.getName());
+        petResponseDto.setGender(genderConverter.convertToDatabaseColumn(pet.getGender()));
+        petResponseDto.setBornAt(pet.getBornAt());
+        petResponseDto.setAge(pet.getAge());
+        petResponseDto.setCreatedAt(pet.getCreatedAt());
+
+        return petResponseDto;
+    }
+
+    @Override
+    public List<PetResponseDto> petListToPetDtoList(Collection<Pet> petCollection) {
+
+        List<PetResponseDto> petToPetResponseDtoList = new ArrayList<>();
 
         for (Pet pet : petCollection) {
 
-            PetDto petDto = petToPetDto(pet);
+            PetResponseDto petResponseDto = petToPetResponseDto(pet);
 
-            petToPetDtoList.add(petDto);
+            petToPetResponseDtoList.add(petResponseDto);
         }
 
-        return petToPetDtoList;
+        return petToPetResponseDtoList;
     }
+
+    //    @Override
+//    public List<PetDto> petListToPetDtoList(Collection<Pet> petCollection) {
+//
+//        List<PetDto> petToPetDtoList = new ArrayList<>();
+//
+//        for (Pet pet : petCollection) {
+//
+//            PetDto petDto = petToPetDto(pet);
+//
+//            petToPetDtoList.add(petDto);
+//        }
+//
+//        return petToPetDtoList;
+//    }
 }
