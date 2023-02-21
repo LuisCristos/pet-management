@@ -6,7 +6,6 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +50,10 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     public ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable(name = "customerId")
-                                                              @Min(value = 1, message = "Must be greater than or equal to 1")
-                                                              @NotNull Long customerId,
+                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                  Long customerId,
                                                               @Valid
-                                                              @RequestBody CustomerRequestDto customerRequestDto) {
+                                                                  @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.updateCustomer(customerId, customerRequestDto);
 
         logger.info("Updated customer with customerId: " + customerId);
@@ -72,8 +71,8 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerResponseDto> findCustomerById(@PathVariable(name = "customerId")
-                                                                @Min(value = 1, message = "Must be greater than or equal to 1")
-                                                                @NotNull Long customerId) {
+                                                                @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                Long customerId) {
 
         logger.info("Find Customer with customerId." + customerId);
 
@@ -82,8 +81,8 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}")
     public ResponseEntity<CustomerResponseDto> deleteCustomerById(@PathVariable(name = "customerId")
-                                                                  @Min(value = 1, message = "Must be greater than or equal to 1")
-                                                                  @NotNull Long customerId) {
+                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                  Long customerId) {
 
         customerService.deleteCustomerById(customerId);
 

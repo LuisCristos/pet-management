@@ -7,7 +7,6 @@ import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.services.pet.PetService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,8 @@ public class PetController {
 
     @GetMapping("/{petId}")
     public ResponseEntity<PetResponseDto> findPetById(@PathVariable(name = "petId")
-                                                      @NotNull
-                                                      @Min(1) Long petId) {
+                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                      Long petId) {
 
         logger.info("Find Pet with petId: " + petId);
 
@@ -67,8 +66,8 @@ public class PetController {
 
     @DeleteMapping("/{petId}")
     public ResponseEntity<PetResponseDto> deletePetById(@PathVariable(name = "petId")
-                                                        @NotNull
-                                                        @Min(1) Long petId) {
+                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                        Long petId) {
 
         petService.deletePetById(petId);
 
@@ -79,10 +78,10 @@ public class PetController {
 
     @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDto> updatePetById(@PathVariable(name = "petId")
-                                                        @NotNull
-                                                        @Min(1) Long petId,
+                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                            Long petId,
                                                         @Valid
-                                                        @RequestBody PetRequestDto petRequestDto) {
+                                                            @RequestBody PetRequestDto petRequestDto) {
 
         petService.updatePetById(petId, petRequestDto);
 

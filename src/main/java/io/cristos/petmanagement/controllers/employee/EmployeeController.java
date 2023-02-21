@@ -6,7 +6,6 @@ import io.cristos.petmanagement.models.employee.Employee;
 import io.cristos.petmanagement.services.employee.EmployeeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -56,8 +55,8 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponseDto> findEmployeeById(@PathVariable(name = "employeeId")
-                                                                @NotNull
-                                                                @Min(1) Long employeeId) {
+                                                                @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                Long employeeId) {
         logger.info("Find employee by id: " + employeeId);
 
         return ResponseEntity.ok(employeeService.findEmployeeById(employeeId));
@@ -65,8 +64,8 @@ public class EmployeeController {
 
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponseDto> deleteEmployeeById(@PathVariable(name = "employeeId")
-                                                                  @Min(1)
-                                                                  @NotNull Long employeeId) {
+                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                  Long employeeId) {
 
         employeeService.deleteEmployee(employeeId);
 
@@ -77,8 +76,7 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponseDto> updateEmployeeById(@PathVariable(name = "employeeId")
-                                                                  @Min(1)
-                                                                  @NotNull
+                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                   Long employeeId,
                                                                   @Valid
                                                                   @RequestBody EmployeeRequestDto employeeRequestDto) {

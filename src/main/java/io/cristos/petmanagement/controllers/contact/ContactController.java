@@ -7,7 +7,6 @@ import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.contact.ContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,7 @@ public class ContactController {
     // veterinarian
     @PostMapping("/veterinarians/{veterinarianId}/contacts")
     public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
-                                                                            @Min(1)
-                                                                            @NotNull
+                                                                                @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                             Long veterinarianId,
                                                                             @Valid
                                                                             @RequestBody ContactRequestDto contactRequestDto) {
@@ -56,8 +54,7 @@ public class ContactController {
 
     @GetMapping("/veterinarians/{veterinarianId}/contacts")
     public ResponseEntity<ContactResponseDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
-                                                                          @Min(1)
-                                                                          @NotNull
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long veterinarianId) {
 
         logger.info("Find contact for veterinarian with id: " + veterinarianId);
@@ -67,14 +64,12 @@ public class ContactController {
 
     @PutMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
     public ResponseEntity<ContactResponseDto> updateContactToVeterinarianById(@PathVariable(name = "veterinarianId")
-                                                                              @Min(1)
-                                                                              @NotNull
+                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                               Long veterinarianId,
                                                                               @Valid
                                                                               @RequestBody ContactRequestDto contactRequestDto,
                                                                               @PathVariable(name = "contactId")
-                                                                              @Min(1)
-                                                                              @NotNull
+                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                               Long contactId) {
 
         contactService.updateContactToVeterinarianById(veterinarianId, contactRequestDto, contactId);
@@ -86,12 +81,10 @@ public class ContactController {
 
     @DeleteMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
     public ResponseEntity<ContactResponseDto> deleteContactToVeterinarianById(@PathVariable(name = "veterinarianId")
-                                                                              @Min(1)
-                                                                              @NotNull
+                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                               Long veterinarianId,
                                                                               @PathVariable(name = "contactId")
-                                                                              @Min(1)
-                                                                              @NotNull
+                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                               Long contactId) {
 
 
@@ -106,12 +99,10 @@ public class ContactController {
 
     @GetMapping("/customers/{customerId}/contacts/{contactId}")
     public ResponseEntity<ContactResponseDto> findContactByCustomerId(@PathVariable(name = "customerId")
-                                                                      @Min(1)
-                                                                      @NotNull
+                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                       Long customerId,
                                                                       @PathVariable(name = "contactId")
-                                                                      @Min(1)
-                                                                      @NotNull
+                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                       Long contactId) {
 
         logger.info("Find contact for customer with id: " + customerId);
@@ -121,8 +112,7 @@ public class ContactController {
 
     @PostMapping("/customers/{customerId}/contacts")
     public ResponseEntity<ContactResponseDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
-                                                                        @Min(1)
-                                                                        @NotNull
+                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                         Long customerId,
                                                                         @Valid
                                                                         @RequestBody ContactRequestDto contactRequestDto) {
@@ -142,14 +132,12 @@ public class ContactController {
 
     @PutMapping("/customers/{customerId}/contacts/{contactId}")
     public ResponseEntity<ContactResponseDto> updateContactToCustomerById(@PathVariable(name = "customerId")
-                                                                          @Min(1)
-                                                                          @NotNull
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long customerId,
                                                                           @Valid
                                                                           @RequestBody ContactRequestDto contactRequestDto,
                                                                           @PathVariable(name = "contactId")
-                                                                          @Min(1)
-                                                                          @NotNull
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long contactId) {
 
         contactService.updateContactToCustomerById(customerId, contactRequestDto, contactId);
@@ -161,12 +149,10 @@ public class ContactController {
 
     @DeleteMapping("/customers/{customerId}/contacts/{contactId}")
     public ResponseEntity<ContactResponseDto> deleteContactToCustomerById(@PathVariable(name = "customerId")
-                                                                          @Min(1)
-                                                                          @NotNull
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long customerId,
                                                                           @PathVariable(name = "contactId")
-                                                                          @Min(1)
-                                                                          @NotNull
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long contactId) {
 
         contactService.deleteContactToCustomerById(customerId, contactId);

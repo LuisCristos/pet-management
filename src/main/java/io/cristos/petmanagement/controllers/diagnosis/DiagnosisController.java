@@ -6,7 +6,6 @@ import io.cristos.petmanagement.models.diagnosis.Diagnosis;
 import io.cristos.petmanagement.services.diagnosis.DiagnosisService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +50,7 @@ public class DiagnosisController {
 
     @GetMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisResponseDto> findDiagnosisById(@PathVariable(name = "diagnosisId")
-                                                                  @NotNull
-                                                                  @Min(1)
+                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                   Long diagnosisId) {
 
         logger.info("Find Diagnosis by diagnosisId: " + diagnosisId);
@@ -70,8 +68,7 @@ public class DiagnosisController {
 
     @PutMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisResponseDto> updateDiagnosis(@PathVariable(name = "diagnosisId")
-                                                                @NotNull
-                                                                @Min(1)
+                                                                    @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long diagnosisId,
                                                                 @RequestBody DiagnosisRequestDto diagnosisRequestDto) {
 
@@ -84,8 +81,7 @@ public class DiagnosisController {
 
     @DeleteMapping("/diagnosis/{diagnosisId}")
     public ResponseEntity<DiagnosisResponseDto> deleteDiagnosisById(@PathVariable(name = "diagnosisId")
-                                                                    @NotNull
-                                                                    @Min(1)
+                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                     Long diagnosisId) {
 
         diagnosisService.deleteDiagnosisById(diagnosisId);

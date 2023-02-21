@@ -6,8 +6,6 @@ import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +58,7 @@ public class VeterinarianController {
 
     @GetMapping("/{veterinarianId}")
     public ResponseEntity<VeterinarianResponseDto> findVeterinarianById(@PathVariable
-                                                                        @Positive
-                                                                        @NotNull
-                                                                        @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                         Long veterinarianId) {
 
         logger.info("Retrieved veterinarian with veterinarianId: " + veterinarianId);
@@ -72,8 +68,7 @@ public class VeterinarianController {
 
     @PutMapping("/{veterinarianId}")
     public ResponseEntity<VeterinarianResponseDto> updateVeterinarianById(@PathVariable
-                                                                          @NotNull
-                                                                          @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long veterinarianId,
                                                                           @Valid
                                                                           @RequestBody VeterinarianRequestDto veterinarianRequestDto) {
@@ -87,9 +82,7 @@ public class VeterinarianController {
 
     @DeleteMapping("/{veterinarianId}")
     public ResponseEntity<VeterinarianResponseDto> deleteVeterinarianById(@PathVariable
-                                                                          @Positive
-                                                                          @NotNull
-                                                                          @Min(value = 1, message = "Must be greater than or equal to 1")
+                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                           Long veterinarianId) {
 
         veterinarianService.deleteVeterinarianById(veterinarianId);
