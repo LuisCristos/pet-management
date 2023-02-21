@@ -9,6 +9,7 @@ public class EmployeeResponseDto {
     private String lastName;
     private LocalDate bornAt;
     private LocalDate createdAt;
+    private String gender;
     private int age;
 
     public EmployeeResponseDto() {
@@ -62,6 +63,14 @@ public class EmployeeResponseDto {
         this.age = age;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "EmployeeResponseDto{" +
@@ -70,6 +79,7 @@ public class EmployeeResponseDto {
                 ", lastName='" + lastName + '\'' +
                 ", bornAt=" + bornAt +
                 ", createdAt=" + createdAt +
+                ", gender='" + gender + '\'' +
                 ", age=" + age +
                 '}';
     }

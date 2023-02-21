@@ -50,6 +50,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         employeeResponseDto.setAge(employee.getAge());
         employeeResponseDto.setBornAt(employee.getBornAt());
         employeeResponseDto.setCreatedAt(employee.getCreatedAt());
+        employeeResponseDto.setGender(genderConverter.convertToDatabaseColumn(employee.getGender()));
 
         return employeeResponseDto;
     }

@@ -42,6 +42,7 @@ public class ContactMapperImpl implements ContactMapper {
         contactResponseDto.setZipCode(contact.getZipCode());
 
         for (String phoneNumber : contact.getPhoneNumberList()) {
+
             contactResponseDto.addPhoneNumber(phoneNumber);
         }
 
@@ -58,7 +59,6 @@ public class ContactMapperImpl implements ContactMapper {
         for (Contact contact : contactCollection) {
 
             contactResponseDtoList.add(contactToContactResponseDto(contact));
-
         }
 
         return contactResponseDtoList;
@@ -76,6 +76,7 @@ public class ContactMapperImpl implements ContactMapper {
         contact.setEmail(contactRequestDto.getEmail());
 
         for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
+
             contact.addPhoneNumber(phoneNumber);
         }
 
