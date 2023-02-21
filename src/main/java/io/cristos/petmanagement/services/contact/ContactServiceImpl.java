@@ -40,7 +40,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     // Contact
-
     @Override
     public Contact saveContact(ContactRequestDto contactRequestDto) {
 

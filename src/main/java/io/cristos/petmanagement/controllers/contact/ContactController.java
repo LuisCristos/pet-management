@@ -84,7 +84,7 @@ public class ContactController {
     }
 
     @DeleteMapping("/contacts/{contactId}")
-    public ResponseEntity<ContactResponseDto> deleteContactById(@PathVariable
+    public ResponseEntity<ContactResponseDto> deleteContactById(@PathVariable(name = "contactId")
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long contactId) {
 
@@ -96,7 +96,6 @@ public class ContactController {
     }
 
 
-//
 //    // veterinarian
 //    @PostMapping("/veterinarians/{veterinarianId}/contacts")
 //    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
