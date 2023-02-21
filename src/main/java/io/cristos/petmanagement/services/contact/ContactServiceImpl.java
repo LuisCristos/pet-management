@@ -4,8 +4,6 @@ import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.models.customer.Customer;
-import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
@@ -15,9 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,160 +39,222 @@ public class ContactServiceImpl implements ContactService {
         this.veterinarianMapper = veterinarianMapper;
     }
 
-    //    veterinarian
+    // Contact
+
     @Override
-    @Transactional
-    public Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto) {
+    public Contact saveContact(ContactRequestDto contactRequestDto) {
 
-        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
-
-        if (Objects.nonNull(veterinarian.getContact())) {
-
-            logger.warn("{}, {}!",
-                    "An exception occurred!", "Contact for " + contactRequestDto + " already exists.");
-
-            throw new IllegalArgumentException("Contact for " + contactRequestDto + " already exists.");
-        }
-
-        Contact contact = contactMapper.contactRequestDtoToContact(contactRequestDto);
-
-        veterinarian.setContact(contact);
-
-        return veterinarianService.saveVeterinarianContact(veterinarian);
+        return contactRepository.save(contactMapper.contactRequestDtoToContact(contactRequestDto));
     }
 
     @Override
-    @Transactional
-    public ContactResponseDto findContactByVeterinarianId(Long veterinarianId) {
+    public ContactResponseDto findContactById(Long contactId) {
 
-        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
-
-        Contact contact = returnContactIfExists(veterinarian);
+        Contact contact = returnContactIfExists(contactId);
 
         return contactMapper.contactToContactResponseDto(contact);
     }
 
     @Override
-    @Transactional
-    public Contact updateContactToVeterinarianById(Long veterinarianId,
-                                                   ContactRequestDto contactRequestDto, Long contactId) {
+    public List<ContactResponseDto> getAllContacts() {
 
-        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
+        Collection<Contact> contactCollection = contactRepository.findAll();
 
-        returnContactIfExists(veterinarian);
+        if (contactCollection.isEmpty()) {
 
-        Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
-
-        return contactRepository.save(contact);
-    }
-
-    @Override
-    @Transactional
-    public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
-
-        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
-
-        Contact contact = returnContactIfExists(veterinarian);
-
-        contactRepository.delete(contact);
-    }
-
-    @Override
-    public Veterinarian returnVeterinarianIfExists(Long veterinarianId) {
-        return veterinarianService.returnVeterinarianIfExists(veterinarianId);
-    }
-
-    @Override
-    public Contact returnContactIfExists(Veterinarian veterinarian) {
-
-        if (Objects.isNull(veterinarian.getContact())) {
-
-            throw new NotFoundException("Contact for VeterinarianId " + veterinarian.getId() + " cannot be found ");
+            logger.info("Retrieved empty List.");
+            return Collections.emptyList();
         }
 
-        Optional<Contact> optionalContact = contactRepository.findById(veterinarian.getContact().getId());
+        return contactMapper.contactListToContactResponseDtoList(contactCollection);
+    }
+
+    @Override
+    public Contact returnContactIfExists(Long contactId) {
+
+        Optional<Contact> optionalContact = Optional.ofNullable(contactRepository.findById(contactId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "An exception occurred!", "Contact with id: " + contactId + " cannot be found.",
+                            new NotFoundException("Contact with id: " + contactId + " cannot be found."));
+
+                    return new NotFoundException("Contact with id: " + contactId + " cannot be found.");
+                }));
 
         return optionalContact.get();
     }
 
-//    customer
-
-
     @Override
-    @Transactional
-    public ContactResponseDto findContactByCustomerId(Long customerId, Long contactId) {
+    public Contact updateContactById(Long contactId, ContactRequestDto contactRequestDto) {
 
-        Customer customer = returnCustomerIfExists(customerId);
+        returnContactIfExists(contactId);
 
-        Contact contact = returnContactCustomerIfExists(customer);
-
-        return contactMapper.contactToContactResponseDto(contact);
+        return contactRepository.save(contactMapper.contactRequestDtoToContact(contactId, contactRequestDto));
     }
 
     @Override
-    @Transactional
-    public Customer saveContactToCustomerByID(Long customerId, ContactRequestDto contactRequestDto) {
+    public void deleteContactById(Long contactId) {
 
-        Customer customer = returnCustomerIfExists(customerId);
+        returnContactIfExists(contactId);
 
-        if (Objects.nonNull(customer.getContact())) {
-
-            logger.warn("{}, {}!",
-                    "An exception occurred!", "Contact for " + customer + " already exists.");
-
-            throw new IllegalArgumentException("Contact for " + customer + " already exists.");
-        }
-
-        Contact contact = contactMapper.contactRequestDtoToContact(contactRequestDto);
-
-        customer.setContact(contact);
-
-        return customerService.saveCustomerWithContact(customer);
+        contactRepository.deleteById(contactId);
     }
 
-    @Override
-    @Transactional
-    public Contact updateContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto, Long contactId) {
-
-        Customer customer = returnCustomerIfExists(customerId);
-
-        returnContactCustomerIfExists(customer);
-
-        Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
-
-        return contactRepository.save(contact);
-    }
-
-    @Override
-    @Transactional
-    public void deleteContactToCustomerById(Long customerId, Long contactId) {
-
-        Customer customer = returnCustomerIfExists(customerId);
-
-        Contact contact = returnContactCustomerIfExists(customer);
-
-        contactRepository.delete(contact);
-    }
-
-    @Override
-    public Customer returnCustomerIfExists(Long customerId) {
-        return customerService.returnCustomerIfExists(customerId);
-    }
-
-    @Override
-    public Contact returnContactCustomerIfExists(Customer customer) {
-
-        if (Objects.isNull(customer.getContact())) {
-
-            logger.warn("{}, {}!",
-                    "An exception occurred!", "Contact cannot be found.",
-                    new NotFoundException("Contact cannot be found."));
-
-            throw new NotFoundException("Contact for Customer " + customer.getId() + " cannot be found ");
-        }
-
-        Optional<Contact> optionalContact = contactRepository.findById(customer.getContact().getId());
-
-        return optionalContact.get();
-    }
+    //
+//    //    veterinarian
+//    @Override
+//    @Transactional
+//    public Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto) {
+//
+//        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
+//
+//        if (Objects.nonNull(veterinarian.getContact())) {
+//
+//            logger.warn("{}, {}!",
+//                    "An exception occurred!", "Contact for " + contactRequestDto + " already exists.");
+//
+//            throw new IllegalArgumentException("Contact for " + contactRequestDto + " already exists.");
+//        }
+//
+//        Contact contact = contactMapper.contactRequestDtoToContact(contactRequestDto);
+//
+//        veterinarian.setContact(contact);
+//
+//        return veterinarianService.saveVeterinarianContact(veterinarian);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public ContactResponseDto findContactByVeterinarianId(Long veterinarianId) {
+//
+//        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
+//
+//        Contact contact = returnContactIfExists(veterinarian);
+//
+//        return contactMapper.contactToContactResponseDto(contact);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public Contact updateContactToVeterinarianById(Long veterinarianId,
+//                                                   ContactRequestDto contactRequestDto, Long contactId) {
+//
+//        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
+//
+//        returnContactIfExists(veterinarian);
+//
+//        Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
+//
+//        return contactRepository.save(contact);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void deleteContactToVeterinarianById(Long veterinarianId, Long contactId) {
+//
+//        Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
+//
+//        Contact contact = returnContactIfExists(veterinarian);
+//
+//        contactRepository.delete(contact);
+//    }
+//
+//    @Override
+//    public Veterinarian returnVeterinarianIfExists(Long veterinarianId) {
+//        return veterinarianService.returnVeterinarianIfExists(veterinarianId);
+//    }
+//
+//    @Override
+//    public Contact returnContactIfExists(Veterinarian veterinarian) {
+//
+//        if (Objects.isNull(veterinarian.getContact())) {
+//
+//            throw new NotFoundException("Contact for VeterinarianId " + veterinarian.getId() + " cannot be found ");
+//        }
+//
+//        Optional<Contact> optionalContact = contactRepository.findById(veterinarian.getContact().getId());
+//
+//        return optionalContact.get();
+//    }
+//
+////    customer
+//
+//
+//    @Override
+//    @Transactional
+//    public ContactResponseDto findContactByCustomerId(Long customerId, Long contactId) {
+//
+//        Customer customer = returnCustomerIfExists(customerId);
+//
+//        Contact contact = returnContactCustomerIfExists(customer);
+//
+//        return contactMapper.contactToContactResponseDto(contact);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public Customer saveContactToCustomerByID(Long customerId, ContactRequestDto contactRequestDto) {
+//
+//        Customer customer = returnCustomerIfExists(customerId);
+//
+//        if (Objects.nonNull(customer.getContact())) {
+//
+//            logger.warn("{}, {}!",
+//                    "An exception occurred!", "Contact for " + customer + " already exists.");
+//
+//            throw new IllegalArgumentException("Contact for " + customer + " already exists.");
+//        }
+//
+//        Contact contact = contactMapper.contactRequestDtoToContact(contactRequestDto);
+//
+//        customer.setContact(contact);
+//
+//        return customerService.saveCustomerWithContact(customer);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public Contact updateContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto, Long contactId) {
+//
+//        Customer customer = returnCustomerIfExists(customerId);
+//
+//        returnContactCustomerIfExists(customer);
+//
+//        Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
+//
+//        return contactRepository.save(contact);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void deleteContactToCustomerById(Long customerId, Long contactId) {
+//
+//        Customer customer = returnCustomerIfExists(customerId);
+//
+//        Contact contact = returnContactCustomerIfExists(customer);
+//
+//        contactRepository.delete(contact);
+//    }
+//
+//    @Override
+//    public Customer returnCustomerIfExists(Long customerId) {
+//        return customerService.returnCustomerIfExists(customerId);
+//    }
+//
+//    @Override
+//    public Contact returnContactCustomerIfExists(Customer customer) {
+//
+//        if (Objects.isNull(customer.getContact())) {
+//
+//            logger.warn("{}, {}!",
+//                    "An exception occurred!", "Contact cannot be found.",
+//                    new NotFoundException("Contact cannot be found."));
+//
+//            throw new NotFoundException("Contact for Customer " + customer.getId() + " cannot be found ");
+//        }
+//
+//        Optional<Contact> optionalContact = contactRepository.findById(customer.getContact().getId());
+//
+//        return optionalContact.get();
+//    }
 }

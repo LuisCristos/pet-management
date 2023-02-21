@@ -3,35 +3,48 @@ package io.cristos.petmanagement.services.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.models.customer.Customer;
-import io.cristos.petmanagement.models.veterinarian.Veterinarian;
+
+import java.util.List;
 
 public interface ContactService {
 
-    //    veterinarian
-    Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto);
+    // Contact
+    Contact saveContact(ContactRequestDto contactRequestDto);
 
-    ContactResponseDto findContactByVeterinarianId(Long veterinarianId);
+    ContactResponseDto findContactById(Long contactId);
 
-    Contact updateContactToVeterinarianById(Long veterinarianId, ContactRequestDto contactRequestDto, Long contactId);
+    List<ContactResponseDto> getAllContacts();
 
-    void deleteContactToVeterinarianById(Long veterinarianId, Long contactId);
+    Contact updateContactById(Long contactId, ContactRequestDto contactRequestDto);
 
-    Veterinarian returnVeterinarianIfExists(Long veterinarianId);
+    void deleteContactById(Long contactId);
 
-    Contact returnContactIfExists(Veterinarian veterinarian);
+    Contact returnContactIfExists(Long contactId);
 
-
-    //    customer
-    Customer saveContactToCustomerByID(Long customerId, ContactRequestDto contactRequestDto);
-
-    ContactResponseDto findContactByCustomerId(Long customerId, Long contactId);
-
-    Contact updateContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto, Long contactId);
-
-    void deleteContactToCustomerById(Long customerId, Long contactId);
-
-    Customer returnCustomerIfExists(Long customerId);
-
-    Contact returnContactCustomerIfExists(Customer customer);
+//    //    veterinarian
+//    Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto);
+//
+//    ContactResponseDto findContactByVeterinarianId(Long veterinarianId);
+//
+//    Contact updateContactToVeterinarianById(Long veterinarianId, ContactRequestDto contactRequestDto, Long contactId);
+//
+//    void deleteContactToVeterinarianById(Long veterinarianId, Long contactId);
+//
+//    Veterinarian returnVeterinarianIfExists(Long veterinarianId);
+//
+//    Contact returnContactIfExists(Veterinarian veterinarian);
+//
+//
+//    //    customer
+//    Customer saveContactToCustomerByID(Long customerId, ContactRequestDto contactRequestDto);
+//
+//    ContactResponseDto findContactByCustomerId(Long customerId, Long contactId);
+//
+//    Contact updateContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto, Long contactId);
+//
+//    void deleteContactToCustomerById(Long customerId, Long contactId);
+//
+//    Customer returnCustomerIfExists(Long customerId);
+//
+//    Contact returnContactCustomerIfExists(Customer customer);
 }
