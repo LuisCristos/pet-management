@@ -11,4 +11,6 @@ public interface ContactMapper {
     Contact contactRequestDtoToContact(Long contactId, ContactRequestDto contactRequestDto);
 
     ContactResponseDto contactToContactResponseDto(Contact contact);
+
+    Contact createContactFromContactRequestDto(ContactRequestDto contactRequestDto);
 }

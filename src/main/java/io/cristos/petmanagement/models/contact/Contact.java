@@ -47,7 +47,7 @@ public class Contact extends BaseIdCreationDate {
     @CollectionTable(name = "contact_phone_numbers",
             joinColumns = @JoinColumn(name = "contact_id"))
     @NotEmpty(message = "{validation.notempty.phonenumberlist}")
-    private List<@NotBlank(message = "{validation.blank.phonenumber}") String> phoneNumberList = new ArrayList<>();
+    private final List<@NotBlank(message = "{validation.blank.phonenumber}") String> phoneNumberList = new ArrayList<>();
     @Column(
             name = "email",
             nullable = false,

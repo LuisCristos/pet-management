@@ -11,17 +11,7 @@ public class ContactMapperImpl implements ContactMapper {
     @Override
     public Contact contactRequestDtoToContact(ContactRequestDto contactRequestDto) {
 
-        Contact contact = new Contact();
-
-        contact.setCity(contactRequestDto.getCity());
-        contact.setStreet(contactRequestDto.getStreet());
-        contact.setHouseNumber(contactRequestDto.getHouseNumber());
-        contact.setZipCode(contactRequestDto.getZipCode());
-        contact.setEmail(contactRequestDto.getEmail());
-
-        for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
-            contact.addPhoneNumber(phoneNumber);
-        }
+        Contact contact = createContactFromContactRequestDto(contactRequestDto);
 
         return contact;
     }
@@ -29,18 +19,9 @@ public class ContactMapperImpl implements ContactMapper {
     @Override
     public Contact contactRequestDtoToContact(Long contactId, ContactRequestDto contactRequestDto) {
 
-        Contact contactToUpdate = new Contact();
+        Contact contactToUpdate = createContactFromContactRequestDto(contactRequestDto);
 
         contactToUpdate.setId(contactId);
-        contactToUpdate.setCity(contactRequestDto.getCity());
-        contactToUpdate.setStreet(contactRequestDto.getStreet());
-        contactToUpdate.setHouseNumber(contactRequestDto.getHouseNumber());
-        contactToUpdate.setZipCode(contactRequestDto.getZipCode());
-        contactToUpdate.setEmail(contactRequestDto.getEmail());
-
-        for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
-            contactToUpdate.addPhoneNumber(phoneNumber);
-        }
 
         return contactToUpdate;
     }
@@ -63,5 +44,23 @@ public class ContactMapperImpl implements ContactMapper {
         contactResponseDto.setEmail(contact.getEmail());
 
         return contactResponseDto;
+    }
+
+    @Override
+    public Contact createContactFromContactRequestDto(ContactRequestDto contactRequestDto) {
+
+        Contact contact = new Contact();
+
+        contact.setCity(contactRequestDto.getCity());
+        contact.setStreet(contactRequestDto.getStreet());
+        contact.setHouseNumber(contactRequestDto.getHouseNumber());
+        contact.setZipCode(contactRequestDto.getZipCode());
+        contact.setEmail(contactRequestDto.getEmail());
+
+        for (String phoneNumber : contactRequestDto.getPhoneNumberList()) {
+            contact.addPhoneNumber(phoneNumber);
+        }
+
+        return contact;
     }
 }

@@ -3,7 +3,7 @@ package io.cristos.petmanagement.exceptions;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ApiError {
@@ -26,7 +26,7 @@ public class ApiError {
         this.timeStamp = timeStamp;
         this.httpStatus = httpStatus;
         this.message = message;
-        this.errors = Arrays.asList(error);
+        this.errors = Collections.singletonList(error);
     }
 
     public HttpStatus getHttpStatus() {

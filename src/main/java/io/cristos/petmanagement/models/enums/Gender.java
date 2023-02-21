@@ -5,7 +5,7 @@ public enum Gender {
     MALE("Male"),
     OTHER("Other");
 
-    private String shortName;
+    private final String shortName;
 
     Gender(String shortName) {
         this.shortName = shortName;

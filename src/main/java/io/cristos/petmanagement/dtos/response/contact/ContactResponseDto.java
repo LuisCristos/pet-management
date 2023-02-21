@@ -9,7 +9,7 @@ public class ContactResponseDto {
     private int houseNumber;
     private String city;
     private String zipCode;
-    private List<String> phoneNumberList = new ArrayList<>();
+    private final List<String> phoneNumberList = new ArrayList<>();
     private String email;
 
     public ContactResponseDto() {
