@@ -16,8 +16,8 @@ public abstract class BaseEntity extends BaseIdCreationDate {
             nullable = false,
             columnDefinition = "DATE"
     )
-    @NotNull(message = "Date of birth is required.")
-    @Past(message = "The date of birth must be in the past.")
+    @NotNull(message = "{validation.notnull.bornat}")
+    @Past(message = "{validation.past}")
     private LocalDate bornAt;
     @Transient
     private int age;
@@ -26,7 +26,7 @@ public abstract class BaseEntity extends BaseIdCreationDate {
             nullable = false,
             columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')"
     )
-    @NotNull(message = "Gender is required.")
+    @NotNull(message = "{validation.notnull.gender}")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

@@ -20,8 +20,8 @@ public class Veterinarian extends Person {
             nullable = false,
             columnDefinition = "VARCHAR(100)"
     )
-    @NotBlank(message = "Speciality is required.")
-    @Size(min = 2, max = 100, message = "Speciality must be between 2 - 100 characters.")
+    @NotBlank(message = "{validation.notblank.speciality}")
+    @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String speciality;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

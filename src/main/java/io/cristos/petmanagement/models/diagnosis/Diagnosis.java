@@ -24,7 +24,7 @@ public class Diagnosis extends BaseIdCreationDate {
             name = "diagnosis",
             columnDefinition = "TEXT"
     )
-    @NotBlank(message = "Diagnostic field must not be empty.")
+    @NotBlank(message = "{validation.notblank.diagnosis}")
     private String diagnosis;
 
     @ManyToOne(

@@ -17,16 +17,16 @@ public abstract class Person extends BaseEntity {
             nullable = false,
             columnDefinition = "VARCHAR(100)"
     )
-    @NotBlank(message = "First name is required.")
-    @Size(min = 2, max = 100, message = "First name must be between 2 - 100 characters.")
+    @NotBlank(message = "{validation.notblank.firstname}")
+    @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String firstName;
     @Column(
             name = "last_name",
             nullable = false,
             columnDefinition = "VARCHAR(100)"
     )
-    @NotBlank(message = "Last name is required.")
-    @Size(min = 2, max = 100, message = "Last name must be between 2 - 100 characters.")
+    @NotBlank(message = "{validation.notblank.lastname}")
+    @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String lastName;
 
     public Person(LocalDate bornAt, int age, Gender gender, String firstName, String lastName) {

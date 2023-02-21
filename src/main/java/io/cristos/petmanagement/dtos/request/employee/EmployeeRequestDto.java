@@ -8,16 +8,16 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class EmployeeRequestDto {
-    @NotBlank(message = "First name is required.")
-    @Size(min = 2, max = 255, message = "First name must be between 2 - 255 characters.")
+    @NotBlank(message = "{validation.notblank.firstname}")
+    @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String firstName;
-    @NotBlank(message = "Last name is required.")
-    @Size(min = 2, max = 255, message = "Last name must be between 2 - 255 characters.")
+    @NotBlank(message = "{validation.notblank.lastname}")
+    @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String lastName;
-    @NotNull(message = "Gender is required.")
+    @NotNull(message = "{validation.notnull.gender}")
     private String gender;
-    @NotNull(message = "Date of birth is required.")
-    @Past(message = "The date of birth must be in the past.")
+    @NotNull(message = "{validation.notnull.bornat}")
+    @Past(message = "{validation.past}")
     private LocalDate bornAt;
 
     public EmployeeRequestDto() {

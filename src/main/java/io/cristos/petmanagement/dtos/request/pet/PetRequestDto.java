@@ -8,13 +8,13 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class PetRequestDto {
-    @NotBlank(message = "Name is required.")
-    @Size(min = 2, max = 255, message = "Name must be between 2 - 255 characters.")
+    @NotBlank(message = "{validation.notblank.name}")
+    @Size(min = 2, max = 255, message = "{validation.size.input}")
     private String name;
-    @NotNull(message = "Gender is required.")
+    @NotNull(message = "{validation.notnull.gender}")
     private String gender;
-    @NotNull(message = "Date of birth is required.")
-    @Past(message = "Date of Birth must be in the Past.")
+    @NotNull(message = "{validation.notnull.bornat}")
+    @Past(message = "{validation.past}")
     private LocalDate bornAt;
 //    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
 
