@@ -24,12 +24,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
     @Override
     public Employee employeeRequestDtoToEmployee(EmployeeRequestDto employeeRequestDto) {
 
-        Employee employee = new Employee();
-
-        employee.setFirstName(employeeRequestDto.getFirstName());
-        employee.setLastName(employeeRequestDto.getLastName());
-        employee.setBornAt(employeeRequestDto.getBornAt());
-        employee.setGender(genderConverter.convertToEntityAttribute(employeeRequestDto.getGender()));
+        Employee employee = createEmployeeFromEmployeeRequestDto(employeeRequestDto);
 
         return employee;
     }
@@ -37,13 +32,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
     @Override
     public Employee employeeRequestDtoToEmployee(Long employeeId, EmployeeRequestDto employeeRequestDto) {
 
-        Employee employee = new Employee();
+        Employee employee = createEmployeeFromEmployeeRequestDto(employeeRequestDto);
 
         employee.setId(employeeId);
-        employee.setFirstName(employeeRequestDto.getFirstName());
-        employee.setLastName(employeeRequestDto.getLastName());
-        employee.setBornAt(employeeRequestDto.getBornAt());
-        employee.setGender(genderConverter.convertToEntityAttribute(employeeRequestDto.getGender()));
 
         return employee;
     }
@@ -76,5 +67,18 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         }
 
         return employeeResponseDtoList;
+    }
+
+    @Override
+    public Employee createEmployeeFromEmployeeRequestDto(EmployeeRequestDto employeeRequestDto) {
+
+        Employee employee = new Employee();
+
+        employee.setFirstName(employeeRequestDto.getFirstName());
+        employee.setLastName(employeeRequestDto.getLastName());
+        employee.setBornAt(employeeRequestDto.getBornAt());
+        employee.setGender(genderConverter.convertToEntityAttribute(employeeRequestDto.getGender()));
+
+        return employee;
     }
 }

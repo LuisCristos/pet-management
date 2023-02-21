@@ -15,4 +15,6 @@ public interface CustomerMapper {
     CustomerResponseDto customerToCustomerResponseDto(Customer customer);
 
     List<CustomerResponseDto> customerListToCustomerResponseDtoList(Collection<Customer> customerCollection);
+
+    Customer createCustomerFromCustomerRequestDto(CustomerRequestDto customerRequestDto);
 }

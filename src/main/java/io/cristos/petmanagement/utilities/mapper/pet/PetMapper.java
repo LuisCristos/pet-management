@@ -16,4 +16,6 @@ public interface PetMapper {
     PetResponseDto petToPetResponseDto(Pet pet);
 
     List<PetResponseDto> petListToPetDtoList(Collection<Pet> petCollection);
+
+    Pet createPetFromPetRequestDto(PetRequestDto petRequestDto);
 }

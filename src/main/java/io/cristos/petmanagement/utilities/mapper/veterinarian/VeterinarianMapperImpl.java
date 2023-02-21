@@ -29,13 +29,7 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
     @Override
     public Veterinarian veterinarianRequestDtoToVeterinarian(VeterinarianRequestDto veterinarianRequestDto) {
 
-        Veterinarian veterinarian = new Veterinarian();
-
-        veterinarian.setFirstName(veterinarianRequestDto.getFirstName());
-        veterinarian.setLastName(veterinarianRequestDto.getLastName());
-        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.getGender()));
-        veterinarian.setBornAt(veterinarianRequestDto.getBornAt());
-        veterinarian.setSpeciality(veterinarianRequestDto.getSpeciality());
+        Veterinarian veterinarian = createVeterinarianFromVeterinarianRequestDto(veterinarianRequestDto);
 
         return veterinarian;
     }
@@ -43,14 +37,9 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
     @Override
     public Veterinarian veterinarianRequestDtoToVeterinarian(Long veterinarianId, VeterinarianRequestDto veterinarianRequestDto) {
 
-        Veterinarian veterinarian = new Veterinarian();
+        Veterinarian veterinarian = createVeterinarianFromVeterinarianRequestDto(veterinarianRequestDto);
 
         veterinarian.setId(veterinarianId);
-        veterinarian.setFirstName(veterinarianRequestDto.getFirstName());
-        veterinarian.setLastName(veterinarianRequestDto.getLastName());
-        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.getGender()));
-        veterinarian.setBornAt(veterinarianRequestDto.getBornAt());
-        veterinarian.setSpeciality(veterinarianRequestDto.getSpeciality());
 
         return veterinarian;
     }
@@ -85,5 +74,19 @@ public class VeterinarianMapperImpl implements VeterinarianMapper {
         }
 
         return veterinarianResponseDtoList;
+    }
+
+    @Override
+    public Veterinarian createVeterinarianFromVeterinarianRequestDto(VeterinarianRequestDto veterinarianRequestDto) {
+
+        Veterinarian veterinarian = new Veterinarian();
+
+        veterinarian.setFirstName(veterinarianRequestDto.getFirstName());
+        veterinarian.setLastName(veterinarianRequestDto.getLastName());
+        veterinarian.setGender(genderConverter.convertToEntityAttribute(veterinarianRequestDto.getGender()));
+        veterinarian.setBornAt(veterinarianRequestDto.getBornAt());
+        veterinarian.setSpeciality(veterinarianRequestDto.getSpeciality());
+
+        return veterinarian;
     }
 }

@@ -27,12 +27,7 @@ public class CustomerMapperImpl implements CustomerMapper {
     @Override
     public Customer customerRequestDtoToCustomer(CustomerRequestDto customerRequestDto) {
 
-        Customer customer = new Customer();
-
-        customer.setFirstName(customerRequestDto.getFirstName());
-        customer.setLastName(customerRequestDto.getLastName());
-        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.getGender()));
-        customer.setBornAt(customerRequestDto.getBornAt());
+        Customer customer = createCustomerFromCustomerRequestDto(customerRequestDto);
 
         return customer;
     }
@@ -40,13 +35,9 @@ public class CustomerMapperImpl implements CustomerMapper {
     @Override
     public Customer customerRequestDtoToCustomer(Long customerId, CustomerRequestDto customerRequestDto) {
 
-        Customer customer = new Customer();
+        Customer customer = createCustomerFromCustomerRequestDto(customerRequestDto);
 
         customer.setId(customerId);
-        customer.setFirstName(customerRequestDto.getFirstName());
-        customer.setLastName(customerRequestDto.getLastName());
-        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.getGender()));
-        customer.setBornAt(customerRequestDto.getBornAt());
 
         return customer;
     }
@@ -80,5 +71,18 @@ public class CustomerMapperImpl implements CustomerMapper {
         }
 
         return customerResponseDtoList;
+    }
+
+    @Override
+    public Customer createCustomerFromCustomerRequestDto(CustomerRequestDto customerRequestDto) {
+
+        Customer customer = new Customer();
+
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        customer.setGender(genderConverter.convertToEntityAttribute(customerRequestDto.getGender()));
+        customer.setBornAt(customerRequestDto.getBornAt());
+
+        return customer;
     }
 }

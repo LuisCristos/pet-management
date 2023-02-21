@@ -31,23 +31,17 @@ public class PetMapperImpl implements PetMapper {
     @Override
     public Pet petRequestDtoToPet(PetRequestDto petRequestDto) {
 
-        Pet pet = new Pet();
-
-        pet.setName(petRequestDto.getName());
-        pet.setBornAt(petRequestDto.getBornAt());
-        pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
+        Pet pet = createPetFromPetRequestDto(petRequestDto);
 
         return pet;
     }
 
     @Override
     public Pet petRequestDtoToPet(Long petId, PetRequestDto petRequestDto) {
-        Pet pet = new Pet();
+
+        Pet pet = createPetFromPetRequestDto(petRequestDto);
 
         pet.setId(petId);
-        pet.setName(petRequestDto.getName());
-        pet.setBornAt(petRequestDto.getBornAt());
-        pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
 
         return pet;
     }
@@ -82,18 +76,15 @@ public class PetMapperImpl implements PetMapper {
         return petToPetResponseDtoList;
     }
 
-    //    @Override
-//    public List<PetDto> petListToPetDtoList(Collection<Pet> petCollection) {
-//
-//        List<PetDto> petToPetDtoList = new ArrayList<>();
-//
-//        for (Pet pet : petCollection) {
-//
-//            PetDto petDto = petToPetDto(pet);
-//
-//            petToPetDtoList.add(petDto);
-//        }
-//
-//        return petToPetDtoList;
-//    }
+    @Override
+    public Pet createPetFromPetRequestDto(PetRequestDto petRequestDto) {
+
+        Pet pet = new Pet();
+
+        pet.setName(petRequestDto.getName());
+        pet.setBornAt(petRequestDto.getBornAt());
+        pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
+
+        return pet;
+    }
 }

@@ -16,4 +16,6 @@ public interface EmployeeMapper {
     EmployeeResponseDto employeeToEmployeeResponseDto(Employee employee);
 
     List<EmployeeResponseDto> employeeListToEmployeeResponseDtoList(Collection<Employee> employeeCollection);
+
+    Employee createEmployeeFromEmployeeRequestDto(EmployeeRequestDto employeeRequestDto);
 }

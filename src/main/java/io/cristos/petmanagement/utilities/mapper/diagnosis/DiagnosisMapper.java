@@ -16,4 +16,6 @@ public interface DiagnosisMapper {
     DiagnosisResponseDto diagnosisToDiagnosisResponseDto(Diagnosis diagnosis);
 
     List<DiagnosisResponseDto> diagnosisListToDiagnosisResponseDtoList(Collection<Diagnosis> diagnosisCollection);
+
+    Diagnosis createDiagnosisFromDiagnosisRequestDto(DiagnosisRequestDto diagnosisRequestDto);
 }

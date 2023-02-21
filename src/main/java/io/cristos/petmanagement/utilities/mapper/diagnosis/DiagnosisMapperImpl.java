@@ -15,9 +15,7 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
     @Override
     public Diagnosis diagnosisRequestDtoToDiagnosis(DiagnosisRequestDto diagnosisRequestDto) {
 
-        Diagnosis diagnosis = new Diagnosis();
-
-        diagnosis.setDiagnosis(diagnosisRequestDto.getDiagnosis());
+        Diagnosis diagnosis = createDiagnosisFromDiagnosisRequestDto(diagnosisRequestDto);
 
         return diagnosis;
     }
@@ -25,10 +23,9 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
     @Override
     public Diagnosis diagnosisRequestDtoToDiagnosis(Long diagnosisId, DiagnosisRequestDto diagnosisRequestDto) {
 
-        Diagnosis diagnosis = new Diagnosis();
+        Diagnosis diagnosis = createDiagnosisFromDiagnosisRequestDto(diagnosisRequestDto);
 
         diagnosis.setId(diagnosisId);
-        diagnosis.setDiagnosis(diagnosisRequestDto.getDiagnosis());
 
         return diagnosis;
     }
@@ -58,5 +55,15 @@ public class DiagnosisMapperImpl implements DiagnosisMapper {
         }
 
         return diagnosisResponseDtoList;
+    }
+
+    @Override
+    public Diagnosis createDiagnosisFromDiagnosisRequestDto(DiagnosisRequestDto diagnosisRequestDto) {
+
+        Diagnosis diagnosis = new Diagnosis();
+
+        diagnosis.setDiagnosis(diagnosisRequestDto.getDiagnosis());
+
+        return diagnosis;
     }
 }
