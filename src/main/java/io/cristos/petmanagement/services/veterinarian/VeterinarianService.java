@@ -10,7 +10,7 @@ public interface VeterinarianService {
 
     Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto);
 
-    Veterinarian saveVeterinarianContact(Veterinarian veterinarian);
+    Veterinarian saveVeterinarian(Veterinarian veterinarian);
 
     List<VeterinarianResponseDto> getAllVeterinarians();
 

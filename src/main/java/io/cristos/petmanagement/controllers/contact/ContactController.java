@@ -3,6 +3,7 @@ package io.cristos.petmanagement.controllers.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.contact.ContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -95,71 +96,69 @@ public class ContactController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // veterinarian
+    @PostMapping("/veterinarians/{veterinarianId}/contacts")
+    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
+                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                            Long veterinarianId,
+                                                                            @Valid
+                                                                            @RequestBody ContactRequestDto contactRequestDto) {
 
-//    // veterinarian
-//    @PostMapping("/veterinarians/{veterinarianId}/contacts")
-//    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
-//                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                            Long veterinarianId,
-//                                                                            @Valid
-//                                                                            @RequestBody ContactRequestDto contactRequestDto) {
-//
-//        Veterinarian veterinarian = contactService.saveContactToVeterinarianByID(veterinarianId, contactRequestDto);
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{contactId}")
-//                .buildAndExpand(veterinarian.getContact().getId())
-//                .toUri();
-//
-//        logger.info("Saved contact for veterinarian with id " + veterinarianId);
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @GetMapping("/veterinarians/{veterinarianId}/contacts")
-//    public ResponseEntity<ContactResponseDto> findContactByVeterinarianId(@PathVariable(name = "veterinarianId")
-//                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                          Long veterinarianId) {
-//
-//        logger.info("Find contact for veterinarian with id: " + veterinarianId);
-//
-//        return ResponseEntity.ok(contactService.findContactByVeterinarianId(veterinarianId));
-//    }
-//
-//    @PutMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
-//    public ResponseEntity<ContactResponseDto> updateContactToVeterinarianById(@PathVariable(name = "veterinarianId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long veterinarianId,
-//                                                                              @Valid
-//                                                                              @RequestBody ContactRequestDto contactRequestDto,
-//                                                                              @PathVariable(name = "contactId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long contactId) {
-//
-//        contactService.updateContactToVeterinarianById(veterinarianId, contactRequestDto, contactId);
-//
-//        logger.info("Updated contact for veterinarian with id " + veterinarianId);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
-//    public ResponseEntity<ContactResponseDto> deleteContactToVeterinarianById(@PathVariable(name = "veterinarianId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long veterinarianId,
-//                                                                              @PathVariable(name = "contactId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long contactId) {
-//
-//
-//        contactService.deleteContactToVeterinarianById(veterinarianId, contactId);
-//
-//        logger.info("Deleted contact for veterinarian with id " + veterinarianId);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
+        Veterinarian veterinarian = contactService.saveContactToVeterinarianByID(veterinarianId, contactRequestDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{contactId}")
+                .buildAndExpand(veterinarian.getContact().getId())
+                .toUri();
+
+        logger.info("Saved contact for veterinarian with id " + veterinarianId);
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/veterinarians/{veterinarianId}/contacts")
+    public ResponseEntity<ContactResponseDto> findVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                      Long veterinarianId) {
+
+        logger.info("Find contact for veterinarian with id: " + veterinarianId);
+
+        return ResponseEntity.ok(contactService.findVeterinarianContactByVeterinarianId(veterinarianId));
+    }
+
+    @PutMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
+    public ResponseEntity<ContactResponseDto> updateVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                        Long veterinarianId,
+                                                                                        @Valid
+                                                                                        @RequestBody ContactRequestDto contactRequestDto,
+                                                                                        @PathVariable(name = "contactId")
+                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                        Long contactId) {
+
+        contactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
+
+        logger.info("Updated contact for veterinarian with id " + veterinarianId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
+    public ResponseEntity<ContactResponseDto> deleteVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                        Long veterinarianId,
+                                                                                        @PathVariable(name = "contactId")
+                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                        Long contactId) {
+
+        contactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
+
+        logger.info("Deleted contact for veterinarian with id " + veterinarianId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 ////    customer ******************************
 //
 //    @GetMapping("/customers/{customerId}/contacts/{contactId}")

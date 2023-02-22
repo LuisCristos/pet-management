@@ -38,7 +38,7 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public Veterinarian saveVeterinarianContact(Veterinarian veterinarian) {
+    public Veterinarian saveVeterinarian(Veterinarian veterinarian) {
         return veterinarianRepository.save(veterinarian);
     }
 

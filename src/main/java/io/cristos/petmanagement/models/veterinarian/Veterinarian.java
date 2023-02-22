@@ -24,7 +24,7 @@ public class Veterinarian extends Person {
     @Size(min = 2, max = 100, message = "{validation.size.input}")
     private String speciality;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "contactId", referencedColumnName = "contactId")
     private Contact contact;
 
