@@ -10,7 +10,7 @@ public interface CustomerService {
 
     Customer saveCustomer(CustomerRequestDto customerRequestDto);
 
-    Customer saveCustomerWithContact(Customer customer);
+    Customer saveCustomer(Customer customer);
 
     List<CustomerResponseDto> getAllCustomers();
 

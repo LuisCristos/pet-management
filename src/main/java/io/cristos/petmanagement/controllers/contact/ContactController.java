@@ -3,7 +3,6 @@ package io.cristos.petmanagement.controllers.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.services.contact.ContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -20,7 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/contacts")
 @Validated
 public class ContactController {
 
@@ -33,7 +32,7 @@ public class ContactController {
     }
 
     // Contact
-    @PostMapping("/contacts")
+    @PostMapping
     public ResponseEntity<ContactResponseDto> saveContact(@RequestBody
                                                           @Valid
                                                           ContactRequestDto contactRequestDto) {
@@ -51,7 +50,7 @@ public class ContactController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/contacts/{contactId}")
+    @GetMapping("/{contactId}")
     public ResponseEntity<ContactResponseDto> findContactById(@PathVariable(name = "contactId")
                                                               @Min(value = 1, message = "{validation.min.pathvariable}")
                                                               Long contactId) {
@@ -61,7 +60,7 @@ public class ContactController {
         return ResponseEntity.ok(contactService.findContactById(contactId));
     }
 
-    @GetMapping("/contacts")
+    @GetMapping
     public ResponseEntity<List<ContactResponseDto>> getAllContacts() {
 
         logger.info("Retrieved all contacts.");
@@ -69,7 +68,7 @@ public class ContactController {
         return ResponseEntity.ok(contactService.getAllContacts());
     }
 
-    @PutMapping("/contacts/{contactId}")
+    @PutMapping("/{contactId}")
     public ResponseEntity<ContactResponseDto> updateContactById(@PathVariable(name = "contactId")
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long contactId,
@@ -84,7 +83,7 @@ public class ContactController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/contacts/{contactId}")
+    @DeleteMapping("/{contactId}")
     public ResponseEntity<ContactResponseDto> deleteContactById(@PathVariable(name = "contactId")
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long contactId) {
@@ -95,134 +94,4 @@ public class ContactController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    // veterinarian
-    @PostMapping("/veterinarians/{veterinarianId}/contacts")
-    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
-                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                            Long veterinarianId,
-                                                                            @Valid
-                                                                            @RequestBody ContactRequestDto contactRequestDto) {
-
-        Veterinarian veterinarian = contactService.saveContactToVeterinarianByID(veterinarianId, contactRequestDto);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{contactId}")
-                .buildAndExpand(veterinarian.getContact().getId())
-                .toUri();
-
-        logger.info("Saved contact for veterinarian with id " + veterinarianId);
-
-        return ResponseEntity.created(location).build();
-    }
-
-    @GetMapping("/veterinarians/{veterinarianId}/contacts")
-    public ResponseEntity<ContactResponseDto> findVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
-                                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                                      Long veterinarianId) {
-
-        logger.info("Find contact for veterinarian with id: " + veterinarianId);
-
-        return ResponseEntity.ok(contactService.findVeterinarianContactByVeterinarianId(veterinarianId));
-    }
-
-    @PutMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
-    public ResponseEntity<ContactResponseDto> updateVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
-                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                                        Long veterinarianId,
-                                                                                        @Valid
-                                                                                        @RequestBody ContactRequestDto contactRequestDto,
-                                                                                        @PathVariable(name = "contactId")
-                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                                        Long contactId) {
-
-        contactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
-
-        logger.info("Updated contact for veterinarian with id " + veterinarianId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/veterinarians/{veterinarianId}/contacts/{contactId}")
-    public ResponseEntity<ContactResponseDto> deleteVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
-                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                                        Long veterinarianId,
-                                                                                        @PathVariable(name = "contactId")
-                                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                                        Long contactId) {
-
-        contactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
-
-        logger.info("Deleted contact for veterinarian with id " + veterinarianId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-////    customer ******************************
-//
-//    @GetMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactResponseDto> findContactByCustomerId(@PathVariable(name = "customerId")
-//                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                      Long customerId,
-//                                                                      @PathVariable(name = "contactId")
-//                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                      Long contactId) {
-//
-//        logger.info("Find contact for customer with id: " + customerId);
-//
-//        return ResponseEntity.ok(contactService.findContactByCustomerId(customerId, contactId));
-//    }
-//
-//    @PostMapping("/customers/{customerId}/contacts")
-//    public ResponseEntity<ContactResponseDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
-//                                                                        @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                        Long customerId,
-//                                                                        @Valid
-//                                                                        @RequestBody ContactRequestDto contactRequestDto) {
-//
-//        Customer customer = contactService.saveContactToCustomerByID(customerId, contactRequestDto);
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{contactId}")
-//                .buildAndExpand(customer.getContact().getId())
-//                .toUri();
-//
-//        logger.info("Saved contact for customer with id " + customerId);
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @PutMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactResponseDto> updateContactToCustomerById(@PathVariable(name = "customerId")
-//                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                          Long customerId,
-//                                                                          @Valid
-//                                                                          @RequestBody ContactRequestDto contactRequestDto,
-//                                                                          @PathVariable(name = "contactId")
-//                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                          Long contactId) {
-//
-//        contactService.updateContactToCustomerById(customerId, contactRequestDto, contactId);
-//
-//        logger.info("Updated contact with contactId: " + contactId);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/customers/{customerId}/contacts/{contactId}")
-//    public ResponseEntity<ContactResponseDto> deleteContactToCustomerById(@PathVariable(name = "customerId")
-//                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                          Long customerId,
-//                                                                          @PathVariable(name = "contactId")
-//                                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                          Long contactId) {
-//
-//        contactService.deleteContactToCustomerById(customerId, contactId);
-//
-//        logger.info("Deleted contact with contactId: " + contactId);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 }

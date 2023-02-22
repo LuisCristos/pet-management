@@ -3,6 +3,7 @@ package io.cristos.petmanagement.services.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.contact.Contact;
+import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface ContactService {
 
     Contact returnContactIfExists(Veterinarian veterinarian);
 
+    Contact returnContactIfExists(Customer customer);
+
     //    veterinarian
     Veterinarian saveContactToVeterinarianByID(Long veterinarianId, ContactRequestDto contactRequestDto);
 
@@ -35,18 +38,14 @@ public interface ContactService {
 
     Veterinarian returnVeterinarianIfExists(Long veterinarianId);
 
+    //    customer
+    Customer saveContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto);
 
-//
-//    //    customer
-//    Customer saveContactToCustomerByID(Long customerId, ContactRequestDto contactRequestDto);
-//
-//    ContactResponseDto findContactByCustomerId(Long customerId, Long contactId);
-//
-//    Contact updateContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto, Long contactId);
-//
-//    void deleteContactToCustomerById(Long customerId, Long contactId);
-//
-//    Customer returnCustomerIfExists(Long customerId);
-//
-//    Contact returnContactCustomerIfExists(Customer customer);
+    ContactResponseDto findCustomerContactByCustomerId(Long customerId, Long contactId);
+
+    Contact updatedCustomerContactByCustomerId(Long customerId, ContactRequestDto contactRequestDto, Long contactId);
+
+    void deleteContactToCustomerById(Long customerId, Long contactId);
+
+    Customer returnCustomerIfExists(Long customerId);
 }
