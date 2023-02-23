@@ -72,9 +72,9 @@ public class CustomerContactController {
                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                  Long contactId) {
 
-        customerContactService.updatedCustomerContactByCustomerId(customerId, contactRequestDto, contactId);
-
         logger.info("Updated contact for customer with contactId: " + contactId);
+
+        customerContactService.updatedCustomerContactByCustomerId(customerId, contactRequestDto, contactId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -87,9 +87,9 @@ public class CustomerContactController {
                                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                 Long contactId) {
 
-        customerContactService.deleteContactToCustomerById(customerId, contactId);
-
         logger.info("Deleted contact with contactId: " + contactId);
+
+        customerContactService.deleteContactToCustomerById(customerId, contactId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

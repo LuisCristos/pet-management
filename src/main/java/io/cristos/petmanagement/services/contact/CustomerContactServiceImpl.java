@@ -55,7 +55,6 @@ public class CustomerContactServiceImpl implements CustomerContactService {
         return customerRepository.save(customer);
     }
 
-
     @Override
     @Transactional
     public ContactResponseDto findCustomerContactByCustomerId(Long customerId, Long contactId) {
@@ -92,6 +91,7 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
         customerRepository.save(customer);
     }
+
     @Override
     public Customer returnCustomerIfExists(Long customerId) {
 
