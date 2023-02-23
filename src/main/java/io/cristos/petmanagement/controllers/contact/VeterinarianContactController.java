@@ -3,7 +3,7 @@ package io.cristos.petmanagement.controllers.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
-import io.cristos.petmanagement.services.contact.ContactService;
+import io.cristos.petmanagement.services.contact.VeterinarianContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
@@ -23,12 +23,11 @@ import java.net.URI;
 public class VeterinarianContactController {
 
     private final Logger logger = LoggerFactory.getLogger(VeterinarianContactController.class);
-
-    private final ContactService contactService;
+    private final VeterinarianContactService veterinarianContactService;
 
     @Autowired
-    public VeterinarianContactController(ContactService contactService) {
-        this.contactService = contactService;
+    public VeterinarianContactController(VeterinarianContactService veterinarianContactService) {
+        this.veterinarianContactService = veterinarianContactService;
     }
 
     @PostMapping("/{veterinarianId}/contacts")
@@ -38,7 +37,7 @@ public class VeterinarianContactController {
                                                                             @Valid
                                                                             @RequestBody ContactRequestDto contactRequestDto) {
 
-        Veterinarian veterinarian = contactService.saveContactToVeterinarianByID(veterinarianId, contactRequestDto);
+        Veterinarian veterinarian = veterinarianContactService.saveContactToVeterinarianById(veterinarianId, contactRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -58,7 +57,7 @@ public class VeterinarianContactController {
 
         logger.info("Find contact for veterinarian with id: " + veterinarianId);
 
-        return ResponseEntity.ok(contactService.findVeterinarianContactByVeterinarianId(veterinarianId));
+        return ResponseEntity.ok(veterinarianContactService.findVeterinarianContactByVeterinarianId(veterinarianId));
     }
 
     @PutMapping("/{veterinarianId}/contacts/{contactId}")
@@ -71,7 +70,7 @@ public class VeterinarianContactController {
                                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                         Long contactId) {
 
-        contactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
+        veterinarianContactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
 
         logger.info("Updated contact for veterinarian with id " + veterinarianId);
 
@@ -86,7 +85,7 @@ public class VeterinarianContactController {
                                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                         Long contactId) {
 
-        contactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
+        veterinarianContactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
 
         logger.info("Deleted contact for veterinarian with id " + veterinarianId);
 

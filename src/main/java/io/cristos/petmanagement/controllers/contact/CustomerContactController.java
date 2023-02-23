@@ -3,7 +3,7 @@ package io.cristos.petmanagement.controllers.contact;
 import io.cristos.petmanagement.dtos.request.contact.ContactRequestDto;
 import io.cristos.petmanagement.dtos.response.contact.ContactResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
-import io.cristos.petmanagement.services.contact.ContactService;
+import io.cristos.petmanagement.services.contact.CustomerContactService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
@@ -22,11 +22,11 @@ public class CustomerContactController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerContactController.class);
 
-    private final ContactService contactService;
+    private final CustomerContactService customerContactService;
 
     @Autowired
-    public CustomerContactController(ContactService contactService) {
-        this.contactService = contactService;
+    public CustomerContactController(CustomerContactService customerContactService) {
+        this.customerContactService = customerContactService;
     }
 
     @GetMapping("/{customerId}/contacts/{contactId}")
@@ -39,7 +39,7 @@ public class CustomerContactController {
 
         logger.info("Find contact for customer with id: " + customerId);
 
-        return ResponseEntity.ok(contactService.findCustomerContactByCustomerId(customerId, contactId));
+        return ResponseEntity.ok(customerContactService.findCustomerContactByCustomerId(customerId, contactId));
     }
 
     @PostMapping("/{customerId}/contacts")
@@ -49,7 +49,7 @@ public class CustomerContactController {
                                                                         @Valid
                                                                         @RequestBody ContactRequestDto contactRequestDto) {
 
-        Customer customer = contactService.saveContactToCustomerById(customerId, contactRequestDto);
+        Customer customer = customerContactService.saveContactToCustomerById(customerId, contactRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -72,7 +72,7 @@ public class CustomerContactController {
                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                  Long contactId) {
 
-        contactService.updatedCustomerContactByCustomerId(customerId, contactRequestDto, contactId);
+        customerContactService.updatedCustomerContactByCustomerId(customerId, contactRequestDto, contactId);
 
         logger.info("Updated contact for customer with contactId: " + contactId);
 
@@ -87,7 +87,7 @@ public class CustomerContactController {
                                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                 Long contactId) {
 
-        contactService.deleteContactToCustomerById(customerId, contactId);
+        customerContactService.deleteContactToCustomerById(customerId, contactId);
 
         logger.info("Deleted contact with contactId: " + contactId);
 

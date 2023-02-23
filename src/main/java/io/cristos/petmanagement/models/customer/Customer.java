@@ -23,13 +23,8 @@ public class Customer extends Person {
     )
     private List<Pet> petList = new ArrayList<>();
 
-    @OneToOne(
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(
-            name = "contactId",
-            referencedColumnName = "contactId"
-    )
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
     private Contact contact;
 
     public Customer(LocalDate dateOfBirth, int age, Gender gender, String firstName, String lastName) {

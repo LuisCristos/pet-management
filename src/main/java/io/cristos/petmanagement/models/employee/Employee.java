@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AttributeOverride(name = "id", column = @Column(name = "employeeId"))
 public class Employee extends Person {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "contactId", referencedColumnName = "contactId")
     private Contact contact;
 
