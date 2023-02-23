@@ -6,7 +6,7 @@ import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
 import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
-import io.cristos.petmanagement.services.veterinarian.VeterinarianService;
+import io.cristos.petmanagement.repositories.veterinarian.VeterinarianRepository;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +23,20 @@ public class VeterinarianContactServiceImpl implements VeterinarianContactServic
     private final Logger logger = LoggerFactory.getLogger(VeterinarianContactServiceImpl.class);
 
     private final ContactMapper contactMapper;
-    private final VeterinarianService veterinarianService;
     private final ContactRepository contactRepository;
+    private final VeterinarianRepository veterinarianRepository;
 
     @Autowired
-    public VeterinarianContactServiceImpl(ContactMapper contactMapper, VeterinarianService veterinarianService,
-                                          ContactRepository contactRepository) {
+    public VeterinarianContactServiceImpl(ContactMapper contactMapper, ContactRepository contactRepository,
+                                          VeterinarianRepository veterinarianRepository) {
         this.contactMapper = contactMapper;
-        this.veterinarianService = veterinarianService;
         this.contactRepository = contactRepository;
+        this.veterinarianRepository = veterinarianRepository;
     }
 
     @Override
     @Transactional
-    public Veterinarian saveContactToVeterinarianById(Long veterinarianId, ContactRequestDto contactRequestDto) {
+    public Veterinarian saveVeterinarianContactByVeterinarianId(Long veterinarianId, ContactRequestDto contactRequestDto) {
 
         Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
 
@@ -52,7 +52,7 @@ public class VeterinarianContactServiceImpl implements VeterinarianContactServic
 
         veterinarian.setContact(contact);
 
-        return veterinarianService.saveVeterinarian(veterinarian);
+        return veterinarianRepository.save(veterinarian);
     }
 
     @Override
@@ -73,11 +73,11 @@ public class VeterinarianContactServiceImpl implements VeterinarianContactServic
 
         Veterinarian veterinarian = returnVeterinarianIfExists(veterinarianId);
 
+        returnContactIfExists(veterinarian);
+
         Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
 
-        veterinarian.setContact(contact);
-
-        return veterinarianService.saveVeterinarian(veterinarian).getContact();
+        return contactRepository.save(contact);
     }
 
     @Override
@@ -90,12 +90,22 @@ public class VeterinarianContactServiceImpl implements VeterinarianContactServic
 
         veterinarian.setContact(null);
 
-        veterinarianService.saveVeterinarian(veterinarian);
+        veterinarianRepository.save(veterinarian);
     }
 
     @Override
     public Veterinarian returnVeterinarianIfExists(Long veterinarianId) {
-        return veterinarianService.returnVeterinarianIfExists(veterinarianId);
+
+        Optional<Veterinarian> optionalVeterinarian = Optional.ofNullable(veterinarianRepository.findById(veterinarianId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}!",
+                            "An exception occurred!", "Veterinarian with id: " + veterinarianId + " cannot be found.",
+                            new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be found."));
+
+                    throw new NotFoundException("Veterinarian with id: " + veterinarianId + " cannot be found.");
+                }));
+
+        return optionalVeterinarian.get();
     }
 
     @Override

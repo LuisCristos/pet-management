@@ -31,13 +31,13 @@ public class VeterinarianContactController {
     }
 
     @PostMapping("/{veterinarianId}/contacts")
-    public ResponseEntity<ContactResponseDto> saveContactToVeterinarianByID(@PathVariable(name = "veterinarianId")
-                                                                            @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                            Long veterinarianId,
-                                                                            @Valid
-                                                                            @RequestBody ContactRequestDto contactRequestDto) {
+    public ResponseEntity<ContactResponseDto> saveVeterinarianContactByVeterinarianId(@PathVariable(name = "veterinarianId")
+                                                                                      @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                                      Long veterinarianId,
+                                                                                      @Valid
+                                                                                      @RequestBody ContactRequestDto contactRequestDto) {
 
-        Veterinarian veterinarian = veterinarianContactService.saveContactToVeterinarianById(veterinarianId, contactRequestDto);
+        Veterinarian veterinarian = veterinarianContactService.saveVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -70,9 +70,9 @@ public class VeterinarianContactController {
                                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                         Long contactId) {
 
-        veterinarianContactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
-
         logger.info("Updated contact for veterinarian with id " + veterinarianId);
+
+        veterinarianContactService.updateVeterinarianContactByVeterinarianId(veterinarianId, contactRequestDto, contactId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -85,9 +85,9 @@ public class VeterinarianContactController {
                                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                         Long contactId) {
 
-        veterinarianContactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
-
         logger.info("Deleted contact for veterinarian with id " + veterinarianId);
+
+        veterinarianContactService.deleteVeterinarianContactByVeterinarianId(veterinarianId, contactId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

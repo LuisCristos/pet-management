@@ -7,7 +7,7 @@ import io.cristos.petmanagement.models.veterinarian.Veterinarian;
 
 public interface VeterinarianContactService {
 
-    Veterinarian saveContactToVeterinarianById(Long veterinarianId, ContactRequestDto contactRequestDto);
+    Veterinarian saveVeterinarianContactByVeterinarianId(Long veterinarianId, ContactRequestDto contactRequestDto);
 
     ContactResponseDto findVeterinarianContactByVeterinarianId(Long veterinarianId);
 
