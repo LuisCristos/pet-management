@@ -10,8 +10,6 @@ public interface VeterinarianService {
 
     Veterinarian saveVeterinarian(VeterinarianRequestDto veterinarianRequestDto);
 
-    Veterinarian saveVeterinarian(Veterinarian veterinarian);
-
     List<VeterinarianResponseDto> getAllVeterinarians();
 
     VeterinarianResponseDto findVeterinarianById(Long veterinarianId);

@@ -38,11 +38,6 @@ public class VeterinarianServiceImpl implements VeterinarianService {
     }
 
     @Override
-    public Veterinarian saveVeterinarian(Veterinarian veterinarian) {
-        return veterinarianRepository.save(veterinarian);
-    }
-
-    @Override
     public List<VeterinarianResponseDto> getAllVeterinarians() {
 
         Collection<Veterinarian> veterinarianCollection = veterinarianRepository.findAll();
