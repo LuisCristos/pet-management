@@ -6,10 +6,11 @@ import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.contact.Contact;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.contact.ContactRepository;
-import io.cristos.petmanagement.services.customer.CustomerService;
+import io.cristos.petmanagement.repositories.customer.CustomerRepository;
 import io.cristos.petmanagement.utilities.mapper.contact.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +23,15 @@ public class CustomerContactServiceImpl implements CustomerContactService {
     private final Logger logger = LoggerFactory.getLogger(CustomerContactServiceImpl.class);
 
     private final ContactMapper contactMapper;
-    private final CustomerService customerService;
     private final ContactRepository contactRepository;
+    private final CustomerRepository customerRepository;
 
-    public CustomerContactServiceImpl(ContactMapper contactMapper, CustomerService customerService,
-                                      ContactRepository contactRepository) {
+    @Autowired
+    public CustomerContactServiceImpl(ContactMapper contactMapper, ContactRepository contactRepository,
+                                      CustomerRepository customerRepository) {
         this.contactMapper = contactMapper;
-        this.customerService = customerService;
         this.contactRepository = contactRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
         customer.setContact(contact);
 
-        return customerService.saveCustomer(customer);
+        return customerRepository.save(customer);
     }
 
 
@@ -71,11 +73,11 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
         Customer customer = returnCustomerIfExists(customerId);
 
+        returnContactIfExists(customer);
+
         Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
 
-        customer.setContact(contact);
-
-        return customerService.saveCustomer(customer).getContact();
+        return contactRepository.save(contact);
     }
 
     @Override
@@ -88,12 +90,21 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
         customer.setContact(null);
 
-        customerService.saveCustomer(customer);
+        customerRepository.save(customer);
     }
-
     @Override
     public Customer returnCustomerIfExists(Long customerId) {
-        return customerService.returnCustomerIfExists(customerId);
+
+        Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
+                .orElseThrow(() -> {
+                    logger.warn("{}, {}! An exception occurred!",
+                            "An exception occurred!", "Customer with id: " + customerId + " cannot be found.",
+                            new NotFoundException("Customer with id: " + customerId + " cannot be found."));
+
+                    return new NotFoundException("Customer with id: " + customerId + " cannot be found.");
+                }));
+
+        return optionalCustomer.get();
     }
 
     @Override

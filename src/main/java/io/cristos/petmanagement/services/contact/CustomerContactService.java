@@ -7,7 +7,6 @@ import io.cristos.petmanagement.models.customer.Customer;
 
 public interface CustomerContactService {
 
-    //    customer
     Customer saveContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto);
 
     ContactResponseDto findCustomerContactByCustomerId(Long customerId, Long contactId);
@@ -19,5 +18,4 @@ public interface CustomerContactService {
     Customer returnCustomerIfExists(Long customerId);
 
     Contact returnContactIfExists(Customer customer);
-
 }
