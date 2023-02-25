@@ -1,6 +1,7 @@
 package io.cristos.petmanagement.utilities.mapper.customer;
 
 import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
+import io.cristos.petmanagement.dtos.response.customer.CustomerPetResponseDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
 
@@ -17,4 +18,6 @@ public interface CustomerMapper {
     List<CustomerResponseDto> customerListToCustomerResponseDtoList(Collection<Customer> customerCollection);
 
     Customer createCustomerFromCustomerRequestDto(CustomerRequestDto customerRequestDto);
+
+    CustomerPetResponseDto customerWithPetsToCustomerWithPetsDto(Customer customer);
 }

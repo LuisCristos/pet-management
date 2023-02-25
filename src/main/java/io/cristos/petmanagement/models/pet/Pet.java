@@ -34,7 +34,13 @@ public class Pet extends BaseEntity {
     )
     private List<Diagnosis> diagnosisList = new ArrayList<>();
     @ManyToOne(
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            }
     )
     private Customer customer;
 
@@ -72,13 +78,14 @@ public class Pet extends BaseEntity {
         this.diagnosisList.remove(diagnosis);
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
+//    public Customer getCustomer() {
+//        return customer;
+//    }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
 
     @Override
     public String toString() {
