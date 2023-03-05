@@ -53,12 +53,4 @@ public class Customer extends Person {
     public void setContact(Contact contact) {
         this.contact = contact;
     }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "petList=" + petList +
-                ", contact=" + contact +
-                '}';
-    }
 }

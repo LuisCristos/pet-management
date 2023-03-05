@@ -31,12 +31,5 @@ public class Employee extends Person {
     public void setContact(Contact contact) {
         this.contact = contact;
     }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "contact=" + contact +
-                '}';
-    }
 }
 

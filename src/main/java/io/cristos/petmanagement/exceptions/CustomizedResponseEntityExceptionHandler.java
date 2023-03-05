@@ -53,7 +53,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Override
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 

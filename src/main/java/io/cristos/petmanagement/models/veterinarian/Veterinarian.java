@@ -50,12 +50,4 @@ public class Veterinarian extends Person {
     public void setContact(Contact contact) {
         this.contact = contact;
     }
-
-    @Override
-    public String toString() {
-        return "Veterinarian{" +
-                "speciality='" + speciality + '\'' +
-                ", contact=" + contact +
-                '}';
-    }
 }

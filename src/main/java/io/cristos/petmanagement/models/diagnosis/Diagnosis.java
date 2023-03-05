@@ -59,13 +59,4 @@ public class Diagnosis extends BaseIdCreationDate {
     public void setPet(Pet pet) {
         this.pet = pet;
     }
-
-    @Override
-    public String toString() {
-        return "Diagnosis{" +
-                "updatedAt=" + updatedAt +
-                ", diagnosis='" + diagnosis + '\'' +
-                ", pet=" + pet +
-                '}';
-    }
 }
