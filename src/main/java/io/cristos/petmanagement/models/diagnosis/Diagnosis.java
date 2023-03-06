@@ -29,7 +29,11 @@ public class Diagnosis extends BaseIdCreationDate {
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH}
     )
     private Pet pet;
 

@@ -19,7 +19,8 @@ public class Customer extends Person {
     @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Pet> petList = new ArrayList<>();
 

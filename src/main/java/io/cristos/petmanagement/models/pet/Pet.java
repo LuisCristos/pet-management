@@ -78,10 +78,6 @@ public class Pet extends BaseEntity {
         this.diagnosisList.remove(diagnosis);
     }
 
-//    public Customer getCustomer() {
-//        return customer;
-//    }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

@@ -27,7 +27,7 @@ public abstract class BaseIdCreationDate implements Serializable {
             columnDefinition = "DATE"
     )
     @CreationTimestamp
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate createdAt;
 
     public BaseIdCreationDate(Long id, LocalDate createdAt) {
         this.id = id;
