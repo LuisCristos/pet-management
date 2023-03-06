@@ -44,6 +44,12 @@
             <version>2.0.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+
         <!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml &ndash;&gt;-->
         <!--        <dependency>-->
         <!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->

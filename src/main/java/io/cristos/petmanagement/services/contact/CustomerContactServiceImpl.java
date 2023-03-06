@@ -100,10 +100,10 @@ public class CustomerContactServiceImpl implements CustomerContactService {
         Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
-                            "An exception occurred!", "Customer with id: " + customerId + " cannot be found.",
-                            new NotFoundException("Customer with id: " + customerId + " cannot be found."));
+                            "An exception occurred!", "CustomerCsv with id: " + customerId + " cannot be found.",
+                            new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found."));
 
-                    return new NotFoundException("Customer with id: " + customerId + " cannot be found.");
+                    return new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found.");
                 }));
 
         return optionalCustomer.get();

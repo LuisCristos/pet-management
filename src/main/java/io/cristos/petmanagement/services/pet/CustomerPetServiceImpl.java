@@ -105,10 +105,10 @@ public class CustomerPetServiceImpl implements CustomerPetService {
                 .orElseThrow(
                         () -> {
                             logger.warn(
-                                    "An exception occurred!", "Customer with id: " + customerId + " cannot be found.",
-                                    new NotFoundException("Customer with id: " + customerId + " cannot be found."));
+                                    "An exception occurred!", "CustomerCsv with id: " + customerId + " cannot be found.",
+                                    new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found."));
 
-                            throw new NotFoundException("Customer with id: " + customerId + " cannot be found.");
+                            throw new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found.");
                         }
                 );
 

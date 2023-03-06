@@ -74,7 +74,7 @@ public class CustomerController {
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long customerId) {
 
-        logger.info("Find Customer with customerId." + customerId);
+        logger.info("Find CustomerCsv with customerId." + customerId);
 
         return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
