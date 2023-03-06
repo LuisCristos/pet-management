@@ -43,7 +43,7 @@ public class Contact extends BaseIdCreationDate {
     )
     @NotBlank(message = "{validation.notblank.zipcode}")
     private String zipCode;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "contact_phone_numbers",
             joinColumns = @JoinColumn(name = "contact_id"))
     @NotEmpty(message = "{validation.notempty.phonenumberlist}")

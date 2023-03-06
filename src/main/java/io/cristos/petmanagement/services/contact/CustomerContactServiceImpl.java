@@ -76,7 +76,9 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
         Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
 
-        return contactRepository.save(contact);
+        customer.setContact(contact);
+
+        return customerRepository.save(customer).getContact();
     }
 
     @Override

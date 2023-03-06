@@ -77,7 +77,9 @@ public class VeterinarianContactServiceImpl implements VeterinarianContactServic
 
         Contact contact = contactMapper.contactRequestDtoToContact(contactId, contactRequestDto);
 
-        return contactRepository.save(contact);
+        veterinarian.setContact(contact);
+
+        return veterinarianRepository.save(veterinarian).getContact();
     }
 
     @Override
