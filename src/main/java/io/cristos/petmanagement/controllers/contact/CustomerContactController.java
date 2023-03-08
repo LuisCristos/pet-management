@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/v1/customers")
+@RequestMapping("/v1/customers/{customerId}/contacts")
 public class CustomerContactController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerContactController.class);
@@ -29,20 +29,32 @@ public class CustomerContactController {
         this.customerContactService = customerContactService;
     }
 
-    @GetMapping("/{customerId}/contacts/{contactId}")
+//    @GetMapping()
+//    public ResponseEntity<ContactResponseDto> findCustomerContactByCustomerId(@PathVariable(name = "customerId")
+//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
+//                                                                              Long customerId,
+//                                                                              @PathVariable(name = "contactId")
+//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
+//                                                                              Long contactId) {
+//
+//        logger.info("Find contact for customer with id: " + customerId);
+//
+//        return ResponseEntity.ok(customerContactService.findCustomerContactByCustomerId(customerId, contactId));
+//    }
+
+
+    @GetMapping()
     public ResponseEntity<ContactResponseDto> findCustomerContactByCustomerId(@PathVariable(name = "customerId")
                                                                               @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                              Long customerId,
-                                                                              @PathVariable(name = "contactId")
-                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                              Long contactId) {
+                                                                              Long customerId) {
 
         logger.info("Find contact for customer with id: " + customerId);
 
-        return ResponseEntity.ok(customerContactService.findCustomerContactByCustomerId(customerId, contactId));
+        return ResponseEntity.ok(customerContactService.findCustomerContactByCustomerId(customerId));
     }
 
-    @PostMapping("/{customerId}/contacts")
+
+    @PostMapping()
     public ResponseEntity<ContactResponseDto> saveContactToCustomerByID(@PathVariable(name = "customerId")
                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                         Long customerId,
@@ -62,7 +74,7 @@ public class CustomerContactController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/{customerId}/contacts/{contactId}")
+    @PutMapping("/{contactId}")
     public ResponseEntity<ContactResponseDto> updatedCustomerContactByCustomerId(@PathVariable(name = "customerId")
                                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                  Long customerId,
@@ -79,7 +91,7 @@ public class CustomerContactController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{customerId}/contacts/{contactId}")
+    @DeleteMapping("/{contactId}")
     public ResponseEntity<ContactResponseDto> deleteCustomerContactByCustomerId(@PathVariable(name = "customerId")
                                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                 Long customerId,

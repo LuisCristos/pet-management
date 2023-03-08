@@ -1,7 +1,7 @@
 package io.cristos.petmanagement.csvreader.csvservice;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import io.cristos.petmanagement.csvreader.csvnodels.CustomerCsv;
+import io.cristos.petmanagement.csvreader.csvnodels.ContactCsv;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -10,17 +10,16 @@ import java.io.FileReader;
 import java.util.List;
 
 @Component
-public class CustomerCsvServiceImpl implements CustomerCsvService {
-
+public class ContactCsvServiceImpl implements ContactCsvService {
     @Override
-    public List<CustomerCsv> convertCsv(File csvFile) {
+    public List<ContactCsv> convertCsv(File csvFile) {
 
         try {
 
-            List<CustomerCsv> customerCsvs = new CsvToBeanBuilder<CustomerCsv>(new FileReader(csvFile))
-                    .withType(CustomerCsv.class)
+            List<ContactCsv> contactCsvs = new CsvToBeanBuilder<ContactCsv>(new FileReader(csvFile))
+                    .withType(ContactCsv.class)
                     .build().parse();
-            return customerCsvs;
+            return contactCsvs;
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

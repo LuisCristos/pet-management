@@ -57,7 +57,7 @@ public class CustomerContactServiceImpl implements CustomerContactService {
 
     @Override
     @Transactional
-    public ContactResponseDto findCustomerContactByCustomerId(Long customerId, Long contactId) {
+    public ContactResponseDto findCustomerContactByCustomerId(Long customerId) {
 
         Customer customer = returnCustomerIfExists(customerId);
 

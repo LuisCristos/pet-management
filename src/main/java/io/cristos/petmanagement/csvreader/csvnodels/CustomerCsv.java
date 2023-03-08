@@ -2,6 +2,7 @@ package io.cristos.petmanagement.csvreader.csvnodels;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
+import io.cristos.petmanagement.models.enums.Gender;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class CustomerCsv {
     @CsvBindByName(column = "Last_Name")
     private String lastName;
     @CsvBindByName(column = "Sex")
-    private String gender;
+    private Gender gender;
     @CsvDate(value = "yyyy-MM-dd")
     @CsvBindByName(column = "Date_of_birth")
     private LocalDate bornAt;
@@ -25,19 +26,6 @@ public class CustomerCsv {
     private String phone;
     @CsvBindByName(column = "Job_Title")
     private String jobTitle;
-
-    public CustomerCsv(Integer index, String userId, String firstName, String lastName, String gender,
-                       LocalDate bornAt, String email, String phone, String jobTitle) {
-        this.index = index;
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.bornAt = bornAt;
-        this.email = email;
-        this.phone = phone;
-        this.jobTitle = jobTitle;
-    }
 
     public CustomerCsv() {
     }
@@ -74,11 +62,11 @@ public class CustomerCsv {
         this.lastName = lastName;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

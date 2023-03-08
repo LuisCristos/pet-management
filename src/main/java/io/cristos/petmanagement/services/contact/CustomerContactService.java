@@ -9,7 +9,7 @@ public interface CustomerContactService {
 
     Customer saveContactToCustomerById(Long customerId, ContactRequestDto contactRequestDto);
 
-    ContactResponseDto findCustomerContactByCustomerId(Long customerId, Long contactId);
+    ContactResponseDto findCustomerContactByCustomerId(Long customerId);
 
     Contact updatedCustomerContactByCustomerId(Long customerId, ContactRequestDto contactRequestDto, Long contactId);
 
