@@ -5,7 +5,6 @@ import io.cristos.petmanagement.dtos.response.customer.CustomerPetResponseDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface CustomerMapper {
@@ -15,7 +14,7 @@ public interface CustomerMapper {
 
     CustomerResponseDto customerToCustomerResponseDto(Customer customer);
 
-    List<CustomerResponseDto> customerListToCustomerResponseDtoList(Collection<Customer> customerCollection);
+    List<CustomerResponseDto> customerListToCustomerResponseDtoList(List<Customer> customerList);
 
     Customer createCustomerFromCustomerRequestDto(CustomerRequestDto customerRequestDto);
 

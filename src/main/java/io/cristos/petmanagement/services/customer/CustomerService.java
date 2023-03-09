@@ -12,7 +12,7 @@ public interface CustomerService {
 
     Customer saveCustomer(Customer customer);
 
-    List<CustomerResponseDto> getAllCustomers();
+    List<CustomerResponseDto> getAllCustomers(String firstName, String lastName);
 
     CustomerResponseDto findCustomerById(Long customerId);
 

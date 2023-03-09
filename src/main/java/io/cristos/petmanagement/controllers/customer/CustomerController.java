@@ -62,11 +62,13 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerResponseDto>> getAllCustomers() {
+    public ResponseEntity<List<CustomerResponseDto>> getAllCustomers(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName) {
 
         logger.info("Retrieved all customers.");
 
-        return ResponseEntity.ok(customerService.getAllCustomers());
+        return ResponseEntity.ok(customerService.getAllCustomers(firstName, lastName));
     }
 
     @GetMapping("/{customerId}")

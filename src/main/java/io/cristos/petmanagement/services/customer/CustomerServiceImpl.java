@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+
+    private static final int DEFAULT_PAGE_NUMBER = 0;
+    private static final int DEFAULT_PAGE_SIZE = 0;
 
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
@@ -41,16 +44,35 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponseDto> getAllCustomers() {
+    public List<CustomerResponseDto> getAllCustomers(String firstName, String lastName) {
 
-        Collection<Customer> customerCollection = customerRepository.findAll();
+        List<Customer> customerList = listCustomersBySearchedValue(firstName, lastName);
 
-        if (customerCollection.isEmpty()) {
+        if (customerList.isEmpty()) {
+
             logger.info("getAllCustomers(). Retrieved empty List.");
+
             return Collections.emptyList();
         }
 
-        return customerMapper.customerListToCustomerResponseDtoList(customerCollection);
+        return customerMapper.customerListToCustomerResponseDtoList(customerList);
+    }
+
+
+    private List<Customer> listCustomersBySearchedValue(String firstName, String lastName) {
+
+        if (StringUtils.hasText(firstName)) {
+
+            return customerRepository.findByFirstNameContainingIgnoreCase(firstName);
+
+        } else if (StringUtils.hasText(lastName)) {
+
+            return customerRepository.findByLastNameContainingIgnoreCase(lastName);
+
+        } else {
+
+            return customerRepository.findAll();
+        }
     }
 
     @Override

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,11 +64,11 @@ public class CustomerMapperImpl implements CustomerMapper {
     }
 
     @Override
-    public List<CustomerResponseDto> customerListToCustomerResponseDtoList(Collection<Customer> customerCollection) {
+    public List<CustomerResponseDto> customerListToCustomerResponseDtoList(List<Customer> customerList) {
 
         List<CustomerResponseDto> customerResponseDtoList = new ArrayList<>();
 
-        for (Customer customer : customerCollection) {
+        for (Customer customer : customerList) {
 
             CustomerResponseDto customerResponseDto = customerToCustomerResponseDto(customer);
 
