@@ -29,20 +29,6 @@ public class CustomerContactController {
         this.customerContactService = customerContactService;
     }
 
-//    @GetMapping()
-//    public ResponseEntity<ContactResponseDto> findCustomerContactByCustomerId(@PathVariable(name = "customerId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long customerId,
-//                                                                              @PathVariable(name = "contactId")
-//                                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
-//                                                                              Long contactId) {
-//
-//        logger.info("Find contact for customer with id: " + customerId);
-//
-//        return ResponseEntity.ok(customerContactService.findCustomerContactByCustomerId(customerId, contactId));
-//    }
-
-
     @GetMapping()
     public ResponseEntity<ContactResponseDto> findCustomerContactByCustomerId(@PathVariable(name = "customerId")
                                                                               @Min(value = 1, message = "{validation.min.pathvariable}")
