@@ -26,6 +26,14 @@ public class Pet extends BaseEntity {
     @NotBlank(message = "{validation.notblank.name}")
     @Size(min = 2, max = 255, message = "{validation.size.input}")
     private String name;
+
+    @Column(
+            name = "species",
+            columnDefinition = "VARCHAR(100)"
+    )
+    @NotBlank
+    @Size(min = 2, max = 255, message = "{validation.size.input}")
+    private String species;
     @OneToMany(
             mappedBy = "pet",
             cascade = CascadeType.ALL,
@@ -64,6 +72,14 @@ public class Pet extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
     }
 
     public List<Diagnosis> getDiagnosisList() {

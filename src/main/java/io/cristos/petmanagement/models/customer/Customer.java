@@ -41,10 +41,12 @@ public class Customer extends Person {
 
     public void addPet(Pet pet) {
         this.petList.add(pet);
+        pet.setCustomer(this);
     }
 
     public void removePet(Pet pet) {
         this.petList.remove(pet);
+        pet.setCustomer(null);
     }
 
     public Contact getContact() {
