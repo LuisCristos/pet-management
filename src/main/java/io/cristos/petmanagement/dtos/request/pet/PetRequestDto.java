@@ -16,7 +16,9 @@ public class PetRequestDto {
     @NotNull(message = "{validation.notnull.bornat}")
     @Past(message = "{validation.past}")
     private LocalDate bornAt;
-//    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
+    @NotBlank(message = "{validation.notblank.species}")
+    @Size(min = 2, max = 255, message = "{validation.size.input}")
+    private String species;
 
     public PetRequestDto() {
     }
@@ -45,13 +47,13 @@ public class PetRequestDto {
         this.bornAt = bornAt;
     }
 
-//    public List<DiagnosisDto> getDiagnosisList() {
-//        return diagnosisList;
-//    }
-//
-//    public void setDiagnosisList(List<DiagnosisDto> diagnosisList) {
-//        this.diagnosisList = diagnosisList;
-//    }
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
 
     @Override
     public String toString() {

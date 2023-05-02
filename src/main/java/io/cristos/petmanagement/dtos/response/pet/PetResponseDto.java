@@ -9,8 +9,8 @@ public class PetResponseDto {
     private String gender;
     private LocalDate bornAt;
     private LocalDate createdAt;
+    private String species;
     private int age;
-//    private List<DiagnosisDto> diagnosisList = new ArrayList<>();
 
     public PetResponseDto() {
     }
@@ -63,13 +63,13 @@ public class PetResponseDto {
         this.age = age;
     }
 
-//    public List<DiagnosisDto> getDiagnosisList() {
-//        return diagnosisList;
-//    }
-//
-//    public void setDiagnosisList(List<DiagnosisDto> diagnosisList) {
-//        this.diagnosisList = diagnosisList;
-//    }
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
 
     @Override
     public String toString() {

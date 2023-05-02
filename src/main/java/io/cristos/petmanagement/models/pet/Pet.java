@@ -98,4 +98,13 @@ public class Pet extends BaseEntity {
         this.customer = customer;
     }
 
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "name='" + name + '\'' +
+                ", species='" + species + '\'' +
+                ", diagnosisList=" + diagnosisList +
+                ", customer=" + customer +
+                '}';
+    }
 }

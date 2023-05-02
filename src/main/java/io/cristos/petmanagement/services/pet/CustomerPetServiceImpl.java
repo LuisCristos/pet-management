@@ -2,6 +2,7 @@ package io.cristos.petmanagement.services.pet;
 
 import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerPetResponseDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.models.pet.Pet;
@@ -77,11 +78,18 @@ public class CustomerPetServiceImpl implements CustomerPetService {
     }
 
     @Override
-    public CustomerPetResponseDto getCustomerWithAllPets(Long customerId) {
+    public List<PetResponseDto> getAllCustomerPetsByCustomerId(Long customerId) {
 
-        Customer customer = returnCustomerIfExists(customerId);
+//        Customer customer = returnCustomerIfExists(customerId);
 
-        return customerMapper.customerWithPetsToCustomerWithPetsDto(customer);
+        List<Pet> petList = new ArrayList<>(petRepository.findByCustomerId(customerId));
+//
+//        for (Pet pet : petList)) {
+//
+//            petList.add(pet);
+//        }
+
+        return petMapper.petListToPetDtoList(petList);
     }
 
     @Override

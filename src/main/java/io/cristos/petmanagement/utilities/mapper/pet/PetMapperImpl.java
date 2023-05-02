@@ -5,8 +5,6 @@ import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.pet.Pet;
 import io.cristos.petmanagement.utilities.genderconverter.GenderConverter;
 import io.cristos.petmanagement.utilities.mapper.diagnosis.DiagnosisMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +15,6 @@ import java.util.List;
 @Component
 public class PetMapperImpl implements PetMapper {
 
-    Logger logger = LoggerFactory.getLogger(PetMapperImpl.class);
     private final DiagnosisMapper diagnosisMapper;
     private final GenderConverter genderConverter;
 
@@ -57,6 +54,7 @@ public class PetMapperImpl implements PetMapper {
         petResponseDto.setBornAt(pet.getBornAt());
         petResponseDto.setAge(pet.getAge());
         petResponseDto.setCreatedAt(pet.getCreatedAt());
+        petResponseDto.setSpecies(pet.getSpecies());
 
         return petResponseDto;
     }
@@ -84,6 +82,7 @@ public class PetMapperImpl implements PetMapper {
         pet.setName(petRequestDto.getName());
         pet.setBornAt(petRequestDto.getBornAt());
         pet.setGender(genderConverter.convertToEntityAttribute(petRequestDto.getGender()));
+        pet.setSpecies(petRequestDto.getSpecies());
 
         return pet;
     }

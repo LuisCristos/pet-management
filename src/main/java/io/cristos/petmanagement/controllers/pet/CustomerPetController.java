@@ -2,6 +2,7 @@ package io.cristos.petmanagement.controllers.pet;
 
 import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerPetResponseDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.pet.CustomerPetService;
 import jakarta.validation.Valid;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
-@RequestMapping("/v1/customers")
+@RequestMapping("/v1/customers/{customerId}/pets")
 @Validated
 public class CustomerPetController {
 
@@ -31,12 +33,12 @@ public class CustomerPetController {
         this.customerPetService = customerPetService;
     }
 
-    @PostMapping("/{customerId}/pets")
-    public ResponseEntity<CustomerPetResponseDto> saveCustomerPet(@PathVariable(name = "customerId")
-                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                  Long customerId,
-                                                                  @Valid
-                                                                  @RequestBody PetRequestDto petRequestDto) {
+    @PostMapping
+    public ResponseEntity<PetResponseDto> saveCustomerPet(@PathVariable(name = "customerId")
+                                                          @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                          Long customerId,
+                                                          @Valid
+                                                          @RequestBody PetRequestDto petRequestDto) {
 
         Customer customer = customerPetService.savaCustomerPetByCustomerId(customerId, petRequestDto);
 
@@ -51,7 +53,7 @@ public class CustomerPetController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{customerId}/pets/{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity<CustomerPetResponseDto> findCustomerPetByCustomerId(@PathVariable(name = "customerId")
                                                                               @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                               Long customerId,
@@ -63,16 +65,16 @@ public class CustomerPetController {
         return ResponseEntity.ok(customerPetService.findCustomerPetByCustomerId(customerId, petId));
     }
 
-    @GetMapping("/{customerId}/pets")
-    public ResponseEntity<CustomerPetResponseDto> getCustomerWithAllPets(@PathVariable
-                                                                         @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                         Long customerId) {
+    @GetMapping
+    public ResponseEntity<List<PetResponseDto>> getAllCustomerPetsByCustomerId(@PathVariable
+                                                                               @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                                               Long customerId) {
         logger.info("Retrieve customer with all pets.");
 
-        return ResponseEntity.ok(customerPetService.getCustomerWithAllPets(customerId));
+        return ResponseEntity.ok(customerPetService.getAllCustomerPetsByCustomerId(customerId));
     }
 
-    @PutMapping("/{customerId}/pets/{petId}")
+    @PutMapping("/{petId}")
     public ResponseEntity<CustomerPetResponseDto> updateCustomerPetByCustomerId(@PathVariable(name = "customerId")
                                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                                 Long customerId,
@@ -86,5 +88,4 @@ public class CustomerPetController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

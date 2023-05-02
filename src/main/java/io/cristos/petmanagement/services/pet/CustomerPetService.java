@@ -2,7 +2,10 @@ package io.cristos.petmanagement.services.pet;
 
 import io.cristos.petmanagement.dtos.request.pet.PetRequestDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerPetResponseDto;
+import io.cristos.petmanagement.dtos.response.pet.PetResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
+
+import java.util.List;
 
 
 public interface CustomerPetService {
@@ -11,7 +14,7 @@ public interface CustomerPetService {
 
     CustomerPetResponseDto findCustomerPetByCustomerId(Long customerId, Long petId);
 
-    CustomerPetResponseDto getCustomerWithAllPets(Long customerId);
+    List<PetResponseDto> getAllCustomerPetsByCustomerId(Long customerId);
 
     Customer updateCustomerPetByCustomerId(Long customerId, PetRequestDto petRequestDto,
                                            Long petId);
