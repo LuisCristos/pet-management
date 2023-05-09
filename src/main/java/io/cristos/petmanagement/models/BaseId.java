@@ -1,10 +1,20 @@
 package io.cristos.petmanagement.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
 @MappedSuperclass
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public abstract class BaseId implements Serializable {
 
     @Id
@@ -20,18 +30,4 @@ public abstract class BaseId implements Serializable {
     )
     private Long id;
 
-    public BaseId(Long id) {
-        this.id = id;
-    }
-
-    public BaseId() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

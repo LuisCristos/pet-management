@@ -1,12 +1,16 @@
 package io.cristos.petmanagement.models.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.cristos.petmanagement.models.contact.Contact;
-import io.cristos.petmanagement.models.enums.Gender;
 import io.cristos.petmanagement.models.person.Person;
 import io.cristos.petmanagement.models.pet.Pet;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,11 @@ import java.util.List;
 @Table(name = "customer")
 @SequenceGenerator(name = "id_generator", sequenceName = "id_sequence_customer", allocationSize = 10)
 @AttributeOverride(name = "id", column = @Column(name = "customerId"))
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class Customer extends Person {
 
     @OneToMany(
@@ -22,18 +31,13 @@ public class Customer extends Person {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private List<Pet> petList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "contactId", referencedColumnName = "contactId")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Contact contact;
-
-    public Customer(LocalDate dateOfBirth, int age, Gender gender, String firstName, String lastName) {
-        super(dateOfBirth, age, gender, firstName, lastName);
-    }
-
-    public Customer() {
-    }
 
     public List<Pet> getPets() {
         return petList;
@@ -47,13 +51,5 @@ public class Customer extends Person {
     public void removePet(Pet pet) {
         this.petList.remove(pet);
         pet.setCustomer(null);
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 }

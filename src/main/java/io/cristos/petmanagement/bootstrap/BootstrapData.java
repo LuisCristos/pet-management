@@ -69,25 +69,29 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void setPetForCustomer() {
-
         List<Customer> customerList = customerRepository.findAll();
         List<Pet> petList = petRepository.findAll();
 
         Customer customer;
         Pet pet;
 
-        for (int i = 0; i < petList.size(); i++) {
-            pet = petList.get(i);
+        for (int i = 0; i < customerList.size(); i++) {
+            customer = customerList.get(i);
+            System.out.println(customer + " " + i);
 
             Random random = new Random();
-            int rint = random.nextInt(98);
+            int randomValue = random.nextInt(4);
 
-            customer = customerList.get(rint);
+            for (int j = 0; j <= randomValue; j++) {
 
-            customer.addPet(pet);
-            pet.setCustomer(customer);
+                int randomNext = random.nextInt(500);
+                pet = petList.get(randomNext);
+                System.out.println(pet + " " + randomNext);
 
-            customerRepository.save(customer);
+                pet.setCustomer(customer);
+                customer.addPet(pet);
+                customerRepository.save(customer);
+            }
         }
     }
 
@@ -113,7 +117,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private List<Pet> loadPetCsv() throws FileNotFoundException {
 
-        File petCsvFile = ResourceUtils.getFile("classpath:csvdata/pet/pet-1000.csv");
+        File petCsvFile = ResourceUtils.getFile("classpath:csvdata/pet/pet-500.csv");
 
         List<PetCsv> petCsvList = petCsvService.convertCsv(petCsvFile);
 

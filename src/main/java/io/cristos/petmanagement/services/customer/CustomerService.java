@@ -3,8 +3,9 @@ package io.cristos.petmanagement.services.customer;
 import io.cristos.petmanagement.dtos.request.customer.CustomerRequestDto;
 import io.cristos.petmanagement.dtos.response.customer.CustomerResponseDto;
 import io.cristos.petmanagement.models.customer.Customer;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
+import java.time.LocalDate;
 
 public interface CustomerService {
 
@@ -12,7 +13,9 @@ public interface CustomerService {
 
     Customer saveCustomer(Customer customer);
 
-    List<CustomerResponseDto> getAllCustomers(String firstName, String lastName);
+    Page<CustomerResponseDto> getAllCustomersPageSortFilter(int pageNumber, int pageSize,
+                                                            String direction, String orderBy,
+                                                            String searchValue, LocalDate birthdate);
 
     CustomerResponseDto findCustomerById(Long customerId);
 

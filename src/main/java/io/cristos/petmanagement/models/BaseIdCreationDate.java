@@ -2,39 +2,26 @@ package io.cristos.petmanagement.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
 @MappedSuperclass
+@SuperBuilder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseIdCreationDate extends BaseId {
 
 
     @Column(
-            name = "date_of_creation",
-            nullable = false,
+            name = "createdAt",
             columnDefinition = "DATE"
     )
     @CreationTimestamp
     private LocalDate createdAt;
-
-    public BaseIdCreationDate(Long id, LocalDate createdAt) {
-        super(id);
-        this.createdAt = createdAt;
-    }
-
-    public BaseIdCreationDate(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public BaseIdCreationDate() {
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
 }

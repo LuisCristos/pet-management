@@ -6,14 +6,17 @@ import io.cristos.petmanagement.exceptions.NotFoundException;
 import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapper;
+import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapperMS;
+import io.cristos.petmanagement.utilities.userinput.pagingandsorting.PagingSortingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,20 +24,23 @@ public class CustomerServiceImpl implements CustomerService {
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
-
-    private static final int DEFAULT_PAGE_NUMBER = 0;
-    private static final int DEFAULT_PAGE_SIZE = 0;
+    private final CustomerMapperMS customerMapperMS;
+    private final PagingSortingService pagingSortingService;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper,
+                               CustomerMapperMS customerMapperMS, PagingSortingService pagingSortingService) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.customerMapperMS = customerMapperMS;
+        this.pagingSortingService = pagingSortingService;
     }
 
     @Override
     public Customer saveCustomer(CustomerRequestDto customerRequestDto) {
 
-        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerRequestDto));
+//        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerRequestDto));
+        return customerRepository.save(customerMapperMS.customerRequestDtoToCustomer(customerRequestDto));
     }
 
     @Override
@@ -44,35 +50,30 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponseDto> getAllCustomers(String firstName, String lastName) {
+    public Page<CustomerResponseDto> getAllCustomersPageSortFilter(int pageNumber, int pageSize, String direction,
+                                                                   String orderBy, String searchValue, LocalDate birthdate) {
 
-        List<Customer> customerList = listCustomersBySearchedValue(firstName, lastName);
+        PageRequest pageRequest = pagingSortingService.getPageRequest(pageNumber, pageSize, direction, orderBy);
 
-        if (customerList.isEmpty()) {
+        Page<Customer> customerPage = null;
 
-            logger.info("getAllCustomers(). Retrieved empty List.");
+        if (Objects.isNull(orderBy)) {
 
-            return Collections.emptyList();
+            customerPage = customerRepository.findAll(pageRequest);
+
+        } else if (orderBy.equals("firstName")) {
+
+            customerPage = customerRepository.findByFirstNameContainingIgnoreCase(searchValue, pageRequest);
+
+        } else if (orderBy.equals("lastName")) {
+
+            customerPage = customerRepository.findByLastNameContainingIgnoreCase(searchValue, pageRequest);
+
+        } else if (birthdate.equals(2022 - 05 - 05)) {
+            customerPage = customerRepository.findByBornAt(birthdate, pageRequest);
         }
 
-        return customerMapper.customerListToCustomerResponseDtoList(customerList);
-    }
-
-
-    private List<Customer> listCustomersBySearchedValue(String firstName, String lastName) {
-
-        if (StringUtils.hasText(firstName)) {
-
-            return customerRepository.findByFirstNameContainingIgnoreCase(firstName);
-
-        } else if (StringUtils.hasText(lastName)) {
-
-            return customerRepository.findByLastNameContainingIgnoreCase(lastName);
-
-        } else {
-
-            return customerRepository.findAll();
-        }
+        return customerMapper.pageCustomerToCustomerResponseDto(customerPage);
     }
 
     @Override
@@ -94,9 +95,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomer(Long customerId, CustomerRequestDto customerRequestDto) {
 
-        returnCustomerIfExists(customerId);
+        Customer customer = returnCustomerIfExists(customerId);
 
-        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerId, customerRequestDto));
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        customer.setBornAt(customerRequestDto.getBornAt());
+
+//        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerId, customerRequestDto));
+        return customerRepository.save(customer);
     }
 
     @Override

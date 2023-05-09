@@ -23,7 +23,6 @@ import java.util.Optional;
 public class CustomerPetServiceImpl implements CustomerPetService {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerPetServiceImpl.class);
-
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final PetMapper petMapper;
