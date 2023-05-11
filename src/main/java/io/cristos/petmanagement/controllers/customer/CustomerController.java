@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +26,8 @@ import java.time.LocalDate;
 @RequestMapping("/v1/customers")
 @Validated
 public class CustomerController {
+    private static final int DEFAULT_PAGE_NUMBER = 0;
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final CustomerService customerService;
@@ -45,8 +50,7 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
-//        logger.info(customerRequestDto + " saved to database.");
-        logger.info("Customer: {} saved to database.", customerRequestDto);
+        logger.info("Customer: {} saved.", customerRequestDto);
 
         return ResponseEntity.created(location).build();
     }
@@ -66,19 +70,21 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<Page<CustomerResponseDto>> getAllCustomersPageSortFilter(
-            @RequestParam @Min(value = 0, message = "{validation.min.requestparam.pagenumber}") int pageNumber,
-            @RequestParam @Min(value = 1, message = "{validation.min.requestparam.pagesize}") int pageSize,
-            @RequestParam(required = false) String direction,
-            @RequestParam(required = false) String orderBy,
+
+            @SortDefault.SortDefaults({
+                    @SortDefault(caseSensitive = false, sort = "firstName", direction = Sort.Direction.ASC),
+                    @SortDefault(caseSensitive = false, sort = "lastName", direction = Sort.Direction.ASC)
+            })
+            Pageable pageable,
             @RequestParam(required = false) String searchValue,
             @RequestParam(required = false) LocalDate birthdate) {
 
 //        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 
-        logger.info("Retrieved all customers:");
+        logger.info("List of Customers retrieved.");
 
-        return ResponseEntity.ok(customerService.getAllCustomersPageSortFilter(pageNumber,
-                pageSize, direction, orderBy, searchValue, birthdate));
+        return ResponseEntity.ok(customerService.getAllCustomersPageSortFilter(pageable,
+                searchValue, birthdate));
     }
 
     @GetMapping("/{customerId}")
@@ -86,7 +92,7 @@ public class CustomerController {
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long customerId) {
 
-        logger.info("Find CustomerCsv with customerId." + customerId);
+        logger.info("Find Customer with id: {}", customerId);
 
         return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
@@ -98,7 +104,7 @@ public class CustomerController {
 
         customerService.deleteCustomerById(customerId);
 
-        logger.info("Deleted customer with customerId: " + customerId);
+        logger.info("Customer with id: {} deleted.", customerId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

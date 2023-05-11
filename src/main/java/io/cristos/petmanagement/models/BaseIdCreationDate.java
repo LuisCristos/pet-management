@@ -20,6 +20,7 @@ public abstract class BaseIdCreationDate extends BaseId {
 
     @Column(
             name = "createdAt",
+            updatable = false,
             columnDefinition = "DATE"
     )
     @CreationTimestamp

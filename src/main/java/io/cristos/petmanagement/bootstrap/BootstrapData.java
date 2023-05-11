@@ -77,7 +77,6 @@ public class BootstrapData implements CommandLineRunner {
 
         for (int i = 0; i < customerList.size(); i++) {
             customer = customerList.get(i);
-            System.out.println(customer + " " + i);
 
             Random random = new Random();
             int randomValue = random.nextInt(4);
@@ -86,7 +85,6 @@ public class BootstrapData implements CommandLineRunner {
 
                 int randomNext = random.nextInt(500);
                 pet = petList.get(randomNext);
-                System.out.println(pet + " " + randomNext);
 
                 pet.setCustomer(customer);
                 customer.addPet(pet);

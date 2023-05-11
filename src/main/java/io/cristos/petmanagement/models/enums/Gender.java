@@ -1,20 +1,18 @@
 package io.cristos.petmanagement.models.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public enum Gender {
     FEMALE("Female"),
     MALE("Male"),
     OTHER("Other");
 
-    private final String shortName;
-
-
-    Gender(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
+    private String shortName;
 
     public static Gender fromShortName(String shortName) {
 

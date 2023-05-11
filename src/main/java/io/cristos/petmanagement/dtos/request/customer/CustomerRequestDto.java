@@ -27,4 +27,8 @@ public class CustomerRequestDto {
     private LocalDate bornAt;
     @NotBlank(message = "{validation.notblank.gender}")
     private String gender;
+
+    public String getGender() {
+        return gender.toUpperCase();
+    }
 }

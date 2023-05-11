@@ -12,12 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -39,7 +42,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer saveCustomer(CustomerRequestDto customerRequestDto) {
 
-//        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerRequestDto));
         return customerRepository.save(customerMapperMS.customerRequestDtoToCustomer(customerRequestDto));
     }
 
@@ -50,30 +52,45 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<CustomerResponseDto> getAllCustomersPageSortFilter(int pageNumber, int pageSize, String direction,
-                                                                   String orderBy, String searchValue, LocalDate birthdate) {
+    public Page<CustomerResponseDto> getAllCustomersPageSortFilter(Pageable pageable, String searchValue, LocalDate birthdate) {
 
-        PageRequest pageRequest = pagingSortingService.getPageRequest(pageNumber, pageSize, direction, orderBy);
+        Sort sort = pageable.getSort();
+        String orderProperty = null;
 
-        Page<Customer> customerPage = null;
-
-        if (Objects.isNull(orderBy)) {
-
-            customerPage = customerRepository.findAll(pageRequest);
-
-        } else if (orderBy.equals("firstName")) {
-
-            customerPage = customerRepository.findByFirstNameContainingIgnoreCase(searchValue, pageRequest);
-
-        } else if (orderBy.equals("lastName")) {
-
-            customerPage = customerRepository.findByLastNameContainingIgnoreCase(searchValue, pageRequest);
-
-        } else if (birthdate.equals(2022 - 05 - 05)) {
-            customerPage = customerRepository.findByBornAt(birthdate, pageRequest);
+        for (Sort.Order order : sort) {
+            orderProperty = order.getProperty();
         }
 
-        return customerMapper.pageCustomerToCustomerResponseDto(customerPage);
+        if (StringUtils.hasText(searchValue) && StringUtils.hasText(orderProperty) && orderProperty.equals("firstName")) {
+
+            Page<Customer> customersPage = customerRepository.findByFirstNameContainingIgnoreCase(searchValue, pageable);
+
+            var customersResponseDtoList = customersPage.getContent().stream()
+                    .map(customerMapperMS::customerListToCustomerResponseDtoList)
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(customersResponseDtoList);
+
+        } else if (StringUtils.hasText(searchValue) && StringUtils.hasText(orderProperty) && orderProperty.equals("lastName")) {
+
+            Page<Customer> customersPage = customerRepository.findByLastNameContainingIgnoreCase(searchValue, pageable);
+
+            var customersResponseDtoList = customersPage.getContent().stream()
+                    .map(customerMapperMS::customerListToCustomerResponseDtoList)
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(customersResponseDtoList);
+
+        } else {
+
+            Page<Customer> findCustomers = customerRepository.findAll(pageable);
+
+            var customerResponseDtoList = findCustomers.getContent().stream()
+                    .map(customerMapperMS::customerListToCustomerResponseDtoList)
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(customerResponseDtoList);
+        }
     }
 
     @Override
@@ -97,12 +114,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = returnCustomerIfExists(customerId);
 
-        customer.setFirstName(customerRequestDto.getFirstName());
-        customer.setLastName(customerRequestDto.getLastName());
-        customer.setBornAt(customerRequestDto.getBornAt());
+        Customer updateCustomer = customerMapperMS.updateCustomerFromCustomerRequestDto(customerRequestDto, customer);
 
-//        return customerRepository.save(customerMapper.customerRequestDtoToCustomer(customerId, customerRequestDto));
-        return customerRepository.save(customer);
+        return saveCustomer(updateCustomer);
     }
 
     @Override
@@ -111,10 +125,10 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
                 .orElseThrow(() -> {
                     logger.warn("{}, {}! An exception occurred!",
-                            "An exception occurred!", "CustomerCsv with id: " + customerId + " cannot be found.",
-                            new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found."));
+                            "An exception occurred!", "Customer with id: " + customerId + " cannot be found.",
+                            new NotFoundException("Customer with id: " + customerId + " cannot be found."));
 
-                    return new NotFoundException("CustomerCsv with id: " + customerId + " cannot be found.");
+                    return new NotFoundException("Customer with id: " + customerId + " cannot be found.");
                 }));
 
         return optionalCustomer.get();
