@@ -6,15 +6,13 @@ import io.cristos.petmanagement.models.customer.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-
 public interface CustomerService {
 
     Customer saveCustomer(CustomerRequestDto customerRequestDto);
 
     Customer saveCustomer(Customer customer);
 
-    Page<CustomerResponseDto> getAllCustomersPageSortFilter(Pageable pageable, String searchValue, LocalDate birthdate);
+    Page<CustomerResponseDto> getAllCustomersPageSortFilter(Pageable pageable, String searchValue);
 
     CustomerResponseDto findCustomerById(Long customerId);
 

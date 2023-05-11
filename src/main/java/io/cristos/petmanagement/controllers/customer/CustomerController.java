@@ -6,8 +6,7 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,16 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/v1/customers")
 @Validated
+@Slf4j
 public class CustomerController {
-    private static final int DEFAULT_PAGE_NUMBER = 0;
-    private static final int DEFAULT_PAGE_SIZE = 10;
 
-    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final CustomerService customerService;
 
 
@@ -50,7 +46,7 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
-        logger.info("Customer: {} saved.", customerRequestDto);
+        log.info("Customer: {} saved.", customerRequestDto);
 
         return ResponseEntity.created(location).build();
     }
@@ -63,28 +59,23 @@ public class CustomerController {
                                                                   @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.updateCustomer(customerId, customerRequestDto);
 
-        logger.info("Customer: {} updated.", customerRequestDto);
+        log.info("Customer: {} updated.", customerRequestDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<Page<CustomerResponseDto>> getAllCustomersPageSortFilter(
-
             @SortDefault.SortDefaults({
                     @SortDefault(caseSensitive = false, sort = "firstName", direction = Sort.Direction.ASC),
                     @SortDefault(caseSensitive = false, sort = "lastName", direction = Sort.Direction.ASC)
             })
             Pageable pageable,
-            @RequestParam(required = false) String searchValue,
-            @RequestParam(required = false) LocalDate birthdate) {
+            @RequestParam(required = false) String searchValue) {
 
-//        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        log.info("List of Customers retrieved.");
 
-        logger.info("List of Customers retrieved.");
-
-        return ResponseEntity.ok(customerService.getAllCustomersPageSortFilter(pageable,
-                searchValue, birthdate));
+        return ResponseEntity.ok(customerService.getAllCustomersPageSortFilter(pageable, searchValue));
     }
 
     @GetMapping("/{customerId}")
@@ -92,7 +83,7 @@ public class CustomerController {
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long customerId) {
 
-        logger.info("Find Customer with id: {}", customerId);
+        log.info("Find Customer with id: {}", customerId);
 
         return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
@@ -104,7 +95,7 @@ public class CustomerController {
 
         customerService.deleteCustomerById(customerId);
 
-        logger.info("Customer with id: {} deleted.", customerId);
+        log.info("Customer with id: {} deleted.", customerId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

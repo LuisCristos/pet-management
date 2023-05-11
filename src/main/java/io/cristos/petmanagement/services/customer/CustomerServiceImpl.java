@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<CustomerResponseDto> getAllCustomersPageSortFilter(Pageable pageable, String searchValue, LocalDate birthdate) {
+    public Page<CustomerResponseDto> getAllCustomersPageSortFilter(Pageable pageable, String searchValue) {
 
         Sort sort = pageable.getSort();
         String orderProperty = null;
