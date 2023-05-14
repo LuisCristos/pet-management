@@ -7,9 +7,7 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapper;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapperMS;
-import io.cristos.petmanagement.utilities.userinput.pagingandsorting.PagingSortingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,24 +20,26 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
-    private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomerMapperMS customerMapperMS;
-    private final PagingSortingService pagingSortingService;
+
 
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper,
-                               CustomerMapperMS customerMapperMS, PagingSortingService pagingSortingService) {
+                               CustomerMapperMS customerMapperMS) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.customerMapperMS = customerMapperMS;
-        this.pagingSortingService = pagingSortingService;
     }
 
     @Override
     public Customer saveCustomer(CustomerRequestDto customerRequestDto) {
+
+        genderParameterCheck(customerRequestDto);
 
         return customerRepository.save(customerMapperMS.customerRequestDtoToCustomer(customerRequestDto));
     }
@@ -113,6 +113,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = returnCustomerIfExists(customerId);
 
+        genderParameterCheck(customerRequestDto);
+
         Customer updateCustomer = customerMapperMS.updateCustomerFromCustomerRequestDto(customerRequestDto, customer);
 
         return saveCustomer(updateCustomer);
@@ -123,7 +125,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Optional<Customer> optionalCustomer = Optional.ofNullable(customerRepository.findById(customerId)
                 .orElseThrow(() -> {
-                    logger.warn("{}, {}! An exception occurred!",
+                    log.warn("{}, {}! An exception occurred!",
                             "An exception occurred!", "Customer with id: " + customerId + " cannot be found.",
                             new NotFoundException("Customer with id: " + customerId + " cannot be found."));
 
@@ -131,5 +133,20 @@ public class CustomerServiceImpl implements CustomerService {
                 }));
 
         return optionalCustomer.get();
+    }
+
+    private void genderParameterCheck(CustomerRequestDto customerRequestDto) {
+
+        String gender = customerRequestDto.getGender();
+
+        if (gender.equalsIgnoreCase("male") | gender.equalsIgnoreCase("female")
+                | gender.equalsIgnoreCase("other")) {
+            return;
+        } else {
+            log.warn("Customer {} was not saved. Because gender value {} is not supported.", customerRequestDto, gender);
+
+            throw new IllegalArgumentException("Gender [" + gender + "] not supported. " +
+                    "Allowed types are Male, Female, Other.");
+        }
     }
 }

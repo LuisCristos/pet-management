@@ -6,13 +6,14 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.services.customer.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +25,12 @@ import java.net.URI;
 @RequestMapping("/v1/customers")
 @Validated
 @Slf4j
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
 
-
-    @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
-
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> saveCustomer(@Valid
                                                             @RequestBody CustomerRequestDto customerRequestDto) {
 
@@ -51,12 +47,15 @@ public class CustomerController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/{customerId}")
+    @PutMapping(
+            value = "/{customerId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable(name = "customerId")
-                                                                  @Min(value = 1, message = "{validation.min.pathvariable}")
-                                                                  Long customerId,
+                                                              @Min(value = 1, message = "{validation.min.pathvariable}")
+                                                              Long customerId,
                                                               @Valid
-                                                                  @RequestBody CustomerRequestDto customerRequestDto) {
+                                                              @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.updateCustomer(customerId, customerRequestDto);
 
         log.info("Customer: {} updated.", customerRequestDto);
@@ -64,7 +63,7 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public ResponseEntity<Page<CustomerResponseDto>> getAllCustomersPageSortFilter(
             @SortDefault.SortDefaults({
                     @SortDefault(caseSensitive = false, sort = "firstName", direction = Sort.Direction.ASC),
@@ -78,7 +77,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getAllCustomersPageSortFilter(pageable, searchValue));
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> findCustomerById(@PathVariable(name = "customerId")
                                                                 @Min(value = 1, message = "{validation.min.pathvariable}")
                                                                 Long customerId) {
