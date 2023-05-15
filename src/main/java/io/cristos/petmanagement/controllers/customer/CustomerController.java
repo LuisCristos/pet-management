@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,12 @@ public class CustomerController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> saveCustomer(@Valid
-                                                            @RequestBody CustomerRequestDto customerRequestDto) {
+                                                            @RequestBody CustomerRequestDto customerRequestDto,
+                                                            @RequestHeader HttpHeaders headers
+//                                                            @RequestHeader(
+//                                                                    value = HttpHeaders.ACCEPT_LANGUAGE,
+//                                                                    required = false) String lang
+    ) {
 
         Customer customer = customerService.saveCustomer(customerRequestDto);
 
@@ -42,6 +48,7 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
+        log.info("Header values {}", headers);
         log.info("Customer: {} saved.", customerRequestDto);
 
         return ResponseEntity.created(location).build();

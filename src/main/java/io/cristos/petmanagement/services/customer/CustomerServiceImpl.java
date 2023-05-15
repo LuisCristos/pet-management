@@ -7,8 +7,8 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapper;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapperMS;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,20 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomerMapperMS customerMapperMS;
-
-
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper,
-                               CustomerMapperMS customerMapperMS) {
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
-        this.customerMapperMS = customerMapperMS;
-    }
 
     @Override
     public Customer saveCustomer(CustomerRequestDto customerRequestDto) {
