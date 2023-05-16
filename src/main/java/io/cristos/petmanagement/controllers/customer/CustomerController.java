@@ -57,8 +57,7 @@ public class CustomerController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(
-            value = "/{customerId}",
+    @PutMapping(value = "/{customerId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable(name = "customerId")
