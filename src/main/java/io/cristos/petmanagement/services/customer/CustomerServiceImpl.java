@@ -7,6 +7,7 @@ import io.cristos.petmanagement.models.customer.Customer;
 import io.cristos.petmanagement.repositories.customer.CustomerRepository;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapper;
 import io.cristos.petmanagement.utilities.mapper.customer.CustomerMapperMS;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;

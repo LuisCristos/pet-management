@@ -15,6 +15,8 @@ public class I18NConfig {
 
         final AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setDefaultLocale(Locale.US);
+        // Setting System default Locale to US
+        Locale.setDefault(Locale.US);
 
         return resolver;
     }

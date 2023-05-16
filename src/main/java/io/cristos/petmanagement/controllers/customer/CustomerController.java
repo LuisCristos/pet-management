@@ -42,11 +42,7 @@ public class CustomerController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerResponseDto> saveCustomer(@Valid
                                                             @RequestBody CustomerRequestDto customerRequestDto,
-                                                            @RequestHeader HttpHeaders headers
-//                                                            @RequestHeader(
-//                                                                    value = HttpHeaders.ACCEPT_LANGUAGE,
-//                                                                    required = false) String lang
-    ) {
+                                                            @RequestHeader HttpHeaders headers) {
 
         Customer customer = customerService.saveCustomer(customerRequestDto);
 
@@ -56,7 +52,6 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
 
-        log.info("Header values {}", headers);
         log.info("Customer: {} saved.", customerRequestDto);
 
         return ResponseEntity.created(location).build();
